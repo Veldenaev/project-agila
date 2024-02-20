@@ -9,6 +9,40 @@ This is a course requirement for CS 191/192 Software Engineering Courses of the 
 - Heffron, Joaquin
 - Ko, Daryll Carlsten
 
+## Sprint 1 Guide
+
+### Prerequisites
+
+Make sure `npm` is installed: see [this guide](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+
+### Creating & styling pages
+
+Each file in `src/pages` corresponds to a route in the website. For example, `src/pages/hello.tsx` maps to `project-agila.vercel.app/hello`.
+
+A barebones page implementation looks like this:
+
+```tsx
+export default function Hello() {
+    return <>
+        <main>
+            <div>Hello World!</div>
+        </main>
+    <>
+} 
+```
+
+React allows us to use HTML-like syntax inside JavaScript/TypeScript files. Next is what does the mapping between `.tsx` files and website routes.
+
+Styling is done using [Tailwind CSS](https://tailwindcss.com/). To make the contents of the `div` above blue, just add a class to the `div` element itself:
+
+```tsx
+<div class="text-blue">Hello World!</div>
+```
+
+The idea behind using Tailwind is to make it easy for us to see which styles particular elements have (as opposed to having to search around in a separate `.css` file). 
+
+### Setting up the database
+
 ## Create T3 App
 
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
@@ -33,7 +67,3 @@ To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the fo
 - [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
 
 You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-### How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
