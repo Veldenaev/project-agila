@@ -2,7 +2,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 
-import Links from "./Links.tsx";
+import Links from "../components/Links";
 
 import { api } from "~/utils/api";
 
