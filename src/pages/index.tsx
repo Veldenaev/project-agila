@@ -22,7 +22,7 @@ export default function Home() {
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Project <span className="text-[hsl(280,100%,70%)]">Agila</span>
           </h1>
-          <h2 className="text-2xl tracking-tight text-white sm:text-[2rem]">Robust document tracking for lawyers.</h2>
+          <h2 className="text-2xl tracking-tight text-white sm:text-[1.5rem]">Empowering transactions between clients and lawyers.</h2>
           {/*
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
             <Link
