@@ -21,7 +21,7 @@ Our workflow (for now) looks like this:
 
 1) Make a new branch with the format `s<sprint number>/<name>` (e.g., `s1/daryll`, `s3/joaquin`) and switch to that branch
 2) Make a change to one or more files (e.g., `a.tsx` and `b.tsx`)
-3) Commit your changes (`git add all && git commit -m '<commit message>'`)
+3) Commit your changes (`git add a.tsx b.tsx && git commit -m '<commit message>'`)
 4) Make a pull request (the option should be visible in the GitHub web UI once you push your changes)
 5) Have someone approve the pull request (ideally someone else).
 6) Rinse and repeat!
