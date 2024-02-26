@@ -15,6 +15,17 @@ This is a course requirement for CS 191/192 Software Engineering Courses of the 
 
 Make sure `npm` is installed: see [this guide](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
+### Making changes
+
+Our workflow (for now) looks like this:
+
+1) Make a new branch with the format `s<sprint number>/<name>` (e.g., `s1/daryll`, `s3/joaquin`) and switch to that branch
+2) Make a change to one or more files (e.g., `a.tsx` and `b.tsx`)
+3) Commit your changes (`git add all && git commit -m '<commit message>'`)
+4) Make a pull request (the option should be visible in the GitHub web UI once you push your changes)
+5) Have someone approve the pull request (ideally someone else).
+6) Rinse and repeat!
+
 ### Creating & styling pages
 
 Each file in `src/pages` corresponds to a route in the website. For example, `src/pages/hello.tsx` maps to `project-agila.vercel.app/hello`.
@@ -31,19 +42,28 @@ export default function Hello() {
 } 
 ```
 
-React allows us to use HTML-like syntax inside JavaScript/TypeScript files. Next is what does the mapping between `.tsx` files and website routes.
+[React](https://react.dev/) allows us to use HTML-like syntax inside JavaScript/TypeScript files. [Next](https://nextjs.org/) is what does the mapping between `.tsx` files and website routes.
 
-Styling is done using [Tailwind CSS](https://tailwindcss.com/). To make the contents of the `div` above blue, just add a class to the `div` element itself:
+Styling is done using [Tailwind](https://tailwindcss.com/). To make the contents of the `div` above blue, just add a class to the `div` element itself:
 
-```tsx
+```html
 <div class="text-blue">Hello World!</div>
 ```
 
 The idea behind using Tailwind is to make it easy for us to see which styles particular elements have (as opposed to having to search around in a separate `.css` file). 
 
+For this sprint, we just need to modify the following files:
+
+```
+src/pages/login.tsx
+src/pages/dashboard.tsx
+src/pages/notification_management.tsx
+src/pages/transaction_management.tsx
+```
+
 ### Setting up the database
 
-## Create T3 App
+## Create T3 App (original README contents)
 
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
 
