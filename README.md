@@ -13,7 +13,8 @@ This is a course requirement for CS 191/192 Software Engineering Courses of the 
 
 ### Prerequisites
 
-Make sure `npm` is installed: see [this guide](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+1) Make sure `npm` is installed; otherwise, see [this guide](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+2) Add the environment variable values listed in the Discord server in your `.env` file.
 
 ### Making changes
 
