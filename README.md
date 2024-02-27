@@ -73,8 +73,9 @@ src/pages/transaction_management.tsx
 ### Setting up the database
 
 1) Edit `prisma/schema.prisma` to include schemas we plan on using (for lawyers, clients, transactions, etc.).
+    - You can use the existing schemas (`Session`, `User`) and our [Design Model](https://docs.google.com/document/d/1e7E8AXHu9J0vk2MAwQUCqEjHrVOD9vA-AqZlwg3HHSU/edit) from CS 191 as a guide!
 2) Run `npx prisma db push` to sync Prisma's schemas to our MySQL schemas.
-3) Access the `localhost:3306` connection in MySQL Workbench (this should still be here from CS 165); the `project_agila` database should contain the relevant tables.
+3) Access the `localhost:3306` connection in MySQL Workbench (this should still be here from CS 165); the `project_agila` database should contain the relevant (empty) tables.
 
 ## Create T3 App (original README contents)
 
