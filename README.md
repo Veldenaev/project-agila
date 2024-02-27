@@ -81,6 +81,14 @@ src/pages/transaction_management.tsx
 
 To sum up this section, you need to *modify* `prisma/schema.prisma` and *create* `prisma/seed.ts`.
 
+## Testing
+
+We'll be using [Playwright](https://playwright.dev/) for testing.
+
+Our tests will be located in the `tests` folder; Playwright helps with *end-to-end testing*, that is, it allows us to make tests that resemble how an actual user would interact with the website.
+
+We'll use the `.spec.ts` file extension for Playwright tests. (Other details to follow in succeeding sprints; I'll just put in some initial tests for Sprint 1 -- Daryll)
+
 ## Create T3 App (original README contents)
 
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
