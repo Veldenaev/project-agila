@@ -21,6 +21,7 @@ git clone git@github.com:Veldenaev/project-agila.git
 
 2) Make sure `npm` is installed (check by running `npm -v`; the version number should appear if you have it installed). Otherwise, see [this guide](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 3) Add the environment variable values listed in the Discord server in your `.env` file.
+4) Verify that you can run the development server by running `npm run dev`.
 
 ### Making changes
 
