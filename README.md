@@ -76,6 +76,8 @@ src/pages/transaction_management.tsx
     - You can use the existing schemas (`Session`, `User`) and our [Design Model](https://docs.google.com/document/d/1e7E8AXHu9J0vk2MAwQUCqEjHrVOD9vA-AqZlwg3HHSU/edit) from CS 191 as a guide!
 2) Run `npx prisma db push` to sync Prisma's schemas to our MySQL schemas.
 3) Access the `localhost:3306` connection in MySQL Workbench (this should still be here from CS 165); the `project_agila` database should contain the relevant (empty) tables.
+4) Follow steps 1 and 2 of this [database seeding guide](https://www.prisma.io/docs/orm/prisma-migrate/workflows/seeding#seeding-your-database-with-typescript-or-javascript).
+5) Run `npx prisma db seed`; relevant tables in the `project_agila` database should now contain entries!
 
 ## Create T3 App (original README contents)
 
