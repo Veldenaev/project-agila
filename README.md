@@ -13,8 +13,14 @@ This is a course requirement for CS 191/192 Software Engineering Courses of the 
 
 ### Prerequisites
 
-1) Make sure `npm` is installed (check by running `npm -v`; the version number should appear if you have it installed). Otherwise, see [this guide](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
-2) Add the environment variable values listed in the Discord server in your `.env` file.
+1) Clone the repo by running
+
+```bash
+git clone git@github.com:Veldenaev/project-agila.git
+```
+
+2) Make sure `npm` is installed (check by running `npm -v`; the version number should appear if you have it installed). Otherwise, see [this guide](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+3) Add the environment variable values listed in the Discord server in your `.env` file.
 
 ### Making changes
 
@@ -23,6 +29,7 @@ Our workflow (for now) looks like this:
 1) Make a new branch with the format `s<sprint number>/<name>` (e.g., `s1/daryll`, `s3/joaquin`) and switch to that branch.
 2) Make a change to one or more files (e.g., `a.tsx` and `b.tsx`).
 3) Commit your changes (`git add a.tsx b.tsx && git commit -m '<commit message>'`).
+4) Push the changes to your local branch (`git push`)
 4) Make a pull request (the option should be visible in the GitHub web UI once you push your changes).
 5) Have someone approve the pull request (ideally someone else).
 6) Rinse and repeat!
