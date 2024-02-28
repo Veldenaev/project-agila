@@ -27,9 +27,9 @@ git clone git@github.com:Veldenaev/project-agila.git
 
 Our workflow (for now) looks like this:
 
-1) Make a new branch with the format `s<sprint number>/<name>` (e.g., `s1/daryll`, `s3/joaquin`) and switch to that branch.
+1) Make a new branch with the format `s<sprint number>/<name>` (e.g., `s1/daryll`, `s3/joaquin`) and switch to that branch (e.g., `git checkout -b s1/daryll`).
 2) Make a change to one or more files (e.g., `a.tsx` and `b.tsx`).
-3) Commit your changes (`git add a.tsx b.tsx && git commit -m '<commit message>'`).
+3) Commit your changes (e.g., `git add a.tsx b.tsx && git commit -m '<commit message>'`).
 4) Push the changes to your local branch (`git push`)
 4) Make a pull request (the option should be visible in the GitHub web UI once you push your changes).
 5) Have someone approve the pull request (ideally someone else).
@@ -87,7 +87,9 @@ We'll be using [Playwright](https://playwright.dev/) for testing.
 
 Our tests will be located in the `tests` folder; Playwright helps with *end-to-end testing*, that is, it allows us to make tests that resemble how an actual user would interact with the website.
 
-We'll use the `.spec.ts` file extension for Playwright tests. (Other details to follow in succeeding sprints; I'll just put in some initial tests for Sprint 1 -- Daryll)
+We'll use the `.spec.ts` file extension for Playwright tests.
+
+To run our tests, make sure a development server is up at `localhost:3000` (by running `npm run dev`), then run `npx playwright test`.
 
 ## Create T3 App (original README contents)
 
