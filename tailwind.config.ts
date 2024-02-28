@@ -5,10 +5,14 @@ export default {
   content: ["./src/**/*.tsx"],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
+      // fontFamily: {
+      //   sans: ["var(--font-sans)", ...fontFamily.sans],
+      // },
+      backgroundImage: {
+        'bookshelf': "url('~/assets/bookshelfbg.jpg')",
       },
     },
   },
   plugins: [],
 } satisfies Config;
+
