@@ -91,9 +91,10 @@ We'll use the `.spec.ts` file extension for Playwright tests.
 
 To run our tests, make sure a development server is up at `localhost:3000` (by running `npm run dev`), then run `npx playwright test`.
 
+---
+
 <details>
 <summary>original README contents</summary>
-<br>
 
 ## Create T3 App
 
