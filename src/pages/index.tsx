@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 
 import Links from "../components/Links";
-import Shadow from "../components/Shadow"
+import Shadow from "../components/Shadow";
 
 import { api } from "~/utils/api";
 
@@ -16,14 +16,16 @@ export default function Home() {
         <title>Project Agila</title>
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <Shadow/>
-      <main className="flex flex-col min-h-screen bg-bookshelf bg-cover bg-center">
-        <Links/>
-        <div className="z-10 mt-auto mb-auto flex flex-col items-center justify-center gap-12 px-4 py-16 ">
+      <Shadow />
+      <main className="flex min-h-screen flex-col bg-bookshelf bg-cover bg-center">
+        <Links />
+        <div className="z-10 mb-auto mt-auto flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Project <span className="text-[hsl(280,100%,70%)]">Agila</span>
           </h1>
-          <h2 className="text-2xl tracking-tight text-white sm:text-[1.5rem]">Empowering transactions between clients and lawyers.</h2>
+          <h2 className="text-2xl tracking-tight text-white sm:text-[1.5rem]">
+            Empowering transactions between clients and lawyers.
+          </h2>
           {/*
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
             <Link
@@ -67,7 +69,7 @@ function AuthShowcase() {
 
   const { data: secretMessage } = api.post.getSecretMessage.useQuery(
     undefined, // no input
-    { enabled: sessionData?.user !== undefined }
+    { enabled: sessionData?.user !== undefined },
   );
 
   return (

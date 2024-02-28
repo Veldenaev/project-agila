@@ -9,10 +9,9 @@ export default {
       //   sans: ["var(--font-sans)", ...fontFamily.sans],
       // },
       backgroundImage: {
-        'bookshelf': "url('~/assets/bookshelfbg.jpg')",
+        bookshelf: "url('~/assets/bookshelfbg.jpg')",
       },
     },
   },
   plugins: [],
 } satisfies Config;
-

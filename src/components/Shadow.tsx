@@ -1,4 +1,5 @@
 export default function Shadow() {
-  return <div className="absolute inset w-full h-full bg-black bg-opacity-60"></div>;
+  return (
+    <div className="inset absolute h-full w-full bg-black bg-opacity-60"></div>
+  );
 }
-
