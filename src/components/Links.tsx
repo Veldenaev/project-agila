@@ -18,10 +18,10 @@ export default function Links() {
     },
   ];
   const pagesJsx = pages.map(({name, route}, index) =>
-      <a key={index} href={route} className="w-full hover:bg-white/10"><div>{name} page</div></a>
+      <a key={index} href={route} className="z-10 h-full w-full bg-violet-500 hover:bg-violet-500/80 flex justify-center items-center"><div>{name} page</div></a>
     );
 
-  return (<div className="w-full h-20 text-white flex flex-row items-center text-center">
+  return (<div className="w-full h-10 text-white flex flex-row items-center text-center">
     {pagesJsx}
   </div>);
 }
