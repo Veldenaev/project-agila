@@ -24,7 +24,7 @@ export default function Login() {
           <div className="flex flex-col items-center gap-12">
 
             <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[4rem]">Agila Law Offices</h1>
-            <h2 className="text-2xl tracking-tight text-white sm:text-[1.5rem]">Be Agile.</h2>
+            <h2 className="text-2xl tracking-tight italic text-white sm:text-[1.5rem]">Be Agile.</h2>
 
           </div>
 
