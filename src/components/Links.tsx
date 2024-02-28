@@ -1,6 +1,10 @@
 export default function Links() {
   const pages = [
     {
+      name: "Landing",
+      route: "/",
+    },
+    {
       name: "Login",
       route: "/login",
     },
