@@ -1,6 +1,7 @@
 import Head from "next/head";
 
 import Links from "../components/Links";
+import Shadow from "../components/Shadow";
 
 export default function TransactionManagement() {
 
@@ -17,10 +18,11 @@ export default function TransactionManagement() {
         <title>Transaction Management | Project Agila</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+      <Shadow/>
+      <main className="flex min-h-screen flex-col items-center bg-bookshelf bg-cover bg-center">
         <Links/>
-        <table className="container mx-auto">
-          <caption className="text-lg font-bold text-white py-2">Transactions</caption>
+        <table className="z-10 mt-auto mb-auto bg-white border-gray border-4 p-4">
+          <caption className="mt-auto z-10 text-white font-sans text-center text-2xl mb-6 mt-4">Transactions</caption>
           <thead>
             <tr className="bg-gray-800 text-white">
               <th className="py-2 px-4">Case Title</th>
