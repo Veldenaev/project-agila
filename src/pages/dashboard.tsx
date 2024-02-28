@@ -8,7 +8,7 @@ export default function Dashboard() {
     <>
       <Head>
         <title>Dashboard | Project Agila</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.png" />
       </Head>
       <Shadow/>
       <main className="flex min-h-screen flex-col items-center bg-bookshelf bg-cover bg-center">
