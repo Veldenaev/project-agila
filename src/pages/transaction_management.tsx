@@ -8,27 +8,38 @@ export default function TransactionManagement() {
   const transactions = [
     {
       id: 1,
-      caseTitle: "Case 1",
-      type: "Type 1",
-      lastUpdated: "2024-02-28",
-      client: "Client 1",
-      appointedAttorney: "Attorney 1",
+      caseTitle: "The First Turnabout",
+      type: "Defense",
+      lastUpdated: "2016-08-03",
+      client: "Larry Butz",
     },
     {
       id: 2,
-      caseTitle: "Case 2",
-      type: "Type 2",
-      lastUpdated: "2024-02-27",
-      client: "Client 2",
-      appointedAttorney: "Attorney 2",
+      caseTitle: "Turnabout Sisters",
+      type: "Defense",
+      lastUpdated: "2016-09-09",
+      client: "Maya Fey",
     },
     {
       id: 3,
-      caseTitle: "Case 3",
-      type: "Type 3",
-      lastUpdated: "2024-02-26",
-      client: "Client 3",
-      appointedAttorney: "Attorney 3",
+      caseTitle: "Turnabout Samurai",
+      type: "Defense",
+      lastUpdated: "2016-01-20",
+      client: "Will Powers",
+    },
+    {
+      id: 4,
+      caseTitle: "Rise from the Ashes",
+      type: "Defense",
+      lastUpdated: "2017-02-25",
+      client: "Lana Skye",
+    },
+    {
+      id: 5,
+      caseTitle: "Turnabout Big Top",
+      type: "Defense",
+      lastUpdated: "2017-12-30",
+      client: "Max Galactica",
     },
   ];
 
@@ -43,7 +54,7 @@ export default function TransactionManagement() {
         <Links />
         <table className="border-gray z-10 mb-auto mt-auto border-4 bg-white p-4">
           <caption className="z-10 mb-6 mt-4 mt-auto text-center font-sans text-2xl text-white">
-            Transactions
+            <span className="font-bold text-[hsl(280,100%,80%)]">Phoenix Wright</span>'s Transactions
           </caption>
           <thead>
             <tr className="bg-gray-800 text-white">
@@ -51,7 +62,7 @@ export default function TransactionManagement() {
               <th className="px-4 py-2">Type</th>
               <th className="px-4 py-2">Last Updated</th>
               <th className="px-4 py-2">Client</th>
-              <th className="px-4 py-2">Appointed Attorney</th>
+              {/*<th className="px-4 py-2">Appointed Attorney</th>*/}
               <th className="px-4 py-2">Actions</th>
             </tr>
           </thead>
@@ -62,7 +73,7 @@ export default function TransactionManagement() {
                 <td className="px-4 py-2">{transaction.type}</td>
                 <td className="px-4 py-2">{transaction.lastUpdated}</td>
                 <td className="px-4 py-2">{transaction.client}</td>
-                <td className="px-4 py-2">{transaction.appointedAttorney}</td>
+                {/*<td className="px-4 py-2">{transaction.appointedAttorney}</td>*/}
                 <td className="px-4 py-2">
                   <button className="mr-2 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
                     Add
