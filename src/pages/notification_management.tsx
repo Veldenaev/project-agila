@@ -43,7 +43,8 @@ export default function NotificationManagement() {
         <Links />
         <table className="border-gray z-10 mb-auto mt-auto border-4 bg-white p-4">
           <caption className="z-10 mb-6 mt-4 mt-auto text-center font-sans text-2xl text-white">
-            Notifications <span className="font-bold text-[hsl(280,100%,80%)]">(admin)</span>
+            Notifications{" "}
+            <span className="font-bold text-[hsl(280,100%,80%)]">(admin)</span>
           </caption>
           <thead>
             <tr className="bg-gray-800 text-white">
@@ -59,11 +60,11 @@ export default function NotificationManagement() {
             {notifications.map((notification) => (
               <tr key={notification.id}>
                 <td className="px-4 py-2">{notification.notificationTitle}</td>
-                <td className="px-4 py-2 max-w-56">{notification.details}</td>
+                <td className="max-w-56 px-4 py-2">{notification.details}</td>
                 <td className="px-4 py-2">{notification.lastUpdated}</td>
                 <td className="px-4 py-2">{notification.viewers}</td>
                 <td className="px-4 py-2">{notification.creator}</td>
-                <td className="px-4 py-2 flex gap-2">
+                <td className="flex gap-2 px-4 py-2">
                   {/*<button className="mr-2 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
                     Add
                   </button>*/}

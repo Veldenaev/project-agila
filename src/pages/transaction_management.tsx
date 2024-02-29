@@ -77,7 +77,7 @@ export default function TransactionManagement() {
                 <td className="px-4 py-2">{transaction.lastUpdated}</td>
                 <td className="px-4 py-2">{transaction.client}</td>
                 {/*<td className="px-4 py-2">{transaction.appointedAttorney}</td>*/}
-                <td className="px-4 py-2 flex gap-2">
+                <td className="flex gap-2 px-4 py-2">
                   {/*<button className="mr-2 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
                     Add
                   </button>*/}
