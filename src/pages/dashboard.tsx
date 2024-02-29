@@ -4,6 +4,25 @@ import Links from "../components/Links";
 import Shadow from "../components/Shadow";
 
 export default function Dashboard() {
+  const settledTransactions = [
+    {
+      title: "Turnabout Sisters",
+      type: "Defense",
+      lastUpdated: "September 9, 2016",
+    },
+    {
+      title: "Reunion, and Turnabout",
+      type: "Defense",
+      lastUpdated: "June 22, 2017",
+    },
+  ];
+  const unsettledTransactions = [
+    {
+      title: "Bridge to the Turnabout",
+      type: "Defense",
+      lastUpdated: "February 10, 2019",
+    },
+  ];
   return (
     <>
       <Head>
@@ -15,7 +34,7 @@ export default function Dashboard() {
         <Links />
 
         <h1 className="z-10 mb-6 mt-4 mt-auto text-center font-sans text-2xl text-white">
-          Welcome, Client Name
+          Welcome, <span className="font-bold text-[hsl(280,100%,80%)]">Maya Fey</span>
         </h1>
 
         <div
@@ -24,7 +43,7 @@ export default function Dashboard() {
         >
           <div id="transactions" className="flex h-full w-1/2 flex-col gap-2">
             <div>
-              <h1 className="text-1xl block p-1 text-center font-sans text-black">
+              <h1 className="text-xl block p-1 text-center font-sans text-black">
                 Settled Transactions
               </h1>
 
@@ -36,13 +55,20 @@ export default function Dashboard() {
                       <th>Type</th>
                       <th>Last Updated</th>
                     </tr>
+                    {settledTransactions.map((row, id) => (
+                      <tr key={id} className="text-center">
+                        <td>{row.title}</td>
+                        <td>{row.type}</td>
+                        <td>{row.lastUpdated}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
             </div>
 
             <div>
-              <h1 className="text-1xl block p-1 text-center font-sans text-black">
+              <h1 className="text-xl block p-1 text-center font-sans text-black">
                 Unsettled Transactions
               </h1>
 
@@ -54,6 +80,13 @@ export default function Dashboard() {
                       <th>Type</th>
                       <th>Last Updated</th>
                     </tr>
+                    {unsettledTransactions.map((row, id) => (
+                      <tr key={id} className="text-center">
+                        <td>{row.title}</td>
+                        <td>{row.type}</td>
+                        <td>{row.lastUpdated}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -62,22 +95,24 @@ export default function Dashboard() {
 
           <div id="notifications" className="flex h-full w-1/2 flex-col gap-2">
             <div>
-              <h1 className="text-1xl block p-1 text-center font-sans text-black">
+              <h1 className="text-xl block p-1 text-center font-sans text-black">
                 Notifications For All Clients
               </h1>
 
-              <div className="border-gray h-60 w-full rounded-xl border-4">
-                <table id="settled" className="w-full"></table>
+              <div className="border-gray h-60 w-full rounded-xl border-4 p-3">
+                <div className="bg-blue-300/50 p-3 mb-2 rounded-xl">Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia.</div>
+                <div>– Admin</div>
               </div>
             </div>
 
             <div>
-              <h1 className="text-1xl block p-1 text-center font-sans text-black">
+              <h1 className="text-xl block p-1 text-center font-sans text-black">
                 Notifications For You
               </h1>
 
-              <div className="border-gray h-60 w-full rounded-xl border-4">
-                <table id="unsettled" className="w-full"></table>
+              <div className="border-gray h-60 w-full rounded-xl border-4 p-3">
+                <div className="bg-blue-300/50 p-3 mb-2 rounded-xl">What did you get yourself into this time?</div>
+                <div>– Phoenix Wright</div>
               </div>
             </div>
           </div>
