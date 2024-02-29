@@ -100,7 +100,7 @@ export default function Dashboard() {
               </h1>
 
               <div className="border-gray h-60 w-full rounded-xl border-4 p-3">
-                <div className="bg-blue-300/50 p-3 mb-2 rounded-xl">Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia.</div>
+                <div className="bg-violet-300/50 p-3 mb-2 rounded-xl">Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia.</div>
                 <div>– Admin</div>
               </div>
             </div>
@@ -111,7 +111,7 @@ export default function Dashboard() {
               </h1>
 
               <div className="border-gray h-60 w-full rounded-xl border-4 p-3">
-                <div className="bg-blue-300/50 p-3 mb-2 rounded-xl">What did you get yourself into this time?</div>
+                <div className="bg-violet-300/50 p-3 mb-2 rounded-xl">What did you get yourself into this time?</div>
                 <div>– Phoenix Wright</div>
               </div>
             </div>

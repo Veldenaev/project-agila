@@ -59,7 +59,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled
-                className="w-full rounded-md bg-blue-500 p-2 text-white"
+                className="w-full rounded-md bg-violet-500 p-2 text-white"
               >
                 Login
               </button>
