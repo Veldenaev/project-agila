@@ -21,7 +21,7 @@ export default function Home() {
         <Links />
         <div className="z-10 mb-auto mt-auto flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            Project <span className="text-[hsl(280,100%,70%)]">Agila</span>
+            Project <span className="text-[hsl(280,100%,80%)]">Agila</span>
           </h1>
           <h2 className="text-2xl tracking-tight text-white sm:text-[1.5rem]">
             Empowering transactions between clients and lawyers.
