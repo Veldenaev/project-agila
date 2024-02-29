@@ -39,7 +39,7 @@ export default function NotificationManagement() {
         <link rel="icon" href="/favicon.png" />
       </Head>
       <Shadow />
-      <main className="flex min-h-screen flex-col items-center bg-bookshelf bg-cover bg-center">
+      <main className="flex min-h-screen flex-col items-center">
         <Links />
         <table className="border-gray z-10 mb-auto mt-auto border-4 bg-white p-4">
           <caption className="z-10 mb-6 mt-4 mt-auto text-center font-sans text-2xl text-white">

@@ -30,7 +30,7 @@ export default function Dashboard() {
         <link rel="icon" href="/favicon.png" />
       </Head>
       <Shadow />
-      <main className="flex min-h-screen flex-col items-center bg-bookshelf bg-cover bg-center">
+      <main className="flex min-h-screen flex-col items-center">
         <Links />
 
         <h1 className="z-10 mb-6 mt-4 mt-auto text-center font-sans text-2xl text-white">

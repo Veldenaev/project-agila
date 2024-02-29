@@ -17,7 +17,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.png" />
       </Head>
       <Shadow />
-      <main className="flex min-h-screen flex-col bg-bookshelf bg-cover bg-center">
+      <main className="flex min-h-screen flex-col">
         <Links />
         <div className="z-10 mb-auto mt-auto flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">

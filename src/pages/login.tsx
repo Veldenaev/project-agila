@@ -15,7 +15,7 @@ export default function Login() {
 
       <Shadow />
 
-      <main className="flex min-h-screen flex-col items-center bg-bookshelf bg-cover bg-center">
+      <main className="flex min-h-screen flex-col items-center">
         <Links />
 
         <div className="z-10 mb-auto mt-auto flex flex-row items-center gap-16">
