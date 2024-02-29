@@ -7,10 +7,10 @@ test("has 'Login' in title", async ({ page }) => {
 
 test("has 'Login' button", async ({ page }) => {
   await page.goto("/login");
-  await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
-})
+  await expect(page.getByRole("button", { name: "Login" })).toBeVisible();
+});
 
 test("'Login' button is disabled", async ({ page }) => {
   await page.goto("/login");
-  await expect(page.getByRole('button', { name: 'Login' })).toBeDisabled();
-})
+  await expect(page.getByRole("button", { name: "Login" })).toBeDisabled();
+});

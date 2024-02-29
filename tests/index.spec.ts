@@ -7,5 +7,7 @@ test("has title 'Project Agila'", async ({ page }) => {
 
 test("has subtitle", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByText("Empowering transactions between clients and lawyers.")).toBeVisible();
-})
+  await expect(
+    page.getByText("Empowering transactions between clients and lawyers."),
+  ).toBeVisible();
+});
