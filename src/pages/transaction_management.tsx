@@ -57,7 +57,7 @@ export default function TransactionManagement() {
             <span className="font-bold text-[hsl(280,100%,80%)]">
               Phoenix Wright
             </span>
-            's Transactions
+            &apos;s Transactions
           </caption>
           <thead>
             <tr className="bg-gray-800 text-white">
