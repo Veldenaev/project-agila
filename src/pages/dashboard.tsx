@@ -8,19 +8,19 @@ export default function Dashboard() {
     {
       title: "Turnabout Sisters",
       type: "Defense",
-      lastUpdated: "September 9, 2016",
+      lastUpdated: "2016-09-09",
     },
     {
       title: "Reunion, and Turnabout",
       type: "Defense",
-      lastUpdated: "June 22, 2017",
+      lastUpdated: "2017-06-22",
     },
   ];
   const unsettledTransactions = [
     {
       title: "Bridge to the Turnabout",
       type: "Defense",
-      lastUpdated: "February 10, 2019",
+      lastUpdated: "2019-02-10",
     },
   ];
   return (
