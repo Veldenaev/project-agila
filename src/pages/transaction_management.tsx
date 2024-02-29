@@ -54,7 +54,10 @@ export default function TransactionManagement() {
         <Links />
         <table className="border-gray z-10 mb-auto mt-auto border-4 bg-white p-4">
           <caption className="z-10 mb-6 mt-4 mt-auto text-center font-sans text-2xl text-white">
-            <span className="font-bold text-[hsl(280,100%,80%)]">Phoenix Wright</span>'s Transactions
+            <span className="font-bold text-[hsl(280,100%,80%)]">
+              Phoenix Wright
+            </span>
+            's Transactions
           </caption>
           <thead>
             <tr className="bg-gray-800 text-white">
