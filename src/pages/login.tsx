@@ -24,7 +24,7 @@ export default function Login() {
               Agila Law Offices
             </h1>
             <h2 className="text-2xl italic tracking-tight text-white sm:text-[1.5rem]">
-              Be Agile.
+              Be agile.
             </h2>
           </div>
 
