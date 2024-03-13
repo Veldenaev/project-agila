@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Links from "../../components/Links";
 import Shadow from "../../components/Shadow";
 
-export default function Accounts() {
+export default function Overviews() {
   const router = useRouter();
   const settledTransactions = [
     {

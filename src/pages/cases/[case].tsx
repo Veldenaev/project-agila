@@ -1,34 +1,73 @@
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 import Links from "../../components/Links";
 import Shadow from "../../components/Shadow";
 
-export default function Accounts() {
+export default function Cases() {
   const router = useRouter();
-  const settledTransactions = [
+  const cases = [
     {
-      title: "Turnabout Sisters",
-      type: "Defense",
-      lastUpdated: "2016-09-09",
+      caseName: "turnabout",
+      caseNum: 1,
+      contractId: 1,
+      clientId: 1,
+      status: "hi",
+      type: "hello",
+      linkPath: "turnabout",
     },
     {
-      title: "Reunion, and Turnabout",
-      type: "Defense",
-      lastUpdated: "2017-06-22",
+      caseName: "turnabout",
+      caseNum: 1,
+      contractId: 1,
+      clientId: 1,
+      status: "hi",
+      type: "hello",
+      linkPath: "turnabout",
+    },
+    {
+      caseName: "turnabout",
+      caseNum: 1,
+      contractId: 1,
+      clientId: 1,
+      status: "hi",
+      type: "hello",
+      linkPath: "turnabout",
+    },
+    {
+      caseName: "turnabout",
+      caseNum: 1,
+      contractId: 1,
+      clientId: 1,
+      status: "hi",
+      type: "hello",
+      linkPath: "turnabout",
+    },
+    {
+      caseName: "turnabout",
+      caseNum: 1,
+      contractId: 1,
+      clientId: 1,
+      status: "hi",
+      type: "hello",
+      linkPath: "turnabout",
+    },
+    {
+      caseName: "turnabout",
+      caseNum: 1,
+      contractId: 1,
+      clientId: 1,
+      status: "hi",
+      type: "hello",
+      linkPath: "turnabout",
     },
   ];
-  const unsettledTransactions = [
-    {
-      title: "Bridge to the Turnabout",
-      type: "Defense",
-      lastUpdated: "2019-02-10",
-    },
-  ];
+  const title = `${router.query.case ?? "NA"}'s cases | Project Agila`;
   return (
     <>
       <Head>
-        <title>{router.query.case}&apos;s cases | Project Agila</title>
+        <title>{title}</title>
         <link rel="icon" href="/favicon.png" />
       </Head>
       <Shadow />
@@ -45,86 +84,43 @@ export default function Accounts() {
           id="dashboard"
           className="border-gray z-10 mb-auto flex h-2/3 w-4/5 flex-row gap-5 rounded-xl border-4 bg-white p-4 pt-0"
         >
-          <div id="transactions" className="flex h-full w-1/2 flex-col gap-2">
-            <div>
-              <h1 className="block p-1 text-center font-sans text-xl text-black">
-                Accounts
-              </h1>
+          <div id="transactions" className="flex h-full w-full flex-col gap-1">
+            <h1 className="block p-1 text-center font-sans text-xl text-black">
+              Cases
+            </h1>
 
-              <div className="border-gray h-60 w-full rounded-xl border-4">
-                <table id="settled" className="w-full">
-                  <tbody>
-                    <tr>
-                      <th>Case Title</th>
-                      <th>Type</th>
-                      <th>Last Updated</th>
+            <div className="border-gray h-60 w-full rounded-xl border-4">
+              <table id="unsettled" className="w-full">
+                <tbody>
+                  <tr>
+                    <th>#</th>
+                    <th>Case Name</th>
+                    <th>Case Number</th>
+                    <th>Contract ID</th>
+                    <th>Client ID</th>
+                    <th>Status</th>
+                    <th>Type</th>
+                  </tr>
+                  {cases.map((row, id) => (
+                    <tr key={id} className="text-center">
+                      <td>{id + 1}</td>
+                      <td>{row.caseName}</td>
+                      <td>{row.caseNum}</td>
+                      <td>{row.contractId}</td>
+                      <td>{row.clientId}</td>
+                      <td>{row.status}</td>
+                      <td>{row.type}</td>
+                      <td>
+                        <Link href={`/overviews/${row.linkPath}`}>
+                          <button className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-700">
+                            Case Overview
+                          </button>
+                        </Link>
+                      </td>
                     </tr>
-                    {settledTransactions.map((row, id) => (
-                      <tr key={id} className="text-center">
-                        <td>{row.title}</td>
-                        <td>{row.type}</td>
-                        <td>{row.lastUpdated}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div>
-              <h1 className="block p-1 text-center font-sans text-xl text-black">
-                Unsettled Transactions
-              </h1>
-
-              <div className="border-gray h-60 w-full rounded-xl border-4">
-                <table id="unsettled" className="w-full">
-                  <tbody>
-                    <tr>
-                      <th>Case Title</th>
-                      <th>Type</th>
-                      <th>Last Updated</th>
-                    </tr>
-                    {unsettledTransactions.map((row, id) => (
-                      <tr key={id} className="text-center">
-                        <td>{row.title}</td>
-                        <td>{row.type}</td>
-                        <td>{row.lastUpdated}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <div id="notifications" className="flex h-full w-1/2 flex-col gap-2">
-            <div>
-              <h1 className="block p-1 text-center font-sans text-xl text-black">
-                Notifications For All Clients
-              </h1>
-
-              <div className="border-gray h-60 w-full rounded-xl border-4 p-3">
-                <div className="mb-2 rounded-xl bg-violet-300/50 p-3">
-                  Lorem ipsum dolor sit amet, officia excepteur ex fugiat
-                  reprehenderit enim labore culpa sint ad nisi Lorem pariatur
-                  mollit ex esse exercitation amet. Nisi anim cupidatat
-                  excepteur officia.
-                </div>
-                <div>– Admin</div>
-              </div>
-            </div>
-
-            <div>
-              <h1 className="block p-1 text-center font-sans text-xl text-black">
-                Notifications For You
-              </h1>
-
-              <div className="border-gray h-60 w-full rounded-xl border-4 p-3">
-                <div className="mb-2 rounded-xl bg-violet-300/50 p-3">
-                  What did you get yourself into this time?
-                </div>
-                <div>– Phoenix Wright</div>
-              </div>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
