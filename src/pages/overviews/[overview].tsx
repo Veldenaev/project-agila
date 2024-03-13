@@ -1,9 +1,11 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 
-import Links from "../components/Links";
-import Shadow from "../components/Shadow";
+import Links from "../../components/Links";
+import Shadow from "../../components/Shadow";
 
-export default function Dashboard() {
+export default function Overviews() {
+  const router = useRouter();
   const settledTransactions = [
     {
       title: "Turnabout Sisters",
@@ -26,16 +28,17 @@ export default function Dashboard() {
   return (
     <>
       <Head>
-        <title>Dashboard | Project Agila</title>
+        <title>{router.query.overview} overview | Project Agila</title>
         <link rel="icon" href="/favicon.png" />
       </Head>
       <Shadow />
       <main className="flex min-h-screen flex-col items-center">
         <Links />
-
         <h1 className="z-10 mb-6 mt-4 mt-auto text-center font-sans text-2xl text-white">
-          Welcome,{" "}
-          <span className="font-bold text-[hsl(280,100%,80%)]">Maya Fey</span>
+          <span className="font-bold text-[hsl(280,100%,80%)]">
+            {router.query.overview}
+          </span>{" "}
+          overview
         </h1>
 
         <div
@@ -45,7 +48,7 @@ export default function Dashboard() {
           <div id="transactions" className="flex h-full w-1/2 flex-col gap-2">
             <div>
               <h1 className="block p-1 text-center font-sans text-xl text-black">
-                Settled Transactions
+                Accounts
               </h1>
 
               <div className="border-gray h-60 w-full rounded-xl border-4">
