@@ -10,6 +10,21 @@ import { api } from "~/utils/api";
 export default function Home() {
   const hello = api.post.hello.useQuery({ text: "from tRPC" });
 
+  const links = [
+    {
+      route: "/accounts/phoenix",
+      text: "Access as lawyer",
+    },
+    {
+      route: "/accounts/gumshoe",
+      text: "Access as manager",
+    },
+    {
+      route: "/cases/maya",
+      text: "Access as client",
+    },
+  ];
+
   return (
     <>
       <Head>
@@ -26,6 +41,17 @@ export default function Home() {
           <h2 className="text-2xl tracking-tight text-white sm:text-[1.5rem]">
             Empowering transactions between clients and lawyers.
           </h2>
+          <div className="flex flex-col justify-center gap-10">
+            {links.map(({ route, text }, index) => (
+              <Link
+                key={index}
+                href={route}
+                className="z-10 flex h-full items-center justify-center rounded-lg bg-violet-500 px-4 py-2 text-white hover:bg-violet-500/80"
+              >
+                {text}
+              </Link>
+            ))}
+          </div>
           {/*
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
             <Link
