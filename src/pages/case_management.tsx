@@ -3,50 +3,39 @@ import Head from "next/head";
 import Links from "../components/Links";
 import Shadow from "../components/Shadow";
 
-export default function TransactionManagement() {
+export default function CaseManagement() {
   // Placeholder Data
-  const transactions = [
+  const cases = [
     {
       id: 1,
-      caseTitle: "The First Turnabout",
-      type: "Defense",
-      lastUpdated: "2016-08-03",
-      client: "Larry Butz",
+      CaseNum: "000001",
+      ContractID: "Contract 1",
+      ClientID: "00001",
+      Status: "Active",
+      Type: "Prosecution"
     },
     {
       id: 2,
-      caseTitle: "Turnabout Sisters",
-      type: "Defense",
-      lastUpdated: "2016-09-09",
-      client: "Maya Fey",
+      CaseNum: "000002",
+      ContractID: "Contract 2",
+      ClientID: "00001",
+      Status: "Active",
+      Type: "Defense"
     },
     {
       id: 3,
-      caseTitle: "Turnabout Samurai",
-      type: "Defense",
-      lastUpdated: "2016-01-20",
-      client: "Will Powers",
-    },
-    {
-      id: 4,
-      caseTitle: "Rise from the Ashes",
-      type: "Defense",
-      lastUpdated: "2017-02-25",
-      client: "Lana Skye",
-    },
-    {
-      id: 5,
-      caseTitle: "Turnabout Big Top",
-      type: "Defense",
-      lastUpdated: "2017-12-30",
-      client: "Max Galactica",
+      CaseNum: "000003",
+      ContractID: "Contract 2",
+      ClientID: "00002",
+      Status: "Active",
+      Type: "Defense"
     },
   ];
 
   return (
     <>
       <Head>
-        <title>Transaction Management | Project Agila</title>
+        <title>Case Management | Project Agila</title>
         <link rel="icon" href="/favicon.png" />
       </Head>
       <Shadow />
@@ -57,26 +46,25 @@ export default function TransactionManagement() {
             <span className="font-bold text-[hsl(280,100%,80%)]">
               Phoenix Wright
             </span>
-            &apos;s Transactions
+            &apos;s Cases
           </caption>
           <thead>
             <tr className="bg-gray-800 text-white">
-              <th className="px-4 py-2">Case Title</th>
+              <th className="px-4 py-2">Case Number</th>
+              <th className="px-4 py-2">Contract ID</th>
+              <th className="px-4 py-2">Client ID</th>
+              <th className="px-4 py-2">Status</th>
               <th className="px-4 py-2">Type</th>
-              <th className="px-4 py-2">Last Updated</th>
-              <th className="px-4 py-2">Client</th>
-              {/*<th className="px-4 py-2">Appointed Attorney</th>*/}
-              <th className="px-4 py-2">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {transactions.map((transaction) => (
-              <tr key={transaction.id}>
-                <td className="px-4 py-2">{transaction.caseTitle}</td>
-                <td className="px-4 py-2">{transaction.type}</td>
-                <td className="px-4 py-2">{transaction.lastUpdated}</td>
-                <td className="px-4 py-2">{transaction.client}</td>
-                {/*<td className="px-4 py-2">{transaction.appointedAttorney}</td>*/}
+            {cases.map((thiscase) => (
+              <tr key={thiscase.id}>
+                <td className="px-4 py-2">{thiscase.CaseNum}</td>
+                <td className="px-4 py-2">{thiscase.ContractID}</td>
+                <td className="px-4 py-2">{thiscase.ClientID}</td>
+                <td className="px-4 py-2">{thiscase.Status}</td>
+                <td className="px-4 py-2">{thiscase.Type}</td>
                 <td className="flex gap-2 px-4 py-2">
                   {/*<button className="mr-2 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
                     Add

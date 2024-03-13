@@ -32,6 +32,26 @@ export default function Links() {
       route: "/accounts/gumshoe",
     },
     {
+      name: "Dashboard - Admin", 
+      route: "/dashboard_admin",
+    },
+    {
+      name: "Dashboard - Lawyer",
+      route: "/dashboard_lawyer",
+    },
+    {
+      name: "Dashboard - Client",
+      route: "/dashboard_client",
+    },
+    {
+      name: "Account Management",
+      route: "/account_management",
+    },
+    {
+      name: "Case Management",
+      route: "/case_management",
+    },
+    {
       name: "Cases (L)",
       route: "/cases/phoenix",
     },
