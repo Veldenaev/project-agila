@@ -9,16 +9,24 @@ export default function Links() {
       route: "/login",
     },
     {
-      name: "Dashboard",
-      route: "/dashboard",
+      name: "Dashboard - Admin",
+      route: "/dashboard_admin",
     },
     {
-      name: "Transaction management",
-      route: "/transaction_management",
+      name: "Dashboard - Lawyer",
+      route: "/dashboard_lawyer",
     },
     {
-      name: "Notification management",
-      route: "/notification_management",
+      name: "Dashboard - Client",
+      route: "/dashboard_client",
+    },
+    {
+      name: "Account Management",
+      route: "/account_management",
+    },
+    {
+      name: "Case Management",
+      route: "/case_management",
     },
   ];
   const pagesJsx = pages.map(({ name, route }, index) => (
