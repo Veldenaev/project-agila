@@ -4,31 +4,18 @@ import { useRouter } from "next/router";
 import Links from "../../components/Links";
 import Shadow from "../../components/Shadow";
 
+import { allCases } from "../../utils/data";
+import type { Case } from "../../utils/data";
+
 export default function Overviews() {
   const router = useRouter();
-  const settledTransactions = [
-    {
-      title: "Turnabout Sisters",
-      type: "Defense",
-      lastUpdated: "2016-09-09",
-    },
-    {
-      title: "Reunion, and Turnabout",
-      type: "Defense",
-      lastUpdated: "2017-06-22",
-    },
-  ];
-  const unsettledTransactions = [
-    {
-      title: "Bridge to the Turnabout",
-      type: "Defense",
-      lastUpdated: "2019-02-10",
-    },
-  ];
+  const currCase: Case =
+    allCases.filter((c) => c.caseNum.toString() === router.query.overview)[0] ??
+    allCases[0]!;
   return (
     <>
       <Head>
-        <title>{router.query.overview} overview | Project Agila</title>
+        <title>Case Overview | Project Agila</title>
         <link rel="icon" href="/favicon.png" />
       </Head>
       <Shadow />
@@ -36,7 +23,7 @@ export default function Overviews() {
         <Links />
         <h1 className="z-10 mb-6 mt-4 mt-auto text-center font-sans text-2xl text-white">
           <span className="font-bold text-[hsl(280,100%,80%)]">
-            {router.query.overview}
+            {currCase.title}
           </span>{" "}
           overview
         </h1>
@@ -48,51 +35,45 @@ export default function Overviews() {
           <div id="transactions" className="flex h-full w-1/2 flex-col gap-2">
             <div>
               <h1 className="block p-1 text-center font-sans text-xl text-black">
-                Accounts
+                Basic information
               </h1>
 
-              <div className="border-gray h-60 w-full rounded-xl border-4">
-                <table id="settled" className="w-full">
-                  <tbody>
-                    <tr>
-                      <th>Case Title</th>
-                      <th>Type</th>
-                      <th>Last Updated</th>
-                    </tr>
-                    {settledTransactions.map((row, id) => (
-                      <tr key={id} className="text-center">
-                        <td>{row.title}</td>
-                        <td>{row.type}</td>
-                        <td>{row.lastUpdated}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <div className="border-gray flex h-60 w-full flex-col items-center justify-center gap-2 rounded-xl border-4 p-5">
+                <div className="flex w-[50%] justify-between gap-2">
+                  <div className="font-bold">Case Number</div>
+                  <div>{currCase.caseNum}</div>
+                </div>
+                <div className="flex w-[50%] justify-between gap-2">
+                  <div className="font-bold">Contract ID</div>
+                  <div>{currCase.contractId}</div>
+                </div>
+                <div className="flex w-[50%] justify-between gap-2">
+                  <div className="font-bold">Client ID</div>
+                  <div>{currCase.clientId}</div>
+                </div>
+                <div className="flex w-[50%] justify-between gap-2">
+                  <div className="font-bold">Status</div>
+                  <div>{currCase.status}</div>
+                </div>
+                <div className="flex w-[50%] justify-between gap-2">
+                  <div className="font-bold">Type</div>
+                  <div>{currCase.type}</div>
+                </div>
               </div>
             </div>
 
             <div>
               <h1 className="block p-1 text-center font-sans text-xl text-black">
-                Unsettled Transactions
+                Description
               </h1>
 
-              <div className="border-gray h-60 w-full rounded-xl border-4">
-                <table id="unsettled" className="w-full">
-                  <tbody>
-                    <tr>
-                      <th>Case Title</th>
-                      <th>Type</th>
-                      <th>Last Updated</th>
-                    </tr>
-                    {unsettledTransactions.map((row, id) => (
-                      <tr key={id} className="text-center">
-                        <td>{row.title}</td>
-                        <td>{row.type}</td>
-                        <td>{row.lastUpdated}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <div className="border-gray h-60 w-full rounded-xl border-4 p-5">
+                <span className="font-bold">Bridge to the Turnabout</span> is
+                the final episode in Phoenix Wright: Ace Attorney - Trials and
+                Tribulations and the Phoenix Wright: Ace Attorney Trilogy. This
+                episode acts as a final reunion of the main characters
+                throughout the trilogy, as well as bringing closure to the
+                overall story arc of the game itself.
               </div>
             </div>
           </div>
@@ -100,31 +81,59 @@ export default function Overviews() {
           <div id="notifications" className="flex h-full w-1/2 flex-col gap-2">
             <div>
               <h1 className="block p-1 text-center font-sans text-xl text-black">
-                Notifications For All Clients
+                Billings
               </h1>
 
-              <div className="border-gray h-60 w-full rounded-xl border-4 p-3">
-                <div className="mb-2 rounded-xl bg-violet-300/50 p-3">
-                  Lorem ipsum dolor sit amet, officia excepteur ex fugiat
-                  reprehenderit enim labore culpa sint ad nisi Lorem pariatur
-                  mollit ex esse exercitation amet. Nisi anim cupidatat
-                  excepteur officia.
-                </div>
-                <div>– Admin</div>
-              </div>
-            </div>
-
-            <div>
-              <h1 className="block p-1 text-center font-sans text-xl text-black">
-                Notifications For You
-              </h1>
-
-              <div className="border-gray h-60 w-full rounded-xl border-4 p-3">
-                <div className="mb-2 rounded-xl bg-violet-300/50 p-3">
-                  What did you get yourself into this time?
-                </div>
-                <div>– Phoenix Wright</div>
-              </div>
+              <table className="border-gray z-10 mb-auto border-4 bg-white p-4 text-center w-full">
+                <thead>
+                  <tr className="bg-gray-800 text-white">
+                    <th className="px-4 py-2">Work</th>
+                    <th className="px-4 py-2">Amount Due (Php)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="px-4 py-2">Defense</td>
+                    <td className="px-4 py-2">100000</td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <tr>
+                    <td className="px-4 py-2">Paperwork</td>
+                    <td className="px-4 py-2">5000</td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <tr>
+                    <td className="px-4 py-2">Food</td>
+                    <td className="px-4 py-2">2000</td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <tr>
+                    <td className="px-4 py-2">Drinks</td>
+                    <td className="px-4 py-2">500</td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <tr>
+                    <td className="px-4 py-2">Greed</td>
+                    <td className="px-4 py-2">50000</td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <tr>
+                    <td className="px-4 py-2">Desire</td>
+                    <td className="px-4 py-2">10000</td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <tr>
+                    <td className="px-4 py-2 font-bold">Total</td>
+                    <td className="px-4 py-2 font-bold">167500</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
