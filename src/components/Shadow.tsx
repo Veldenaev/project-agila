@@ -5,7 +5,7 @@ export default function Shadow() {
   return (
     <>
       <div className="inset absolute z-10 h-full w-full bg-black bg-opacity-60"></div>
-      <Image src={bookshelfbg} layout="fill" alt="Bookshelf background image" />
+      <Image src={bookshelfbg} fill alt="Bookshelf background image" />
     </>
   );
 }
