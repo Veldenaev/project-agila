@@ -7,6 +7,7 @@ export default function Links() {
       name: "Landing",
       route: "/",
     },
+    // Sprint 1
     //    {
     //      name: "Login",
     //      route: "/login",
@@ -23,6 +24,27 @@ export default function Links() {
     //      name: "Notification management",
     //      route: "/notification_management",
     //    },
+    // Sprint 2a
+    //    {
+    //      name: "Dashboard - Admin",
+    //      route: "/dashboard_admin",
+    //    },
+    //    {
+    //      name: "Dashboard - Lawyer",
+    //      route: "/dashboard_lawyer",
+    //    },
+    //    {
+    //      name: "Dashboard - Client",
+    //      route: "/dashboard_client",
+    //    },
+    //    {
+    //      name: "Account Management",
+    //      route: "/account_management",
+    //    },
+    //    {
+    //      name: "Case Management",
+    //      route: "/case_management",
+    //    },
     {
       name: "Accounts (L)",
       route: "/accounts/phoenix",
@@ -30,26 +52,6 @@ export default function Links() {
     {
       name: "Accounts (M)",
       route: "/accounts/gumshoe",
-    },
-    {
-      name: "Dashboard - Admin", 
-      route: "/dashboard_admin",
-    },
-    {
-      name: "Dashboard - Lawyer",
-      route: "/dashboard_lawyer",
-    },
-    {
-      name: "Dashboard - Client",
-      route: "/dashboard_client",
-    },
-    {
-      name: "Account Management",
-      route: "/account_management",
-    },
-    {
-      name: "Case Management",
-      route: "/case_management",
     },
     {
       name: "Cases (L)",
