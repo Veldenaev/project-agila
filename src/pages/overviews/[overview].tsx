@@ -84,7 +84,7 @@ export default function Overviews() {
                 Billings
               </h1>
 
-              <table className="border-gray z-10 mb-auto border-4 bg-white p-4 text-center w-full">
+              <table className="border-gray z-10 mb-auto w-full border-4 bg-white p-4 text-center">
                 <thead>
                   <tr className="bg-gray-800 text-white">
                     <th className="px-4 py-2">Work</th>
