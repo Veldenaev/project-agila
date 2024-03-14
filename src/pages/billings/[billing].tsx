@@ -35,10 +35,10 @@ export default function Billings() {
       <main className="flex min-h-screen flex-col items-center">
         <Links />
         <h1 className="z-10 mb-6 mt-4 mt-auto text-center font-sans text-2xl text-white">
-          Billings for{" "}
           <span className="font-bold text-[hsl(280,100%,80%)]">
             {router.query.billing}
-          </span>
+          </span>{" "}
+          billings
         </h1>
 
         <div
