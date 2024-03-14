@@ -17,35 +17,76 @@ datasource db {
 // Necessary for Next auth
 
 model Client {
-    Client_ID            String    @id @default(cuid())
-    Last_Name            String?
-    First_Name           String?
-    Company              String?
-    Phone                String?   @unique
-    Email                String?   @unique
-    Address              String?
-    City                 String?
-    State                String?
-    ZIP                  String?
+    ClientID            Int        @id  @db.SmallInt
+    ContractID          Int        @unique  @db.SmallInt
+    FirstName           String?    @db.VarChar(15)
+    LastName            String?    @db.VarChar(15)
+    MiddleName          String?    @db.VarChar(15)
+    Email               String?    @db.VarChar(50)
+    CellNum             String?    @db.VarChar(15)
+    TelNum              String?    @db.VarChar(15)
+    CityAdd             String?    @db.VarChar(30)
+    Remarks             String?    @db.VarChar(200)
+    user                String?    @db.VarChar(20)
+    pass                String?    @db.Char(50)
+    cases               Cases[]
+    contracts           Contract[] @relation("NumContracts")
+    contract            Contract?  @relation("SameID", fields: [ContractID], references: [ContractID])
 }
 
 model Lawyer {
-    Lawyer_ID            String    @id @default(cuid())
-    Last_Name            String?
-    First_Name           String?
-    Specialization       String?
-    Phone                String?   @unique
-    Email                String?   @unique
-    Address              String?
-    City                 String?
-    State                String?
-    ZIP                  String?
+    LawyerID            Int        @id  @db.SmallInt
+    FirstName           String?    @db.VarChar(15)
+    LastName            String?    @db.VarChar(15)
+    MiddleName          String?    @db.VarChar(15)
+    Email               String?    @db.VarChar(50)
+    AltEmail            String?    @db.VarChar(50)
+    CellNum             String?    @db.VarChar(15)
+    TelNum              String?    @db.VarChar(15)
+    CityAdd             String?    @db.VarChar(30)
+    isManager           Boolean?   @db.Bit(1)  @default(false)
+    user                String?    @db.VarChar(20)
+    pass                String?    @db.Char(50)
+    cases               Cases[]
+    works               Work[]
 }
 
-model Notification {
-    Notif_ID             String   @id @default(cuid())
-    Message              String?
-    Creation             DateTime?
+model Contract {
+    ContractID          Int        @id  @db.SmallInt
+    ClientID            Int        @db.SmallInt
+    MajorPleading       Int?       @db.SmallInt
+    MinorPleading       Int?       @db.SmallInt
+    PartnerApp          Int?       @db.SmallInt
+    JuniorAssocApp      Int?       @db.SmallInt
+    SeniorAssocApp      Int?       @db.SmallInt
+    cases               Cases[]
+    client              Client?    @relation("SameID")
+    clients             Client?    @relation("NumContracts", fields: [ClientID], references: [ClientID])
+    
+}
+
+model Work {
+    WorkID              Int        @id  @db.SmallInt
+    CaseNum             String     @db.VarChar(10)
+    Type                String?    @db.VarChar(12)
+    Date                DateTime?  @db.Date
+    Remarks             String?    @db.VarChar(100)
+    location            String?    @db.VarChar(100)
+    filename            String?    @db.VarChar(20)
+    lawyers             Lawyer[]
+    case                Cases?      @relation(fields: [CaseNum], references: [CaseNum])
+}
+
+model Cases {
+    CaseNum             String     @id  @db.VarChar(10)
+    ContractID          Int        @db.SmallInt
+    ClientID            Int        @db.SmallInt
+    Status              String?    @db.VarChar(300)
+    Type                String?    @db.VarChar(20)
+    works               Work[]
+    lawyers             Lawyer[]
+    client              Client?    @relation(fields: [ClientID], references: [ClientID])
+    contract            Contract?  @relation(fields: [ContractID], references: [ContractID])
 }
 
 // model Post {
