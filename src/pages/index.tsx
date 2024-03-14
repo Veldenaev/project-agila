@@ -12,15 +12,15 @@ export default function Home() {
 
   const links = [
     {
-      route: "/accounts/phoenix",
+      route: "/accounts/0",
       text: "Access as lawyer",
     },
     {
-      route: "/accounts/gumshoe",
+      route: "/accounts/1",
       text: "Access as manager",
     },
     {
-      route: "/cases/maya",
+      route: "/cases/c_0",
       text: "Access as client",
     },
   ];
