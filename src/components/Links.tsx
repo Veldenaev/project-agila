@@ -47,32 +47,32 @@ export default function Links() {
     //    },
     {
       name: "Accounts (L)",
-      route: "/accounts/phoenix",
+      route: "/accounts/0",
     },
     {
       name: "Cases (L)",
-      route: "/cases/phoenix",
+      route: "/cases/l_0",
     },
     {
       name: "Accounts (M)",
-      route: "/accounts/admin",
+      route: "/accounts/1",
     },
     {
       name: "Cases (M)",
-      route: "/cases/admin",
+      route: "/cases/l_1",
     },
     {
       name: "Cases (C)",
-      route: "/cases/maya",
+      route: "/cases/c_0",
     },
     {
       name: "Case Overview",
-      route: "/overviews/bridge_to_the_turnabout",
+      route: "/overviews/0",
     },
-    {
-      name: "Billing",
-      route: "/billings/bridge_to_the_turnabout",
-    },
+    //     {
+    //       name: "Billing",
+    //       route: "/billings/0",
+    //     },
   ];
   const pagesJsx = pages.map(({ name, route }, index) => (
     <a
