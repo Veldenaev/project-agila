@@ -23,9 +23,9 @@ VALUES
 	(19, 24, 'William', 'Nguyen', 'Ng', 'williamnguyen@example.com', '09101234567', '(02) 901-2345', 'Manila City', 'None', 'wnnguyen', 'passWilliam19'),
 	(20, 3, 'Sophia', 'Kim', 'Gonzalez', 'sophiakim@example.com', '09211234567', '(02) 012-3456', 'Taguig City', 'None', 'sgkim', 'passSophia20'),
 	(21, 0, 'Eric', 'Lee', 'Ng', 'ericlee@example.com', '09321234567', '(02) 123-4567', 'Pasig City', 'None', 'enlee', 'passEric21'),
-	(22, 0, 'Dylan', 'Wilson', 'Martinez', 'dylanwilson@example.com', '09431234567', '(02) 234-5678', 'Makati City', 'None', 'dmwilson', 'passDylan22'),
-	(23, 0, 'Lily', 'Chen', 'Wang', 'lilychen@example.com', '09541234567', '(02) 345-6789', 'Mandaluyong City', 'None', 'lwchen', 'passLily23'),
-	(24, 0, 'Sofia', 'Garcia', 'Gonzalez', 'sofiagarcia@example.com', '09651234567', '(02) 456-7890', 'Manila City', 'None', 'sogarcia', 'passSofia24'),
+-- 	(22, 0, 'Dylan', 'Wilson', 'Martinez', 'dylanwilson@example.com', '09431234567', '(02) 234-5678', 'Makati City', 'None', 'dmwilson', 'passDylan22'),
+-- 	(23, 0, 'Lily', 'Chen', 'Wang', 'lilychen@example.com', '09541234567', '(02) 345-6789', 'Mandaluyong City', 'None', 'lwchen', 'passLily23'),
+-- 	(24, 0, 'Sofia', 'Garcia', 'Gonzalez', 'sofiagarcia@example.com', '09651234567', '(02) 456-7890', 'Manila City', 'None', 'sogarcia', 'passSofia24'),
 	(25, 17, 'Oscar', 'Tan', 'Lopez', 'oscartan@example.com', '09761234567', '(02) 567-8901', 'Quezon City', 'None', 'oltan', 'passOscar25');
     
 INSERT INTO lawyer
