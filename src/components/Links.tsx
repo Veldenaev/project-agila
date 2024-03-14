@@ -50,20 +50,28 @@ export default function Links() {
       route: "/accounts/phoenix",
     },
     {
-      name: "Accounts (M)",
-      route: "/accounts/gumshoe",
-    },
-    {
       name: "Cases (L)",
       route: "/cases/phoenix",
     },
     {
-      name: "Cases (M)",
-      route: "/cases/gumshoe",
+      name: "Accounts (M)",
+      route: "/accounts/admin",
     },
     {
-      name: "Case Overview (L)",
+      name: "Cases (M)",
+      route: "/cases/admin",
+    },
+    {
+      name: "Cases (C)",
+      route: "/cases/maya",
+    },
+    {
+      name: "Case Overview",
       route: "/overviews/bridge_to_the_turnabout",
+    },
+    {
+      name: "Billing",
+      route: "/billings/bridge_to_the_turnabout",
     },
   ];
   const pagesJsx = pages.map(({ name, route }, index) => (

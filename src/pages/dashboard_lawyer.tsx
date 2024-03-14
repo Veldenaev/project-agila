@@ -57,7 +57,9 @@ export default function Dashboard() {
 
         <h1 className="z-10 mb-6 mt-4 mt-auto text-center font-sans text-2xl text-white">
           Welcome,{" "}
-          <span className="font-bold text-[hsl(280,100%,80%)]">Lawyer Name</span>
+          <span className="font-bold text-[hsl(280,100%,80%)]">
+            Lawyer Name
+          </span>
         </h1>
 
         <div
@@ -96,9 +98,10 @@ export default function Dashboard() {
           <div id="clientinfo" className="flex h-full w-1/2 flex-col gap-2">
             <div>
               <h1 className="block p-1 text-center font-sans text-xl text-black">
-                Cases for <span className="text-purple-600">Selected Client</span>
+                Cases for{" "}
+                <span className="text-purple-600">Selected Client</span>
               </h1>
-              
+
               <div className="border-gray h-60 w-full rounded-xl border-4">
                 <table id="Case" className="w-full">
                   <tbody>

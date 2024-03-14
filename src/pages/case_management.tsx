@@ -12,7 +12,7 @@ export default function CaseManagement() {
       ContractID: "Contract 1",
       ClientID: "00001",
       Status: "Active",
-      Type: "Prosecution"
+      Type: "Prosecution",
     },
     {
       id: 2,
@@ -20,7 +20,7 @@ export default function CaseManagement() {
       ContractID: "Contract 2",
       ClientID: "00001",
       Status: "Active",
-      Type: "Defense"
+      Type: "Defense",
     },
     {
       id: 3,
@@ -28,7 +28,7 @@ export default function CaseManagement() {
       ContractID: "Contract 2",
       ClientID: "00002",
       Status: "Active",
-      Type: "Defense"
+      Type: "Defense",
     },
   ];
 
