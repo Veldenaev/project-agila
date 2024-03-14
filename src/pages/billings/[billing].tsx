@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Links from "../../components/Links";
 import Shadow from "../../components/Shadow";
 
-export default function Overviews() {
+export default function Billings() {
   const router = useRouter();
   const settledTransactions = [
     {
@@ -28,17 +28,17 @@ export default function Overviews() {
   return (
     <>
       <Head>
-        <title>{router.query.overview} overview | Project Agila</title>
+        <title>{router.query.billing} billings | Project Agila</title>
         <link rel="icon" href="/favicon.png" />
       </Head>
       <Shadow />
       <main className="flex min-h-screen flex-col items-center">
         <Links />
         <h1 className="z-10 mb-6 mt-4 mt-auto text-center font-sans text-2xl text-white">
+          Billings for{" "}
           <span className="font-bold text-[hsl(280,100%,80%)]">
-            {router.query.overview}
-          </span>{" "}
-          overview
+            {router.query.billing}
+          </span>
         </h1>
 
         <div
