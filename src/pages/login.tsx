@@ -3,8 +3,6 @@ import Head from "next/head";
 import Links from "../components/Links";
 import Shadow from "../components/Shadow";
 
-import bgimg from "assets/bookshelfbg.jpg";
-
 export default function Login() {
   return (
     <>
