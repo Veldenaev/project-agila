@@ -6,6 +6,9 @@
   .btn-blue {
     @apply rounded-md bg-blue-400 px-2 py-1 text-white hover:bg-blue-500;
   }
+  .btn-yellow {
+    @apply rounded-md bg-yellow-500 px-2 py-1 text-white hover:bg-yellow-600;
+  }
   .btn-red {
     @apply rounded-md bg-red-400 px-2 py-1 text-white hover:bg-red-500;
   }

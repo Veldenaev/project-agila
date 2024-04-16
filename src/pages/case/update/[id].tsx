@@ -1,27 +1,24 @@
 import React, { useState } from "react";
-import Layout from "../../components/Layout";
+import Layout from "../../../components/Layout";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { type Case } from "~/utils/types";
+import { type GetServerSideProps } from "next";
+import prisma from "~/lib/prisma";
 
-export default function MakeCase() {
+interface Props {
+  theCase: Case;
+}
+
+export default function UpdateCase({ theCase }: Props) {
   const router = useRouter();
-  const defaultCase: Case = {
-    CaseNum: "",
-    ContractID: 0,
-    ClientID: 0,
-    Status: "",
-    Type: "",
-    Title: "",
-    Venue: "",
-  };
-  const [newCase, setNewCase] = useState(defaultCase);
+  const [newCase, setNewCase] = useState(theCase);
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      await fetch("/api/case", {
-        method: "POST",
+      await fetch(`/api/case/${theCase.CaseNum}`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newCase),
       });
@@ -34,7 +31,7 @@ export default function MakeCase() {
   return (
     <>
       <Head>
-        <title>Add Case</title>
+        <title>Update Case</title>
       </Head>
       <Layout>
         <main className="flex min-h-screen flex-col">
@@ -42,15 +39,16 @@ export default function MakeCase() {
             onSubmit={submitData}
             className="z-10 mx-auto my-auto flex flex-col gap-4"
           >
-            <h1 className="text-center font-extrabold tracking-tight text-white sm:text-[3rem]">
-              <span className="text-[hsl(280,100%,80%)]">Add</span> a new case
+            <h1 className="text-center font-bold tracking-tight text-white sm:text-[3rem]">
+              <span className="text-[hsl(280,100%,80%)]">Update</span> Case #
+              {theCase.CaseNum}
             </h1>
             <div className="grid grid-cols-2 gap-3 rounded-lg bg-white p-4 pb-5">
-              {Object.keys(defaultCase).map((k, index) => (
+              {Object.entries(theCase).map(([k, v], index) => (
                 <div key={index} className="flex flex-col">
                   <span className="pl-1 text-black">{k}</span>
                   <input
-                    className="rounded-md border-2 border-solid border-black px-1"
+                    className="rounded-md border-2 border-solid border-black px-1 disabled:bg-gray-200"
                     autoFocus
                     onChange={(e) =>
                       setNewCase((oldCase) => ({
@@ -58,10 +56,10 @@ export default function MakeCase() {
                         [k]: e.target.value,
                       }))
                     }
+                    disabled={k === "CaseNum"}
                     placeholder={k}
-                    type={
-                      typeof defaultCase[k] === "string" ? "text" : "number"
-                    }
+                    defaultValue={v as string}
+                    type={typeof v === "string" ? "text" : "number"}
                   />
                 </div>
               ))}
@@ -69,7 +67,7 @@ export default function MakeCase() {
             <div className="flex justify-center gap-3 text-lg">
               <input
                 type="submit"
-                value="Create"
+                value="Update"
                 className="rounded-md bg-blue-400 px-2 py-1 text-white transition-all hover:scale-110 hover:cursor-pointer"
               />
               <a
@@ -86,3 +84,17 @@ export default function MakeCase() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const theCase = await prisma.cases.findUnique({
+    where: {
+      CaseNum: String(params?.id),
+    },
+    include: {
+      client: true,
+    },
+  });
+  return {
+    props: { theCase },
+  };
+};

@@ -67,3 +67,8 @@ export interface Work {
   Title: string;
   FeeAmt: number;
 }
+
+export interface WorkAssign {
+  WorkID: number;
+  LawyerID: number;
+}

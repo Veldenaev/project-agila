@@ -1,5 +1,5 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import { type GetStaticProps } from "next";
+import { type GetServerSideProps } from "next";
 import Head from "next/head";
 import Layout from "~/components/Layout";
 import MyTable from "~/components/Table";
@@ -44,6 +44,9 @@ export default function AllCases({ cases }: Props) {
           <button className="btn-blue">
             <a href={`/case/${info.renderValue() ?? "all"}`}>View</a>
           </button>
+          <button className="btn-yellow">
+            <a href={`/case/update/${info.renderValue() ?? "all"}`}>Update</a>
+          </button>
           <button
             className="btn-red"
             onClick={() => deleteCase(info.renderValue() ?? "")}
@@ -75,10 +78,9 @@ export default function AllCases({ cases }: Props) {
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const cases = await prisma.cases.findMany();
   return {
     props: { cases },
-    revalidate: 10,
   };
 };
