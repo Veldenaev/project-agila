@@ -6,43 +6,17 @@ import Shadow from "../components/Shadow";
 export default function Dashboard() {
   const Client = [
     {
-      ClientID: "00001",
-      LastName: "Smith",
-      FirstName: "Sophia",
-      MiddleName: "James",
-    },
-    {
-      ClientID: "00002",
-      LastName: "Johnson",
-      FirstName: "Alexander",
-      MiddleName: "Grace",
-    },
-    {
-      ClientID: "00003",
-      LastName: "Brown",
-      FirstName: "Emma",
-      MiddleName: "Michael",
-    },
+      
+    }
   ];
   const Case = [
     {
-      CaseNum: "CaseNum1",
-      ContractID: "ContractID1",
-      Status: "Active",
-      Type: "Defense",
-    },
-    {
-      CaseNum: "CaseNum2",
-      ContractID: "ContractID2",
-      Status: "Active",
-      Type: "Prosecution",
+      
     },
   ];
   const Work = [
     {
-      WorkID: "00101",
-      Type: "Appeal",
-      Date: "01/02/24",
+
     },
   ];
   return (
@@ -64,13 +38,16 @@ export default function Dashboard() {
 
         <div
           id="dashboard"
-          className="border-gray z-10 mb-auto flex h-2/3 w-4/5 flex-row gap-5 rounded-xl border-4 bg-white p-4 pt-0"
+          className="border-gray z-10 mb-auto flex h-2/3 w-5/6 flex-row gap-5 rounded-xl border-4 bg-white p-4 pt-0"
         >
-          <div id="clientlist" className="flex h-full w-1/2 flex-col gap-2">
+          <div id="Selection" className="flex h-full w-2/5 flex-col gap-2">
             <div>
-              <h1 className="block p-1 text-center font-sans text-xl text-black">
-                Client List
-              </h1>
+              <div className="flex items-center justify-between">
+                <h1 className="block p-1 text-center font-sans text-xl text-black">
+                  Client List
+                  </h1>
+                <button className="rounded bg-green-500 px-4 py-1 font-bold text-white hover:bg-yellow-700">Add</button>
+              </div>
 
               <div className="border-gray h-60 w-full rounded-xl border-4">
                 <table id="Client" className="w-full">
@@ -81,74 +58,159 @@ export default function Dashboard() {
                       <th>First Name</th>
                       <th>Middle Name</th>
                     </tr>
-                    {Client.map((row, id) => (
-                      <tr key={id} className="text-center">
-                        <td>{row.ClientID}</td>
-                        <td>{row.LastName}</td>
-                        <td>{row.FirstName}</td>
-                        <td>{row.MiddleName}</td>
-                      </tr>
-                    ))}
                   </tbody>
                 </table>
               </div>
-            </div>
-          </div>
 
-          <div id="clientinfo" className="flex h-full w-1/2 flex-col gap-2">
-            <div>
-              <h1 className="block p-1 text-center font-sans text-xl text-black">
-                Cases for{" "}
-                <span className="text-purple-600">Selected Client</span>
-              </h1>
+              <div>
+              <div className="flex items-center justify-between">
+                <h1 className="block p-1 text-center font-sans text-xl text-black">
+                  Cases for{" "}
+                  <span className="text-purple-600">Selected Client</span>
+                </h1>
+                <button className="rounded bg-green-500 px-4 py-1 font-bold text-white hover:bg-yellow-700">Add</button>
+              </div>
 
               <div className="border-gray h-60 w-full rounded-xl border-4">
                 <table id="Case" className="w-full">
                   <tbody>
                     <tr>
-                      <th>Case Number</th>
-                      <th>Contract ID</th>
-                      <th>Status</th>
+                      <th>Title</th>
                       <th>Type</th>
+                      <th>Status</th>
                     </tr>
-                    {Case.map((row, id) => (
-                      <tr key={id} className="text-center">
-                        <td>{row.CaseNum}</td>
-                        <td>{row.ContractID}</td>
-                        <td>{row.Status}</td>
-                        <td>{row.Type}</td>
-                      </tr>
-                    ))}
                   </tbody>
                 </table>
               </div>
             </div>
 
-            <div>
-              <h1 className="block p-1 text-center font-sans text-xl text-black">
-                Work for <span className="text-red-600">Case Number</span>
-              </h1>
+            </div>
+          </div>
 
-              <div className="border-gray h-60 w-full rounded-xl border-4 p-3">
-                <table id="Work" className="w-full">
+          <div id="SelectionInfo" className="flex h-full w-3/5 flex-col gap-2">
+            <div className="flex flex-row gap-2">
+              <div id="SelectedClient" className="flex h-full w-1/2 flex-col gap-2">
+                <div className="border-gray h-60 w-full box-xl border-2">
+                  <div className="flex items-center justify-between">
+                    <h2 className="block p-1 text-center text-x0.5 text-black">
+                      Client Details
+                    </h2>
+                    <div>
+                      <button className="rounded bg-yellow-500 px-4 py-1 font-bold text-white hover:bg-yellow-700">Edit</button>
+                      <button className="rounded bg-red-500 px-4 py-1 font-bold text-white hover:bg-yellow-700">Delete</button>
+                    </div>
+                  </div>
+                  <tbody>
+                    <tr>
+                      <td><strong>Client ID:</strong></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Complete Name:</strong></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Email:</strong></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Cellphone Number:</strong></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Telephone Number:</strong></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Address:</strong></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Remarks:</strong></td>
+                      <td></td>
+                    </tr>
+                    </tbody>
+                </div>
+              </div>
+              <div id="SelectedCase" className="flex h-full w-1/2 flex-col gap-2">
+                <div className="border-gray h-60 w-full box-xl border-2">
+                  <div className="flex items-center justify-between">
+                    <h2 className="block p-1 text-center text-x0.5 text-black">
+                      Case Details
+                    </h2>
+                    <div>
+                      <button className="rounded bg-yellow-500 px-4 py-1 font-bold text-white hover:bg-yellow-700">Edit</button>
+                      <button className="rounded bg-red-500 px-4 py-1 font-bold text-white hover:bg-yellow-700">Delete</button>
+                    </div>
+                  </div>
+                  <tbody>
+                    <tr>
+                      <td><strong>Case Title:</strong></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Case Number:</strong></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Contract Type:</strong></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Contract ID:</strong></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Case Type:</strong></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Assigned Lawyer:</strong></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Status:</strong></td>
+                      <td></td>
+                    </tr>
+                    </tbody>
+                </div>
+              </div>
+          </div>
+          <div className="flex items-center justify-between">
+                <h1 className="block p-1 text-center font-sans text-xl text-black">
+                  Works for{" "}
+                  <span className="text-red-600">Selected Case</span>
+                  </h1>
+                <div>
+                <button className="rounded bg-green-500 px-4 py-1 font-bold text-white">Add</button>
+                <button className="rounded bg-yellow-500 px-4 py-1 font-bold text-white">Edit</button>
+                <button className="rounded bg-red-500 px-4 py-1 font-bold text-white">Delete</button>
+                </div>
+              </div>
+
+              <div className="border-gray h-60 w-full rounded-xl border-4">
+                <table id="Client" className="w-full">
                   <tbody>
                     <tr>
                       <th>Work ID</th>
+                      <th>Title</th>
                       <th>Type</th>
                       <th>Date</th>
+                      <th>Location</th>
+                      <th>Filename</th>
+                      <th>Fee</th>
+                      <th>Remarks</th>
+                      
+                      
                     </tr>
-                    {Work.map((row, id) => (
-                      <tr key={id} className="text-center">
-                        <td>{row.WorkID}</td>
-                        <td>{row.Type}</td>
-                        <td>{row.Date}</td>
-                      </tr>
-                    ))}
                   </tbody>
                 </table>
-              </div>
-            </div>
           </div>
+
+          </div>
+          
+
+
         </div>
       </main>
     </>
