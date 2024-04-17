@@ -3,8 +3,6 @@ import Head from "next/head";
 import Links from "../components/Links";
 import Shadow from "../components/Shadow";
 
-import bgimg from "assets/bookshelfbg.jpg";
-
 export default function Login() {
   return (
     <>
@@ -21,8 +19,7 @@ export default function Login() {
         <div className="z-10 mb-auto mt-auto flex flex-row items-center gap-16">
           <div className="flex flex-col items-center gap-12">
             <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[4rem]">
-              <span className="text-[hsl(280,100%,80%)]">Agila</span> Law
-              Offices
+              <span className="text-agila">Agila</span> Law Offices
             </h1>
             <h2 className="text-2xl italic tracking-tight text-white sm:text-[1.5rem]">
               Be agile.
