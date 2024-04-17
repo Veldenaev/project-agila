@@ -14,7 +14,7 @@ export interface Client {
 }
 
 export interface Lawyer {
-  LawyerId: number;
+  LawyerID: number;
   FirstName: string;
   LastName: string;
   MiddleName: string;
@@ -71,4 +71,11 @@ export interface Work {
 export interface WorkAssign {
   WorkID: number;
   LawyerID: number;
+}
+
+export interface Payment {
+  PaymentID: number;
+  ClientID: number;
+  Amount: number;
+  Date: Date;
 }

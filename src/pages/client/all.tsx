@@ -4,52 +4,45 @@ import Head from "next/head";
 import Layout from "~/components/Layout";
 import MyTable from "~/components/Table";
 import prisma from "~/lib/prisma";
-import { type Case } from "~/utils/types";
+import { type Client } from "~/utils/types";
 
-async function deleteCase(id: string): Promise<void> {
-  await fetch(`/api/case/${id}`, {
+async function deleteClient(id: number): Promise<void> {
+  await fetch(`/api/client/${id}`, {
     method: "DELETE",
   });
 }
 
 interface Props {
-  cases: Case[];
+  clients: Client[];
 }
 
-export default function AllCases({ cases }: Props) {
-  const data = cases;
-  const columnHelper = createColumnHelper<Case>();
+export default function AllClients({ clients }: Props) {
+  const data = clients;
+  const columnHelper = createColumnHelper<Client>();
   const columns = [
-    columnHelper.accessor("CaseNum", {
-      cell: (info) => info.getValue(),
+    columnHelper.accessor("ClientID", { header: "Client ID" }),
+    columnHelper.accessor("ContractID", { header: "Contract ID" }),
+    columnHelper.accessor("FirstName", {
+      header: "First Name",
     }),
-    columnHelper.accessor("ContractID", {
-      header: () => <span>Contract ID</span>,
-      cell: (info) => info.getValue(),
+    columnHelper.accessor("LastName", {
+      header: "Last Name",
+    }),
+    columnHelper.accessor("MiddleName", {
+      header: "Middle Name",
     }),
     columnHelper.accessor("ClientID", {
-      header: () => "Client ID",
-      cell: (info) => info.renderValue(),
-    }),
-    columnHelper.accessor("Status", {
-      header: "Status",
-    }),
-    columnHelper.accessor("Type", {
-      header: "Type",
-    }),
-    columnHelper.accessor("CaseNum", {
-      header: "Actions",
       cell: (info) => (
         <div className="flex flex-row gap-1">
           <button className="btn-blue">
-            <a href={`/case/${info.renderValue() ?? "all"}`}>View</a>
+            <a href={`/client/${info.renderValue() ?? -1}`}>View</a>
           </button>
           <button className="btn-yellow">
-            <a href={`/case/update/${info.renderValue() ?? "all"}`}>Update</a>
+            <a href={`/client/update/${info.renderValue() ?? -1}`}>Update</a>
           </button>
           <button
             className="btn-red"
-            onClick={() => deleteCase(info.renderValue() ?? "")}
+            onClick={() => deleteClient(info.renderValue() ?? -1)}
           >
             Delete
           </button>
@@ -62,13 +55,13 @@ export default function AllCases({ cases }: Props) {
   return (
     <>
       <Head>
-        <title>All Cases</title>
+        <title>All Clients</title>
       </Head>
       <Layout>
         <main className="flex min-h-screen flex-col">
           <div className="z-10 my-auto flex flex-col items-center justify-center gap-12 px-4 py-16 ">
             <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-[3rem]">
-              <span className="text-agila">All</span> Cases
+              <span className="text-agila">All</span> clients
             </h1>
             <MyTable data={data} columns={columns} />
           </div>
@@ -79,8 +72,8 @@ export default function AllCases({ cases }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const cases = await prisma.cases.findMany();
+  const clients = await prisma.client.findMany();
   return {
-    props: { cases },
+    props: { clients },
   };
 };

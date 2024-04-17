@@ -8,14 +8,14 @@ export default async function handle(
   const caseNum = req.query.id;
   if (req.method === "DELETE") {
     // DELETE /api/post/:id
-    const post = await prisma.cases.delete({
+    const result = await prisma.cases.delete({
       where: { CaseNum: String(caseNum) },
     });
-    res.json(post);
+    res.json(result);
   } else if (req.method === "PUT") {
     // PUT /api/post/:id
     const { CaseNum, ContractID, ClientID, Status, Type } = req.body;
-    const post = await prisma.cases.update({
+    const result = await prisma.cases.update({
       where: { CaseNum: String(caseNum) },
       data: {
         CaseNum: String(CaseNum),
@@ -25,7 +25,7 @@ export default async function handle(
         Type: String(Type),
       },
     });
-    res.json(post);
+    res.json(result);
   } else {
     throw new Error(
       `The HTTP ${req.method} method is not supported at this route.`,

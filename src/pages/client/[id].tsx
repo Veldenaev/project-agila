@@ -1,32 +1,26 @@
-import {
-  useReactTable,
-  createColumnHelper,
-  getCoreRowModel,
-  flexRender,
-} from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { type GetServerSideProps } from "next";
-import { type Case } from "~/utils/types";
+import { type Client, type Lawyer, type Case } from "~/utils/types";
 import Head from "next/head";
 import prisma from "../../lib/prisma";
 import Shadow from "~/components/Shadow";
+import Table from "~/components/Table";
 
 interface Props {
-  cases: Case[];
+  client: Client & { cases: Case[] };
 }
 
-export default function Client({ cases }: Props) {
-  const data = cases;
+export default function Client({ client }: Props) {
+  const data = client.cases;
   const columnHelper = createColumnHelper<Case>();
   const columns = [
     columnHelper.accessor("CaseNum", {
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("ContractID", {
-      header: () => <span>Contract ID</span>,
-      cell: (info) => <i>{info.getValue()}</i>,
+      cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("ClientID", {
-      header: () => "Client ID",
       cell: (info) => info.renderValue(),
     }),
     columnHelper.accessor("Status", {
@@ -36,55 +30,20 @@ export default function Client({ cases }: Props) {
       header: "Type",
     }),
   ];
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
   return (
     <>
       <Head>
-        <title>Hi&apos;s Dashboard</title>
+        <title>{client.FirstName}&apos;s Dashboard</title>
         <link rel="icon" href="/favicon.png" />
       </Head>
       <Shadow />
       <main className="flex min-h-screen flex-col">
         <div className="z-10 mb-auto mt-auto flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-[3rem]">
-            Your cases
+            <span className="text-agila">{client.FirstName}</span>
+            &apos;s cases
           </h1>
-          <table className="rounded-md bg-white">
-            <thead>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <th key={header.id} className="px-3 py-1">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody>
-              {table.getRowModel().rows.map((row) => (
-                <tr key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="px-3 py-1">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Table columns={columns} data={data} />
         </div>
       </main>
     </>
@@ -92,12 +51,15 @@ export default function Client({ cases }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const cases = await prisma.cases.findMany({
+  const client = await prisma.client.findUnique({
     where: {
-      CaseNum: String(params?.id),
+      ClientID: Number(params?.id),
+    },
+    include: {
+      cases: true,
     },
   });
   return {
-    props: { cases },
+    props: { client },
   };
 };

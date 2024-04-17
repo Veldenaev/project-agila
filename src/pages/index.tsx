@@ -14,11 +14,19 @@ export default function Home() {
     },
     {
       route: "/client/1",
-      text: "Access as manager",
+      text: "Access as client",
     },
     {
-      route: "/cases/c_0",
-      text: "Access as client",
+      route: "/case/all",
+      text: "Access as manager (all cases)",
+    },
+    {
+      route: "/lawyer/all",
+      text: "Access as manager (all lawyers)",
+    },
+    {
+      route: "/client/all",
+      text: "Access as manager (all clients)",
     },
   ];
 
@@ -31,7 +39,7 @@ export default function Home() {
         <main className="flex min-h-screen flex-col">
           <div className="z-10 mb-auto mt-auto flex flex-col items-center justify-center gap-12 px-4 py-16 ">
             <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-              Project <span className="text-[hsl(280,100%,80%)]">Agila</span>
+              Project <span className="text-agila">Agila</span>
             </h1>
             <h2 className="text-2xl tracking-tight text-white sm:text-[1.5rem]">
               Empowering billings for the law industry.
@@ -41,7 +49,7 @@ export default function Home() {
                 <Link
                   key={index}
                   href={route}
-                  className="z-10 flex h-full items-center justify-center rounded-lg bg-violet-500 px-4 py-2 text-lg text-white hover:bg-violet-500/80"
+                  className="z-10 flex h-full items-center justify-center rounded-lg bg-agila px-4 py-2 text-lg font-bold hover:bg-agila/80"
                 >
                   {text}
                 </Link>

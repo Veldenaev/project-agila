@@ -88,60 +88,84 @@ export default function Table<T>({ data, columns }: Props<T>) {
             );
           })}
         </tbody>
+        <tfoot>
+          {table.getFooterGroups().map((footerGroup) => (
+            <tr key={footerGroup.id}>
+              {footerGroup.headers.map((header) => (
+                <th key={header.id}>
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.footer,
+                        header.getContext(),
+                      )}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </tfoot>
       </table>
-      <div className="flex flex-col items-center gap-2 rounded-md bg-white p-2">
-        <div className="flex items-center gap-2">
-          <button
-            className="rounded border p-1"
-            onClick={() => table.firstPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            {"<<"}
-          </button>
-          <button
-            className="rounded border p-1"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            {"<"}
-          </button>
-          <button
-            className="rounded border p-1"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            {">"}
-          </button>
-          <button
-            className="rounded border p-1"
-            onClick={() => table.lastPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            {">>"}
-          </button>
-          <span className="flex items-center gap-1">
-            <div>Page</div>
-            <strong>{table.getState().pagination.pageIndex + 1}</strong> of{" "}
-            <strong>{table.getPageCount().toLocaleString()}</strong>
-          </span>
-          <span className="flex items-center gap-1">
-            | Go to page
-            <input
-              type="number"
-              defaultValue={table.getState().pagination.pageIndex + 1}
-              onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                table.setPageIndex(page);
-              }}
-              className="w-16 rounded border p-1"
-            />
-          </span>
+      {data.length > 0 && (
+        <div className="flex flex-col items-center gap-2 rounded-md bg-white p-2">
+          <div className="flex items-center gap-2">
+            <button
+              className="rounded border p-1"
+              onClick={() => table.firstPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              {"<<"}
+            </button>
+            <button
+              className="rounded border p-1"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              {"<"}
+            </button>
+            <button
+              className="rounded border p-1"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              {">"}
+            </button>
+            <button
+              className="rounded border p-1"
+              onClick={() => table.lastPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              {">>"}
+            </button>
+            <span className="flex items-center gap-1">
+              <div>Page</div>
+              <strong>
+                {table.getState().pagination.pageIndex + 1}
+              </strong> of{" "}
+              <strong>{table.getPageCount().toLocaleString()}</strong>
+            </span>
+            <span className="flex items-center gap-1">
+              | Go to page
+              <input
+                min={1}
+                max={
+                  (data.length + pagination.pageSize - 1) / pagination.pageSize
+                }
+                type="number"
+                defaultValue={table.getState().pagination.pageIndex + 1}
+                onChange={(e) => {
+                  const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                  table.setPageIndex(page);
+                }}
+                className="w-16 rounded border p-1"
+              />
+            </span>
+          </div>
+          <div>
+            Showing {table.getRowModel().rows.length.toLocaleString()} of{" "}
+            {table.getRowCount().toLocaleString()} rows
+          </div>
         </div>
-        <div>
-          Showing {table.getRowModel().rows.length.toLocaleString()} of{" "}
-          {table.getRowCount().toLocaleString()} rows
-        </div>
-      </div>
+      )}
     </>
   );
 }

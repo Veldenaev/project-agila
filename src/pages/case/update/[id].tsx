@@ -5,6 +5,7 @@ import Head from "next/head";
 import { type Case } from "~/utils/types";
 import { type GetServerSideProps } from "next";
 import prisma from "~/lib/prisma";
+import { defaultCase } from "~/utils/defaults";
 
 interface Props {
   theCase: Case;
@@ -40,29 +41,32 @@ export default function UpdateCase({ theCase }: Props) {
             className="z-10 mx-auto my-auto flex flex-col gap-4"
           >
             <h1 className="text-center font-bold tracking-tight text-white sm:text-[3rem]">
-              <span className="text-[hsl(280,100%,80%)]">Update</span> Case #
-              {theCase.CaseNum}
+              <span className="text-agila">Update</span> Case #{theCase.CaseNum}
             </h1>
             <div className="grid grid-cols-2 gap-3 rounded-lg bg-white p-4 pb-5">
-              {Object.entries(theCase).map(([k, v], index) => (
-                <div key={index} className="flex flex-col">
-                  <span className="pl-1 text-black">{k}</span>
-                  <input
-                    className="rounded-md border-2 border-solid border-black px-1 disabled:bg-gray-200"
-                    autoFocus
-                    onChange={(e) =>
-                      setNewCase((oldCase) => ({
-                        ...oldCase,
-                        [k]: e.target.value,
-                      }))
-                    }
-                    disabled={k === "CaseNum"}
-                    placeholder={k}
-                    defaultValue={v as string}
-                    type={typeof v === "string" ? "text" : "number"}
-                  />
-                </div>
-              ))}
+              {Object.entries(theCase)
+                .filter(([k, _]) => Object.keys(defaultCase).includes(k))
+                .map(([k, v], index) => (
+                  <div key={index} className="flex flex-col">
+                    <span className="pl-1 text-black">{k}</span>
+                    <input
+                      className="rounded-md border-2 border-solid border-black px-1 disabled:bg-gray-200"
+                      autoFocus
+                      onChange={(e) =>
+                        setNewCase((oldCase) => ({
+                          ...oldCase,
+                          [k]: e.target.value,
+                        }))
+                      }
+                      disabled={["CaseNum", "ContractID", "ClientID"].includes(
+                        k,
+                      )}
+                      placeholder={k}
+                      defaultValue={v as string}
+                      type={typeof v === "string" ? "text" : "number"}
+                    />
+                  </div>
+                ))}
             </div>
             <div className="flex justify-center gap-3 text-lg">
               <input
@@ -89,9 +93,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const theCase = await prisma.cases.findUnique({
     where: {
       CaseNum: String(params?.id),
-    },
-    include: {
-      client: true,
     },
   });
   return {
