@@ -1,6 +1,6 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { type GetServerSideProps } from "next";
-import { type Client, type Lawyer, type Case } from "~/utils/types";
+import { type Client, type Case } from "~/utils/types";
 import Head from "next/head";
 import prisma from "../../lib/prisma";
 import Shadow from "~/components/Shadow";
