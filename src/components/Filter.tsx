@@ -1,11 +1,11 @@
 import { type Column, type Table } from "@tanstack/react-table";
 
-interface Props {
-  column: Column<any, any>;
-  table: Table<any>;
+interface Props<T, U> {
+  column: Column<T, U>;
+  table: Table<T>;
 }
 
-export default function Filter({ column, table }: Props) {
+export default function Filter<T, U>({ column, table }: Props<T, U>) {
   const firstValue = table
     .getPreFilteredRowModel()
     .flatRows[0]?.getValue(column.id);
