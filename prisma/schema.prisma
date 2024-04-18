@@ -30,8 +30,9 @@ model Client {
     user                String?    @db.VarChar(20)
     pass                String?    @db.Char(50)
     cases               Cases[]
-    contracts           Contract[] @relation("NumContracts")
-    contract            Contract?  @relation("SameID", fields: [ContractID], references: [ContractID])
+    payments            Payment[]
+    clients             Contract[] @relation("people")
+    contracts           Contract?  @relation("sameID", fields: [ContractID], references: [ContractID])
 }
 
 model Lawyer {
@@ -59,20 +60,27 @@ model Contract {
     PartnerApp          Int?       @db.SmallInt
     JuniorAssocApp      Int?       @db.SmallInt
     SeniorAssocApp      Int?       @db.SmallInt
+    isAmendment         Boolean?   @db.Bit(1)  @default(false)
+    RootContractID      Int?       @db.SmallInt
+    Date                DateTime?  @db.Date
     cases               Cases[]
-    client              Client?    @relation("SameID")
-    clients             Client?    @relation("NumContracts", fields: [ClientID], references: [ClientID])
+    // roots               Contract[] @relation("root")
+    // root                Contract?  @relation("root", fields: [RootContractID], references: [ContractID])
+    contracts           Client?    @relation("sameID")
+    clients             Client?    @relation("people", fields: [ClientID], references: [ClientID])
     
 }
 
 model Work {
     WorkID              Int        @id  @db.SmallInt
     CaseNum             String     @db.VarChar(10)
-    Type                String?    @db.VarChar(12)
+    Type                String?    @db.VarChar(20)
     Date                DateTime?  @db.Date
     Remarks             String?    @db.VarChar(100)
     location            String?    @db.VarChar(100)
     filename            String?    @db.VarChar(20)
+    Title               String?    @db.VarChar(40)
+    FeeAmt              Int?       @db.SmallInt
     lawyers             Lawyer[]
     case                Cases?      @relation(fields: [CaseNum], references: [CaseNum])
 }
@@ -83,10 +91,20 @@ model Cases {
     ClientID            Int        @db.SmallInt
     Status              String?    @db.VarChar(300)
     Type                String?    @db.VarChar(20)
+    Title               String?    @db.VarChar(40)
+    Venue               String?    @db.VarChar(40)
     works               Work[]
     lawyers             Lawyer[]
     client              Client?    @relation(fields: [ClientID], references: [ClientID])
     contract            Contract?  @relation(fields: [ContractID], references: [ContractID])
+}
+
+model Payment {
+    PaymentID           Int        @id  @db.SmallInt
+    ClientID            Int        @db.SmallInt
+    Amount              Int        @db.Int
+    Date                DateTime?  @db.Date
+    client              Client?    @relation(fields: [ClientID], references: [ClientID])
 }
 
 // model Post {
