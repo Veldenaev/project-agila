@@ -47,12 +47,6 @@ export default function AllCases({ cases }: Props) {
           <button className="btn-yellow">
             <a href={`/case/update/${info.renderValue() ?? "all"}`}>Update</a>
           </button>
-          <button
-            className="btn-red"
-            onClick={() => deleteCase(info.renderValue() ?? "")}
-          >
-            Delete
-          </button>
         </div>
       ),
       enableSorting: false,

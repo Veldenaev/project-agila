@@ -45,12 +45,6 @@ export default function AllLawyers({ lawyers }: Props) {
           <button className="btn-yellow">
             <a href={`/lawyer/update/${info.renderValue() ?? -1}`}>Update</a>
           </button>
-          <button
-            className="btn-red"
-            onClick={() => deleteLawyer(info.renderValue() ?? -1)}
-          >
-            Delete
-          </button>
         </div>
       ),
       enableSorting: false,

@@ -36,7 +36,7 @@ export default function Case({ theCase }: Props) {
   return (
     <>
       <Head>
-        <title>Cases | Project Agila</title>
+        <title>Case {theCase.CaseNum} Information</title>
       </Head>
       <Layout>
         <main className="flex min-h-screen flex-col">

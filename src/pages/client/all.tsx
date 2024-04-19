@@ -40,12 +40,6 @@ export default function AllClients({ clients }: Props) {
           <button className="btn-yellow">
             <a href={`/client/update/${info.renderValue() ?? -1}`}>Update</a>
           </button>
-          <button
-            className="btn-red"
-            onClick={() => deleteClient(info.renderValue() ?? -1)}
-          >
-            Delete
-          </button>
         </div>
       ),
       enableSorting: false,
