@@ -28,6 +28,10 @@ export default function Home() {
       route: "/client/all",
       text: "Access as manager (all clients)",
     },
+    {
+      route: "/manager/dashboard",
+      text: "Access UI for Manager Dashboard",
+    },
   ];
 
   return (

@@ -69,6 +69,14 @@ export default function Links() {
       name: "Case Overview",
       route: "/overviews/0",
     },
+    {
+      name: "Manage Staff",
+      route: "/manager/manage_staff",
+    },
+    {
+      name: "Manage Clients and Cases",
+      route: "/manager/manage_client",
+    },
     //     {
     //       name: "Billing",
     //       route: "/billings/0",
