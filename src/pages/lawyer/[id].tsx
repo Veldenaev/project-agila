@@ -5,6 +5,7 @@ import Head from "next/head";
 import prisma from "../../lib/prisma";
 import Layout from "~/components/Layout";
 import Table from "~/components/Table";
+import Form from "~/components/Form";
 
 interface Props {
   lawyer: Lawyer & { cases: (Case & { client: Client })[] };
@@ -30,40 +31,30 @@ export default function Lawyer({ lawyer }: Props) {
       header: "Type",
     }),
   ];
-  const data2: Client[] = lawyer.cases.flatMap((oneCase) => oneCase.client);
-  const columnHelper2 = createColumnHelper<Client>();
-  const columns2 = [
-    columnHelper2.accessor("FirstName", {
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper2.accessor("LastName", {
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper2.accessor("Email", {
-      cell: (info) => info.renderValue(),
-    }),
-  ];
   return (
     <>
       <Head>
-        <title>{lawyer.FirstName}&apos;s Dashboard</title>
+        <title>Lawyer Dashboard</title>
       </Head>
       <Layout>
         <main className="flex min-h-screen flex-col">
           <div className="z-10 mb-auto mt-auto flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-            <div className="flex flex-col items-center justify-center gap-6">
-              <h1 className="font-bold tracking-tight text-white sm:text-[2rem]">
-                <span className="text-agila">{lawyer.FirstName}</span>
-                &apos;s cases
-              </h1>
-              <Table columns={columns} data={data} />
-            </div>
-            <div className="flex flex-col items-center justify-center gap-6">
-              <h1 className="text-xl font-bold tracking-tight text-white sm:text-[2rem]">
-                <span className="text-agila">{lawyer.FirstName}</span>
-                &apos;s accounts
-              </h1>
-              <Table columns={columns2} data={data2} />
+            <div className="flex flex-row gap-5">
+              <Form
+                obj={lawyer}
+                type="lawyer"
+                name="Lawyer"
+                p_keys={["LawyerID"]}
+                hide={["isManager", "pass", "cases"]}
+                id_func={(l: Lawyer) => l.LawyerID}
+              />
+              <div className="flex flex-col items-center justify-center gap-6">
+                <h1 className="font-bold tracking-tight text-white sm:text-[2rem]">
+                  <span className="text-agila">{lawyer.FirstName}</span>
+									&apos;s Cases
+                </h1>
+                <Table columns={columns} data={data} />
+              </div>
             </div>
           </div>
         </main>
