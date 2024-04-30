@@ -16,26 +16,25 @@ interface Props {
   lawyers: Lawyer[];
 }
 
+interface Row {
+	name: string;
+	id: number;
+}
+
 export default function AllLawyers({ lawyers }: Props) {
-  const data = lawyers;
-  const columnHelper = createColumnHelper<Lawyer>();
+  const data: Row[] = lawyers.map(lawyer => ({
+		name: `${lawyer.LastName}, ${lawyer.FirstName} ${lawyer.MiddleName}`,
+		id: lawyer.LawyerID
+	}));
+  const columnHelper = createColumnHelper<Row>();
   const columns = [
-    columnHelper.accessor("LawyerID", {
+		columnHelper.accessor("name", {
+			header: "Name",
+		}),
+    columnHelper.accessor("id", {
       header: "Lawyer ID",
     }),
-    columnHelper.accessor("FirstName", {
-      header: "First Name",
-    }),
-    columnHelper.accessor("LastName", {
-      header: "Last Name",
-    }),
-    columnHelper.accessor("MiddleName", {
-      header: "Middle Name",
-    }),
-    columnHelper.accessor("Email", {
-      header: "Email",
-    }),
-    columnHelper.accessor("LawyerID", {
+    columnHelper.accessor("id", {
       header: "Actions",
       cell: (info) => (
         <div className="flex flex-row gap-1">
