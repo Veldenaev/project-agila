@@ -41,9 +41,6 @@ export default function AllLawyers({ lawyers }: Props) {
           <button className="btn-blue">
             <a href={`/lawyer/${info.renderValue() ?? -1}`}>View</a>
           </button>
-          <button className="btn-yellow">
-            <a href={`/lawyer/update/${info.renderValue() ?? -1}`}>Update</a>
-          </button>
         </div>
       ),
       enableSorting: false,
