@@ -17,20 +17,20 @@ interface Props {
 }
 
 interface Row {
-	name: string;
-	id: number;
+  name: string;
+  id: number;
 }
 
 export default function AllLawyers({ lawyers }: Props) {
-  const data: Row[] = lawyers.map(lawyer => ({
-		name: `${lawyer.LastName}, ${lawyer.FirstName} ${lawyer.MiddleName}`,
-		id: lawyer.LawyerID
-	}));
+  const data: Row[] = lawyers.map((lawyer) => ({
+    name: `${lawyer.LastName}, ${lawyer.FirstName} ${lawyer.MiddleName}`,
+    id: lawyer.LawyerID,
+  }));
   const columnHelper = createColumnHelper<Row>();
   const columns = [
-		columnHelper.accessor("name", {
-			header: "Name",
-		}),
+    columnHelper.accessor("name", {
+      header: "Name",
+    }),
     columnHelper.accessor("id", {
       header: "Lawyer ID",
     }),
