@@ -17,12 +17,16 @@ test("has table", async ({ page }) => {
 
 test("'View' button is visible", async ({ page }) => {
   await page.goto("/client/all");
-  await expect(page.getByRole("button", { name: /View/ }).first()).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: /View/ }).first(),
+  ).toBeVisible();
 });
 
 test("'Update' button is visible", async ({ page }) => {
   await page.goto("/client/all");
-  await expect(page.getByRole("button", { name: /Update/ }).first()).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: /Update/ }).first(),
+  ).toBeVisible();
 });
 
 test("Clicking 'View' button leads to a client's page", async ({ page }) => {
@@ -35,7 +39,10 @@ test("Clicking 'Update' button leads to a form to update the client", async ({
   page,
 }) => {
   await page.goto("/client/all");
-  await page.getByRole("button", { name: /Update/ }).first().click();
+  await page
+    .getByRole("button", { name: /Update/ })
+    .first()
+    .click();
   await expect(page).toHaveURL(/client\/update\/\d+/);
 });
 
