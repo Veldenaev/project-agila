@@ -25,7 +25,7 @@ export default function Filter<T, U>({ column, table }: Props<T, U>) {
         }
         min={0}
         placeholder={`Min`}
-        className="w-24 rounded border px-1 shadow"
+        className="w-16 rounded border px-1 shadow"
       />
       <input
         type="number"
@@ -37,12 +37,12 @@ export default function Filter<T, U>({ column, table }: Props<T, U>) {
           ])
         }
         placeholder={`Max`}
-        className="w-24 rounded border px-1 shadow"
+        className="w-16 rounded border px-1 shadow"
       />
     </div>
   ) : (
     <input
-      className="w-36 rounded border px-1 shadow"
+      className="w-28 rounded border px-1 shadow"
       onChange={(e) => column.setFilterValue(e.target.value)}
       onClick={(e) => e.stopPropagation()}
       placeholder={`Filter...`}
