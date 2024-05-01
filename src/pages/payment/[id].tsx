@@ -22,9 +22,10 @@ export default function Payment({ payment }: Props) {
               obj={payment}
               type="payment"
               name="Payment"
-              p_keys={["PaymentID", "ClientID"]}
+              keys={["PaymentID", "ClientID"]}
               hide={[]}
-              id_func={(c: Payment) => c.PaymentID}
+              textarea={[]}
+              identifier={(c: Payment) => c.PaymentID}
               adding={false}
               stay={false}
             />
