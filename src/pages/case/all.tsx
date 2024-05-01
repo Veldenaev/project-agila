@@ -5,17 +5,38 @@ import Layout from "~/components/Layout";
 import MyTable from "~/components/Table";
 import prisma from "~/lib/prisma";
 import { type Case } from "@prisma/client";
+import pingDelete from "~/utils/pingDelete";
+import { useRouter } from "next/navigation";
 
 interface Props {
   cases: Case[];
 }
 
 export default function AllCases({ cases }: Props) {
+  const router = useRouter();
   const data = cases;
   const columnHelper = createColumnHelper<Case>();
   const columns = [
     columnHelper.accessor("CaseNum", {
-      cell: (info) => info.getValue(),
+      cell: (info) => (
+        <div className="flex flex-row items-center justify-center gap-2">
+          <p>{info.getValue()}</p>
+          <div className="flex flex-row gap-1">
+            <a className="btn-blue" href={`/case/${info.getValue()}`}>
+              View
+            </a>
+            <button
+              className="btn-red"
+              onClick={async () => {
+                await pingDelete("case", info.getValue());
+                router.refresh();
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      ),
     }),
     columnHelper.accessor("ContractID", {
       header: () => <span>Contract ID</span>,
@@ -23,25 +44,13 @@ export default function AllCases({ cases }: Props) {
     }),
     columnHelper.accessor("ClientID", {
       header: () => "Client ID",
-      cell: (info) => info.renderValue(),
+      cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("Status", {
       header: "Status",
     }),
     columnHelper.accessor("Type", {
       header: "Type",
-    }),
-    columnHelper.accessor("CaseNum", {
-      header: "Actions",
-      cell: (info) => (
-        <div className="flex flex-row gap-1">
-          <button className="btn-blue">
-            <a href={`/case/${info.renderValue() ?? "all"}`}>View</a>
-          </button>
-        </div>
-      ),
-      enableSorting: false,
-      enableColumnFilter: false,
     }),
   ];
   return (

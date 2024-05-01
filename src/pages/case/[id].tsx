@@ -3,7 +3,6 @@ import Head from "next/head";
 import { type GetServerSideProps } from "next";
 import prisma from "~/lib/prisma";
 import {
-  type Client,
   type Case,
   type Work,
   type Contract,
@@ -12,21 +11,60 @@ import {
 import Layout from "~/components/Layout";
 import { createColumnHelper } from "@tanstack/react-table";
 import Table from "~/components/Table";
-import CaseForm from "~/components/CaseForm";
+import pingDelete from "~/utils/pingDelete";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Form from "~/components/Form";
 
 interface Props {
-  theCase: Case & { client: Client; contract: Contract; lawyers: Lawyer[] };
+  theCase: Case & { contract: Contract; lawyers: Lawyer[]; works: Work[] };
 }
 
 export default function Case({ theCase }: Props) {
-  const data: Work[] = [];
+  const router = useRouter();
+  const { contract, lawyers, works, ...obj } = theCase;
+  const data: Work[] = works;
   const columnHelper = createColumnHelper<Work>();
   const columns = [
     columnHelper.accessor("Title", {
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("Date", {
+      cell: (info) => {
+        const d = new Date(String(info.getValue()));
+        return (
+          <div>
+            {d.getMonth() + 1}/{d.getDay()}/{d.getFullYear()}
+          </div>
+        );
+      },
+    }),
+    columnHelper.accessor("FeeAmt", {
+      header: "Fee Amount",
       cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("WorkID", {
+      header: "Actions",
+      cell: (info) => (
+        <div className="flex flex-row items-center justify-center gap-2">
+          <div className="flex flex-row gap-1">
+            <a className="btn-blue" href={`/work/${info.getValue()}`}>
+              Edit
+            </a>
+            <button
+              className="btn-red"
+              onClick={async () => {
+                await pingDelete("case", info.getValue());
+                router.refresh();
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      ),
+      enableColumnFilter: false,
+      enableSorting: false,
     }),
   ];
   return (
@@ -38,40 +76,58 @@ export default function Case({ theCase }: Props) {
         <main className="flex min-h-screen flex-col">
           <div className="z-10 my-auto flex flex-col items-center justify-center gap-5">
             <div className="flex flex-row gap-10">
-              <CaseForm
-                obj={theCase}
+              <Form
+                obj={obj}
                 type="case"
                 name="Case"
-                p_keys={["CaseNum", "ContractID", "ClientID"]}
-                hide={["client", "contract", "lawyers"]}
-                id_func={(c: Case) => c.CaseNum}
+                keys={["CaseNum", "ContractID", "ClientID"]}
+                hide={[]}
+                textarea={[]}
+                identifier={(c: Case) => c.CaseNum}
+                adding={false}
+                stay={true}
               />
-              <div className="flex flex-col justify-center gap-5">
-                <h1 className="text-center font-bold tracking-tight text-white sm:text-[2rem]">
-                  Work Involved
-                </h1>
-                <Table data={data} columns={columns} />
-                <p className="text-white">
-                  Total:{" "}
-                  {data
-                    .map((work) => work.FeeAmt ?? 0)
-                    .reduce((acc, cur) => acc + cur, 0)}
-                </p>
-              </div>
-              <div className="flex flex-col justify-center gap-5">
-                <h1 className="text-center font-bold tracking-tight text-white sm:text-[2rem]">
-                  Assigned Lawyers
-                </h1>
-                <div className="flex flex-col gap-1 rounded-md bg-white">
-                  {theCase.lawyers.map((lawyer, index) => (
-                    <div
-                      key={index}
-                      className="flex flex-row items-center justify-between gap-1 px-3 py-2"
+              <div className="flex flex-col gap-10">
+                <div className="flex flex-col justify-center gap-5">
+                  <div className="flex flex-row items-center justify-center gap-6">
+                    <h1 className="text-center font-bold tracking-tight text-white sm:text-[2rem]">
+                      Work Involved
+                    </h1>
+                    <Link
+                      className="btn-blue"
+                      href={`/work/new/${theCase.CaseNum}`}
                     >
-                      <p>{lawyer.LastName + ", " + lawyer.FirstName}</p>
-                      <button className="btn-red">Delete</button>
-                    </div>
-                  ))}
+                      <p>Add</p>
+                    </Link>
+                  </div>
+                  <Table data={data} columns={columns} />
+                  <p className="flex flex-row items-center justify-between rounded-md bg-white p-2">
+                    <span className="rounded-md bg-gray-700 px-3 py-1 text-white">
+                      Total
+                    </span>
+                    <span className="mr-1 font-bold">
+                      Php{" "}
+                      {data
+                        .map((work) => work.FeeAmt ?? 0)
+                        .reduce((acc, cur) => acc + cur, 0)}
+                    </span>
+                  </p>
+                </div>
+                <div className="flex flex-col justify-center gap-5">
+                  <h1 className="text-center font-bold tracking-tight text-white sm:text-[2rem]">
+                    Assigned Lawyers
+                  </h1>
+                  <div className="flex flex-col gap-1 rounded-md bg-white">
+                    {lawyers.map((lawyer, index) => (
+                      <div
+                        key={index}
+                        className="flex flex-row items-center justify-between gap-1 px-3 py-2"
+                      >
+                        <p>{`${lawyer.LastName}, ${lawyer.FirstName} ${lawyer.MiddleName}`}</p>
+                        <button className="btn-red">Delete</button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -91,6 +147,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       client: true,
       contract: true,
       lawyers: true,
+      works: true,
     },
   });
   return {
