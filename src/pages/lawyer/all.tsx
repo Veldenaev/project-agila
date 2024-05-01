@@ -37,9 +37,9 @@ export default function AllLawyers({ lawyers }: Props) {
         <div className="flex flex-row items-center justify-between">
           <p>{info.getValue()}</p>
           <div className="flex flex-row gap-1">
-            <a className="btn-blue" href={`/lawyer/${info.getValue()}`}>
+            <Link className="btn-blue" href={`/lawyer/${info.getValue()}`}>
               View
-            </a>
+            </Link>
             <button
               className="btn-red"
               onClick={async () => {

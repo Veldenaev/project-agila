@@ -7,6 +7,7 @@ import prisma from "~/lib/prisma";
 import { type Case } from "@prisma/client";
 import pingDelete from "~/utils/pingDelete";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface Props {
   cases: Case[];
@@ -22,9 +23,9 @@ export default function AllCases({ cases }: Props) {
         <div className="flex flex-row items-center justify-center gap-2">
           <p>{info.getValue()}</p>
           <div className="flex flex-row gap-1">
-            <a className="btn-blue" href={`/case/${info.getValue()}`}>
+            <Link className="btn-blue" href={`/case/${info.getValue()}`}>
               View
-            </a>
+            </Link>
             <button
               className="btn-red"
               onClick={async () => {
