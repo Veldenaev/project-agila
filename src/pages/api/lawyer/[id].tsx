@@ -1,5 +1,6 @@
 import { type NextApiRequest, type NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
+import { type Lawyer } from "@prisma/client";
 
 export default async function handle(
   req: NextApiRequest,
@@ -14,14 +15,22 @@ export default async function handle(
     res.json(post);
   } else if (req.method === "PUT") {
     // PUT /api/lawyer/:id
-    const { LawyerID, FirstName, LastName, Email } = req.body;
+    const lawyer: Lawyer = req.body;
     const post = await prisma.lawyer.update({
-      where: { LawyerID: Number(LawyerID) },
+      where: { LawyerID: Number(lawyerId) },
       data: {
-        LawyerID: Number(LawyerID),
-        FirstName: String(FirstName),
-        LastName: String(LastName),
-        Email: String(Email),
+        LawyerID: Number(lawyer.LawyerID),
+        FirstName: String(lawyer.FirstName),
+        LastName: String(lawyer.LastName),
+        MiddleName: String(lawyer.MiddleName),
+        Email: String(lawyer.Email),
+        AltEmail: String(lawyer.AltEmail),
+        CellNum: String(lawyer.CellNum),
+        TelNum: String(lawyer.TelNum),
+        CityAdd: String(lawyer.CityAdd),
+        isManager: Boolean(lawyer.isManager),
+        user: String(lawyer.user),
+        pass: String(lawyer.pass),
       },
     });
     res.json(post);

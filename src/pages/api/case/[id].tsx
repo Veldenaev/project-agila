@@ -1,4 +1,5 @@
 import { type NextApiRequest, type NextApiResponse } from "next";
+import { type Case } from "@prisma/client";
 import prisma from "../../../lib/prisma";
 
 export default async function handle(
@@ -7,22 +8,24 @@ export default async function handle(
 ) {
   const caseNum = req.query.id;
   if (req.method === "DELETE") {
-    // DELETE /api/post/:id
+    // DELETE /api/case/:id
     const result = await prisma.case.delete({
       where: { CaseNum: String(caseNum) },
     });
     res.json(result);
   } else if (req.method === "PUT") {
-    // PUT /api/post/:id
-    const { CaseNum, ContractID, ClientID, Status, Type } = req.body;
+    // PUT /api/case/:id
+    const theCase: Case = req.body;
     const result = await prisma.case.update({
       where: { CaseNum: String(caseNum) },
       data: {
-        CaseNum: String(CaseNum),
-        ContractID: Number(ContractID),
-        ClientID: Number(ClientID),
-        Status: String(Status),
-        Type: String(Type),
+        CaseNum: String(theCase.CaseNum),
+        ContractID: Number(theCase.ContractID),
+        ClientID: Number(theCase.ClientID),
+        Status: String(theCase.Status),
+        Type: String(theCase.Type),
+        Title: String(theCase.Title),
+        Venue: String(theCase.Venue),
       },
     });
     res.json(result);
