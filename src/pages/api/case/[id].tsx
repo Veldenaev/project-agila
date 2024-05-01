@@ -8,14 +8,14 @@ export default async function handle(
   const caseNum = req.query.id;
   if (req.method === "DELETE") {
     // DELETE /api/post/:id
-    const result = await prisma.cases.delete({
+    const result = await prisma.case.delete({
       where: { CaseNum: String(caseNum) },
     });
     res.json(result);
   } else if (req.method === "PUT") {
     // PUT /api/post/:id
     const { CaseNum, ContractID, ClientID, Status, Type } = req.body;
-    const result = await prisma.cases.update({
+    const result = await prisma.case.update({
       where: { CaseNum: String(caseNum) },
       data: {
         CaseNum: String(CaseNum),

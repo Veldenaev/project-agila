@@ -8,7 +8,7 @@ export default async function handle(
 ) {
   const { CaseNum, ContractID, ClientID, Status, Type } = req.body;
 
-  const result = await prisma.cases.create({
+  const result = await prisma.case.create({
     data: {
       CaseNum: String(CaseNum),
       ContractID: Number(ContractID),
