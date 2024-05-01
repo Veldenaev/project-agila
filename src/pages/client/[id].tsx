@@ -3,9 +3,12 @@ import { type GetServerSideProps } from "next";
 import { type Client, type Case, type Payment } from "@prisma/client";
 import Head from "next/head";
 import prisma from "../../lib/prisma";
-import Shadow from "~/components/Shadow";
 import Table from "~/components/Table";
 import Form from "~/components/Form";
+import Link from "next/link";
+import Layout from "~/components/Layout";
+import pingDelete from "~/utils/pingDelete";
+import { useRouter } from "next/navigation";
 
 interface Props {
   client: Client & { cases: Case[]; payments: Payment[] };
@@ -24,7 +27,9 @@ interface PaymentRow {
 }
 
 export default function Client({ client }: Props) {
-  const casesData: CaseRow[] = client.cases.map((c) => ({
+  const router = useRouter();
+  const { cases, payments, ...obj } = client;
+  const casesData: CaseRow[] = cases.map((c) => ({
     num: c.CaseNum,
     status: c.Status,
     type: c.Type,
@@ -33,7 +38,25 @@ export default function Client({ client }: Props) {
   const casesColumns = [
     casesColumnHelper.accessor("num", {
       header: "Case Number",
-      cell: (info) => info.getValue(),
+      cell: (info) => (
+        <div className="flex flex-row items-center justify-center gap-2">
+          <p>{info.getValue()}</p>
+          <div className="flex flex-row gap-1">
+            <a className="btn-blue" href={`/case/${info.getValue()}`}>
+              View
+            </a>
+            <button
+              className="btn-red"
+              onClick={async () => {
+                await pingDelete("case", info.getValue());
+                router.refresh();
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      ),
     }),
     casesColumnHelper.accessor("status", {
       header: "Status",
@@ -43,20 +66,8 @@ export default function Client({ client }: Props) {
       header: "Type",
       cell: (info) => info.renderValue(),
     }),
-    casesColumnHelper.accessor("num", {
-      header: "Actions",
-      cell: (info) => (
-        <div className="flex flex-row gap-1">
-          <button className="btn-blue">
-            <a href={`/case/${info.renderValue() ?? -1}`}>View</a>
-          </button>
-        </div>
-      ),
-      enableSorting: false,
-      enableColumnFilter: false,
-    }),
   ];
-  const paymentsData: PaymentRow[] = client.payments.map((payment) => ({
+  const paymentsData: PaymentRow[] = payments.map((payment) => ({
     refNum: payment.PaymentID,
     amount: payment.Amount,
     date: payment.Date,
@@ -65,7 +76,27 @@ export default function Client({ client }: Props) {
   const paymentsColumns = [
     paymentsColumnHelper.accessor("refNum", {
       header: "Reference Number",
-      cell: (info) => info.getValue(),
+      cell: (info) => (
+        <div className="flex flex-row items-center justify-between gap-3">
+          <p className="flex w-full items-center justify-center">
+            {info.getValue()}
+          </p>
+          <div className="flex flex-row gap-1">
+            <a className="btn-blue" href={`/payment/${info.getValue()}`}>
+              Edit
+            </a>
+            <button
+              className="btn-red"
+              onClick={async () => {
+                await pingDelete("payment", info.getValue());
+                router.refresh();
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      ),
     }),
     paymentsColumnHelper.accessor("amount", {
       header: "Amount",
@@ -73,46 +104,64 @@ export default function Client({ client }: Props) {
     }),
     paymentsColumnHelper.accessor("date", {
       header: "Date",
-      cell: (info) => info.getValue(),
+      cell: (info) => {
+        const d = new Date(String(info.getValue()));
+        return (
+          <div>
+            {d.getMonth() + 1}/{d.getDay()}/{d.getFullYear()}
+          </div>
+        );
+      },
     }),
   ];
   return (
     <>
       <Head>
         <title>Client Dashboard</title>
-        <link rel="icon" href="/favicon.png" />
       </Head>
-      <Shadow />
-      <main className="flex min-h-screen flex-col">
-        <div className="z-10 mb-auto mt-auto flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <div className="flex flex-row gap-6">
-            <Form
-              obj={client}
-              type="client"
-              name="Client"
-              p_keys={["ClientID", "ContractID"]}
-              hide={["pass", "cases", "payments"]}
-              id_func={(c: Client) => c.ClientID}
-            />
-            <div className="flex flex-col items-center justify-center gap-6">
-              <div className="flex flex-col items-center justify-center gap-6">
-                <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-[2rem]">
-                  <span className="text-agila">{client.FirstName}</span>
-                  &apos;s cases
-                </h1>
-                <Table columns={casesColumns} data={casesData} />
-              </div>
-              <div className="flex flex-col items-center justify-center gap-6">
-                <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-[2rem]">
-                  <span className="text-agila">{client.FirstName}</span>
-                  &apos;s payments
-                </h1>
-                <Table columns={paymentsColumns} data={paymentsData} />
+      <Layout>
+        <main className="flex min-h-screen flex-col">
+          <div className="z-10 mb-auto mt-auto flex flex-col items-center justify-center gap-12 px-4 py-16">
+            <div className="flex flex-row gap-10">
+              <Form
+                obj={obj}
+                type="client"
+                name="Client"
+                keys={["ClientID", "ContractID"]}
+                hide={["pass"]}
+                textarea={[]}
+                identifier={(c: Client) => c.ClientID}
+                adding={false}
+                stay={true}
+              />
+              <div className="flex flex-col items-center justify-center gap-10">
+                <div className="flex flex-col items-center justify-center gap-6">
+                  <h1 className="text-2xl font-bold tracking-tight text-white sm:text-[2rem]">
+                    <span className="text-agila">{client.FirstName}</span>
+                    &apos;s cases
+                  </h1>
+                  <Table columns={casesColumns} data={casesData} />
+                </div>
+                <div className="flex flex-col items-center justify-center gap-6">
+                  <div className="flex flex-row items-center gap-6">
+                    <h1 className="text-2xl font-bold tracking-tight text-white sm:text-[2rem]">
+                      <span className="text-agila">{client.FirstName}</span>
+                      &apos;s payments
+                    </h1>
+                    <Link
+                      className="btn-blue"
+                      href={`/payment/new/${client.ClientID}`}
+                    >
+                      <p>Add</p>
+                    </Link>
+                  </div>
+                  <Table columns={paymentsColumns} data={paymentsData} />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </Layout>
     </>
   );
 }
