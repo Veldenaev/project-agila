@@ -1,5 +1,7 @@
 USE project_agila;
 
+SET FOREIGN_KEY_CHECKS = 0;
+
 INSERT INTO client
 VALUES
 	(1, 3, 'Alice', 'Johnson', 'Diaz', 'alicejohnson@example.com', '09191234567', '(02) 123-4567', 'Makati City', 'None', 'adjohnson', 'passAlice1'),
@@ -87,7 +89,7 @@ VALUES
 	(14, '6790', 'MajorPleadings', '2024-02-28', 'None', 'TBD', 'file_9.pdf', 'Title9', 18562),
 	(15, '1236', 'MajorPleadings', '2024-03-10', 'None', 'TBD', 'file_23.pdf', 'Title23', 8612);
 
-INSERT INTO cases
+INSERT INTO `case`
 VALUES
 	('1234', 10, 24, 'Ongoing', 'Criminal', 'Title10', 'Court'),
 	('5678', 17, 19, 'Ongoing', 'Special', 'Title17', 'Court'),
@@ -123,7 +125,7 @@ VALUES
 	(14, 3, 18562, '2024-04-14'),
 	(15, 14, 8612, '2024-04-15');
 
-INSERT INTO _casestolawyer
+INSERT INTO _casetolawyer
 VALUES
 	('1234', 2),
 	('5678', 5),
@@ -159,11 +161,13 @@ VALUES
 	(2, 14),
 	(8, 15);
 
+SET FOREIGN_KEY_CHECKS = 1;
+
 SELECT * FROM client;
 SELECT * FROM lawyer;
 SELECT * FROM contract;
 SELECT * FROM work;
-SELECT * FROM cases;
+SELECT * FROM `case`;
 SELECT * FROM payment;
-SELECT * FROM _casestolawyer;
+SELECT * FROM _casetolawyer;
 SELECT * FROM _lawyertowork;
