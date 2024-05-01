@@ -1,6 +1,6 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { type GetServerSideProps } from "next";
-import { type Lawyer, type Case, type Client } from "~/utils/types";
+import { type Lawyer, type Case, type Client } from "@prisma/client";
 import Head from "next/head";
 import prisma from "../../lib/prisma";
 import Layout from "~/components/Layout";
@@ -51,7 +51,7 @@ export default function Lawyer({ lawyer }: Props) {
               <div className="flex flex-col items-center justify-center gap-6">
                 <h1 className="font-bold tracking-tight text-white sm:text-[2rem]">
                   <span className="text-agila">{lawyer.FirstName}</span>
-									&apos;s Cases
+                  &apos;s Cases
                 </h1>
                 <Table columns={columns} data={data} />
               </div>
