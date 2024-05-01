@@ -51,9 +51,46 @@ export default function Form<T extends object>({
       onSubmit={submitData}
       className="z-10 mx-auto my-auto flex flex-col gap-4"
     >
-      <h1 className="text-center font-bold tracking-tight text-white sm:text-[2rem]">
-        <span className="text-agila">{name}</span> #{identifier(obj)}
-      </h1>
+      <div className="flex flex-row items-center justify-center gap-6">
+        <h1 className="text-center font-bold tracking-tight text-white sm:text-[2rem]">
+          <span className="text-agila">{name}</span> #{identifier(obj)}
+        </h1>
+        <div className="flex justify-center gap-3 text-lg">
+          {adding ? (
+            <>
+              <input
+                type="submit"
+                value="Add"
+                className="btn-blue hover:cursor-pointer"
+              />
+              <button className="btn-red" onClick={() => router.back()}>
+                Cancel
+              </button>
+            </>
+          ) : updating ? (
+            <>
+              <input
+                type="submit"
+                value="Confirm"
+                className="btn-blue hover:cursor-pointer"
+              />
+              <button
+                className="btn-red"
+                onClick={() => {
+                  setNewObj(obj);
+                  setUpdating((c) => !c);
+                }}
+              >
+                Cancel
+              </button>
+            </>
+          ) : (
+            <button className="btn-blue" onClick={() => setUpdating((c) => !c)}>
+              Edit
+            </button>
+          )}
+        </div>
+      </div>
       <div className="grid grid-cols-2 gap-3 rounded-lg bg-white p-4 pb-5">
         {Object.entries(newObj)
           .filter(([k, _]) => !hide.includes(k))
@@ -63,7 +100,7 @@ export default function Form<T extends object>({
 
               {textarea.includes(k) ? (
                 <textarea
-                  className="rounded-md border-2 border-solid border-black px-1 disabled:bg-gray-200"
+                  className="min-h-7 rounded-md border-2 border-solid border-black px-1 disabled:bg-gray-200"
                   disabled={!updating}
                   defaultValue={v as string}
                   onChange={(e) =>
@@ -106,41 +143,6 @@ export default function Form<T extends object>({
               )}
             </div>
           ))}
-      </div>
-      <div className="flex justify-center gap-3 text-lg">
-        {adding ? (
-          <>
-            <input
-              type="submit"
-              value="Add"
-              className="btn-blue hover:cursor-pointer"
-            />
-            <button className="btn-red" onClick={() => router.back()}>
-              Cancel
-            </button>
-          </>
-        ) : updating ? (
-          <>
-            <input
-              type="submit"
-              value="Confirm"
-              className="btn-blue hover:cursor-pointer"
-            />
-            <button
-              className="btn-red"
-              onClick={() => {
-                setNewObj(obj);
-                setUpdating((c) => !c);
-              }}
-            >
-              Cancel
-            </button>
-          </>
-        ) : (
-          <button className="btn-blue" onClick={() => setUpdating((c) => !c)}>
-            Edit
-          </button>
-        )}
       </div>
     </form>
   );
