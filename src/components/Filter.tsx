@@ -23,6 +23,7 @@ export default function Filter<T, U>({ column, table }: Props<T, U>) {
             old?.[1],
           ])
         }
+				min={0}
         placeholder={`Min`}
         className="w-24 rounded border px-1 shadow"
       />
