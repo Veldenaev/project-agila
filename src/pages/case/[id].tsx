@@ -82,7 +82,7 @@ export default function Case({ theCase }: Props) {
                 name="Case"
                 keys={["CaseNum", "ContractID", "ClientID"]}
                 hide={[]}
-                textarea={[]}
+                textarea={["Status"]}
                 identifier={(c: Case) => c.CaseNum}
                 adding={false}
                 stay={true}
