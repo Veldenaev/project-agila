@@ -53,7 +53,7 @@ export default function Form<T extends object>({
         <span className="text-agila">{name}</span> #{id_func(obj)}
       </h1>
       <div className="grid grid-cols-2 gap-3 rounded-lg bg-white p-4 pb-5">
-        {Object.entries(obj)
+        {Object.entries(newObj)
           .filter(([k, _]) => !hide.includes(k))
           .map(([k, v], index) => (
             <div key={index} className="flex flex-col">
@@ -70,12 +70,15 @@ export default function Form<T extends object>({
                 disabled={p_keys.includes(k) || !updating}
                 placeholder={k}
                 defaultValue={v as string}
+                value={v as string}
                 type={
-                  k === "Date"
-                    ? "date"
-                    : typeof v === "string"
-                      ? "text"
-                      : "number"
+                  k.includes("Email")
+                    ? "email"
+                    : k === "Date"
+                      ? "date"
+                      : typeof v === "string"
+                        ? "text"
+                        : "number"
                 }
               />
             </div>
@@ -100,7 +103,13 @@ export default function Form<T extends object>({
               value="Confirm"
               className="btn-blue hover:cursor-pointer"
             />
-            <button className="btn-red" onClick={() => setUpdating((c) => !c)}>
+            <button
+              className="btn-red"
+              onClick={() => {
+                setNewObj(obj);
+                setUpdating((c) => !c);
+              }}
+            >
               Cancel
             </button>
           </>
