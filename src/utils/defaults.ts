@@ -3,6 +3,7 @@ import {
   type Case,
   type Lawyer,
   type Client,
+  type Work,
 } from "@prisma/client";
 
 export const defaultCase: Case = {
@@ -50,4 +51,16 @@ export const defaultPayment: Payment = {
   ClientID: 0,
   Amount: 0,
   Date: new Date(),
+};
+
+export const defaultWork: Work = {
+  WorkID: 0,
+  CaseNum: "",
+  Type: "",
+  Date: new Date(),
+  Remarks: "",
+  location: "",
+  filename: "",
+  Title: "",
+  FeeAmt: 0,
 };
