@@ -1,6 +1,11 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { type GetServerSideProps } from "next";
-import { type Client, type Case, type Payment } from "@prisma/client";
+import {
+  type Client,
+  type Case,
+  type Payment,
+  type Contract,
+} from "@prisma/client";
 import Head from "next/head";
 import prisma from "../../lib/prisma";
 import Table from "~/components/Table";
@@ -12,6 +17,7 @@ import { useRouter } from "next/navigation";
 
 interface Props {
   client: Client & { cases: Case[]; payments: Payment[] };
+  contract: Contract;
 }
 
 interface CaseRow {
@@ -26,7 +32,7 @@ interface PaymentRow {
   date: Date | null;
 }
 
-export default function Client({ client }: Props) {
+export default function Client({ client, contract }: Props) {
   const router = useRouter();
   const { cases, payments, ...obj } = client;
   const casesData: CaseRow[] = cases.map((c) => ({
@@ -123,17 +129,35 @@ export default function Client({ client }: Props) {
         <main className="flex min-h-screen flex-col">
           <div className="z-10 mb-auto mt-auto flex flex-col items-center justify-center gap-12 px-4 py-16">
             <div className="flex flex-row gap-10">
-              <Form
-                obj={obj}
-                type="client"
-                name="Client"
-                keys={["ClientID", "ContractID"]}
-                hide={["pass"]}
-                textarea={[]}
-                identifier={(c: Client) => c.ClientID}
-                adding={false}
-                stay={true}
-              />
+              <div className="flex flex-col items-center justify-center gap-10">
+                <Form
+                  obj={obj}
+                  type="client"
+                  name="Client"
+                  keys={["ClientID", "ContractID"]}
+                  hide={["pass"]}
+                  textarea={[]}
+                  identifier={(c: Client) => c.ClientID}
+                  adding={false}
+                  stay={true}
+                />
+                <div className="flex flex-col items-center justify-center gap-6">
+                  <div className="flex flex-row gap-6">
+                    <h1 className="text-2xl font-bold tracking-tight text-white sm:text-[2rem]">
+                      <span className="text-agila">Default</span> contract
+                    </h1>
+                    <Link
+                      className="btn-blue"
+                      href={`/contract/${client.ClientID}`}
+                    >
+                      All contracts
+                    </Link>
+                  </div>
+                  <div className="w-full rounded-md bg-white px-3 py-1">
+                    {contract.ContractID}
+                  </div>
+                </div>
+              </div>
               <div className="flex flex-col items-center justify-center gap-10">
                 <div className="flex flex-col items-center justify-center gap-6">
                   <h1 className="text-2xl font-bold tracking-tight text-white sm:text-[2rem]">
@@ -176,7 +200,15 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       payments: true,
     },
   });
+  const contract = await prisma.contract.findUnique({
+    where: {
+      ContractID: Number(client?.ContractID),
+    },
+  });
   return {
-    props: { client: JSON.parse(JSON.stringify(client)) },
+    props: {
+      client: JSON.parse(JSON.stringify(client)),
+      contract: JSON.parse(JSON.stringify(contract)),
+    },
   };
 };
