@@ -8,6 +8,8 @@ interface Props<T extends object> {
   p_keys: string[];
   hide: string[];
   id_func: (t: T) => string | number;
+  adding: boolean;
+  stay: boolean;
 }
 
 export default function Form<T extends object>({
@@ -17,20 +19,26 @@ export default function Form<T extends object>({
   p_keys,
   hide,
   id_func,
+  adding,
+  stay,
 }: Props<T>) {
   const router = useRouter();
   const [newObj, setNewObj] = useState(obj);
-  const [updating, setUpdating] = useState(false);
+  const [updating, setUpdating] = useState(adding || false);
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      await fetch(`/api/${type}/${id_func(obj)}`, {
-        method: "PUT",
+      await fetch(adding ? `/api/${type}` : `/api/${type}/${id_func(obj)}`, {
+        method: adding ? "POST" : "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newObj),
       });
-      router.refresh();
+      if (stay) {
+        router.refresh();
+      } else {
+        router.back();
+      }
     } catch (error) {
       console.error(error);
     }
@@ -62,13 +70,30 @@ export default function Form<T extends object>({
                 disabled={p_keys.includes(k) || !updating}
                 placeholder={k}
                 defaultValue={v as string}
-                type={typeof v === "string" ? "text" : "number"}
+                type={
+                  k === "Date"
+                    ? "date"
+                    : typeof v === "string"
+                      ? "text"
+                      : "number"
+                }
               />
             </div>
           ))}
       </div>
       <div className="flex justify-center gap-3 text-lg">
-        {updating ? (
+        {adding ? (
+          <>
+            <input
+              type="submit"
+              value="Add"
+              className="btn-blue hover:cursor-pointer"
+            />
+            <button className="btn-red" onClick={() => router.back()}>
+              Cancel
+            </button>
+          </>
+        ) : updating ? (
           <>
             <input
               type="submit"
