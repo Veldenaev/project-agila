@@ -5,6 +5,9 @@ import Layout from "~/components/Layout";
 import MyTable from "~/components/Table";
 import prisma from "~/lib/prisma";
 import { type Lawyer } from "@prisma/client";
+import pingDelete from "~/utils/pingDelete";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface Props {
   lawyers: Lawyer[];
@@ -16,6 +19,7 @@ interface Row {
 }
 
 export default function AllLawyers({ lawyers }: Props) {
+  const router = useRouter();
   const data: Row[] = lawyers
     .map((lawyer) => ({
       name: `${lawyer.LastName}, ${lawyer.FirstName} ${lawyer.MiddleName}`,
@@ -29,18 +33,25 @@ export default function AllLawyers({ lawyers }: Props) {
     }),
     columnHelper.accessor("id", {
       header: "Lawyer ID",
-    }),
-    columnHelper.accessor("id", {
-      header: "Actions",
       cell: (info) => (
-        <div className="flex flex-row gap-1">
-          <button className="btn-blue">
-            <a href={`/lawyer/${info.renderValue() ?? -1}`}>View</a>
-          </button>
+        <div className="flex flex-row items-center justify-between">
+          <p>{info.getValue()}</p>
+          <div className="flex flex-row gap-1">
+            <a className="btn-blue" href={`/lawyer/${info.getValue()}`}>
+              View
+            </a>
+            <button
+              className="btn-red"
+              onClick={async () => {
+                await pingDelete("lawyer", info.getValue());
+                router.refresh();
+              }}
+            >
+              Delete
+            </button>
+          </div>
         </div>
       ),
-      enableSorting: false,
-      enableColumnFilter: false,
     }),
   ];
   return (
@@ -51,9 +62,14 @@ export default function AllLawyers({ lawyers }: Props) {
       <Layout>
         <main className="flex min-h-screen flex-col">
           <div className="z-10 my-auto flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-            <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-[3rem]">
-              <span className="text-agila">All</span> lawyers
-            </h1>
+            <div className="flex flex-row items-center gap-6">
+              <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-[3rem]">
+                <span className="text-agila">All</span> lawyers
+              </h1>
+              <Link className="btn-blue" href="/lawyer/new/">
+                <p>Add</p>
+              </Link>
+            </div>
             <MyTable data={data} columns={columns} />
           </div>
         </main>
