@@ -25,9 +25,9 @@ export default function Lawyer({ lawyer }: Props) {
         <div className="flex flex-row items-center justify-center gap-2">
           <p>{info.getValue()}</p>
           <div className="flex flex-row gap-1">
-            <a className="btn-blue" href={`/case/${info.getValue()}`}>
+            <Link className="btn-blue" href={`/case/${info.getValue()}`}>
               View
-            </a>
+            </Link>
             <button
               className="btn-red"
               onClick={async () => {
@@ -79,9 +79,9 @@ export default function Lawyer({ lawyer }: Props) {
                   <h1 className="text-2xl font-bold tracking-tight text-white sm:text-[2rem]">
                     <span className="text-agila">All</span> cases
                   </h1>
-                  <Link className="btn-blue" href="/case/new/">
-                    <p>Add</p>
-                  </Link>
+                  {/* <Link className="btn-blue" href="/case/new/"> */}
+                  {/* <p>Add</p> */}
+                  {/* </Link> */}
                 </div>
                 <Table columns={columns} data={data} />
               </div>

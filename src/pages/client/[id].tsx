@@ -16,7 +16,11 @@ import pingDelete from "~/utils/pingDelete";
 import { useRouter } from "next/navigation";
 
 interface Props {
-  client: Client & { cases: Case[]; payments: Payment[] };
+  client: Client & {
+    contracts: Contract[];
+    cases: Case[];
+    payments: Payment[];
+  };
   contract: Contract;
 }
 
@@ -48,9 +52,9 @@ export default function Client({ client, contract }: Props) {
         <div className="flex flex-row items-center justify-center gap-2">
           <p>{info.getValue()}</p>
           <div className="flex flex-row gap-1">
-            <a className="btn-blue" href={`/case/${info.getValue()}`}>
+            <Link className="btn-blue" href={`/case/${info.getValue()}`}>
               View
-            </a>
+            </Link>
             <button
               className="btn-red"
               onClick={async () => {
@@ -88,9 +92,9 @@ export default function Client({ client, contract }: Props) {
             {info.getValue()}
           </p>
           <div className="flex flex-row gap-1">
-            <a className="btn-blue" href={`/payment/${info.getValue()}`}>
+            <Link className="btn-blue" href={`/payment/${info.getValue()}`}>
               Edit
-            </a>
+            </Link>
             <button
               className="btn-red"
               onClick={async () => {
@@ -114,7 +118,7 @@ export default function Client({ client, contract }: Props) {
         const d = new Date(String(info.getValue()));
         return (
           <div>
-            {d.getMonth() + 1}/{d.getDay()}/{d.getFullYear()}
+            {d.getMonth() + 1}/{d.getDate()}/{d.getFullYear()}
           </div>
         );
       },
@@ -156,6 +160,11 @@ export default function Client({ client, contract }: Props) {
                   <div className="w-full rounded-md bg-white px-3 py-1">
                     {contract.ContractID}
                   </div>
+                  <select onChange={() => console.log("I changed")}>
+                    {/*contracts.map((c, index) => (
+                      <option key={index}>{c.ContractID}</option>
+                    ))*/}
+                  </select>
                 </div>
               </div>
               <div className="flex flex-col items-center justify-center gap-10">
@@ -198,6 +207,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     include: {
       cases: true,
       payments: true,
+      contracts: true,
     },
   });
   const contract = await prisma.contract.findUnique({

@@ -22,7 +22,7 @@ interface Props {
 
 export default function Case({ theCase }: Props) {
   const router = useRouter();
-  const { contract, lawyers, works, ...obj } = theCase;
+  const { lawyers, works, ...obj } = theCase;
   const data: Work[] = works;
   const columnHelper = createColumnHelper<Work>();
   const columns = [
@@ -34,7 +34,7 @@ export default function Case({ theCase }: Props) {
         const d = new Date(String(info.getValue()));
         return (
           <div>
-            {d.getMonth() + 1}/{d.getDay()}/{d.getFullYear()}
+            {d.getMonth() + 1}/{d.getDate()}/{d.getFullYear()}
           </div>
         );
       },
@@ -48,9 +48,9 @@ export default function Case({ theCase }: Props) {
       cell: (info) => (
         <div className="flex flex-row items-center justify-center gap-2">
           <div className="flex flex-row gap-1">
-            <a className="btn-blue" href={`/work/${info.getValue()}`}>
+            <Link className="btn-blue" href={`/work/${info.getValue()}`}>
               Edit
-            </a>
+            </Link>
             <button
               className="btn-red"
               onClick={async () => {
@@ -124,7 +124,7 @@ export default function Case({ theCase }: Props) {
                         className="flex flex-row items-center justify-between gap-1 px-3 py-2"
                       >
                         <p>{`${lawyer.LastName}, ${lawyer.FirstName} ${lawyer.MiddleName}`}</p>
-                        <button className="btn-red">Delete</button>
+                        {/* <button className="btn-red">Delete</button> */}
                       </div>
                     ))}
                   </div>
