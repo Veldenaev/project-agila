@@ -22,7 +22,7 @@ export default function Login() {
               </h2>
             </div>
 
-            <div className="h- w-80 rounded bg-white p-8 shadow-md">
+            <div className="w-80 rounded bg-white p-8 shadow-md">
               <h2 className="mb-4 text-2xl font-semibold">Login</h2>
 
               <form>
