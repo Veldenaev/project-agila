@@ -4,6 +4,7 @@ import {
   type Lawyer,
   type Client,
   type Work,
+  type Contract,
 } from "@prisma/client";
 
 export const defaultCase: Case = {
@@ -50,6 +51,19 @@ export const defaultPayment: Payment = {
   PaymentID: 0,
   ClientID: 0,
   Amount: 0,
+  Date: new Date(),
+};
+
+export const defaultContract: Contract = {
+  ContractID: 0,
+  ClientID: 0,
+  MajorPleading: 0,
+  MinorPleading: 0,
+  PartnerApp: 0,
+  JuniorAssocApp: 0,
+  SeniorAssocApp: 0,
+  isAmendment: false,
+  RootContractID: 0,
   Date: new Date(),
 };
 
