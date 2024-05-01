@@ -162,7 +162,7 @@ export default function Table<T>({ data, columns }: Props<T>) {
           </div>
           <div>
             Showing {table.getRowModel().rows.length.toLocaleString()} of{" "}
-            {table.getRowCount().toLocaleString()} rows
+            {table.getRowCount().toLocaleString()} row(s)
           </div>
         </div>
       )}
