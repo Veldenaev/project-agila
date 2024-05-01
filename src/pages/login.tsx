@@ -25,28 +25,24 @@ export default function Login() {
             <div className="w-80 rounded bg-white p-8 shadow-md">
               <h2 className="mb-4 text-2xl font-semibold">Login</h2>
 
-              <form>
+              <form action="/api/auth/callback/credentials">
                 <div className="mb-4 font-sans">
                   <label className="block text-sm font-medium text-gray-700">
-                    username
+                    Username
+                    <input
+                      type="text"
+                      className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+                    ></input>
                   </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    className="mt-1 block w-full rounded-md border border-gray-300 p-2"
-                  ></input>
                 </div>
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700">
-                    password
+                    Password
+                    <input
+                      type="password"
+                      className="mt-1 block w-full rounded-md border border-gray-300 p-2"
+                    ></input>
                   </label>
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    className="mt-1 block w-full rounded-md border border-gray-300 p-2"
-                  ></input>
                 </div>
                 <button
                   type="submit"
