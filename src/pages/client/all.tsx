@@ -4,41 +4,38 @@ import Head from "next/head";
 import Layout from "~/components/Layout";
 import MyTable from "~/components/Table";
 import prisma from "~/lib/prisma";
-import { type Client } from "~/utils/types";
-
-async function deleteClient(id: number): Promise<void> {
-  await fetch(`/api/client/${id}`, {
-    method: "DELETE",
-  });
-}
+import { type Client } from "@prisma/client";
 
 interface Props {
   clients: Client[];
 }
 
+interface Row {
+  name: string;
+  id: number;
+}
+
 export default function AllClients({ clients }: Props) {
-  const data = clients;
-  const columnHelper = createColumnHelper<Client>();
+  const data: Row[] = clients
+    .map((client) => ({
+      name: `${client.LastName}, ${client.FirstName} ${client.MiddleName}`,
+      id: client.ClientID,
+    }))
+    .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
+  const columnHelper = createColumnHelper<Row>();
   const columns = [
-    columnHelper.accessor("ClientID", { header: "Client ID" }),
-    columnHelper.accessor("ContractID", { header: "Contract ID" }),
-    columnHelper.accessor("FirstName", {
-      header: "First Name",
+    columnHelper.accessor("name", {
+      header: "Name",
     }),
-    columnHelper.accessor("LastName", {
-      header: "Last Name",
+    columnHelper.accessor("id", {
+      header: "Client ID",
     }),
-    columnHelper.accessor("MiddleName", {
-      header: "Middle Name",
-    }),
-    columnHelper.accessor("ClientID", {
+    columnHelper.accessor("id", {
+      header: "Actions",
       cell: (info) => (
         <div className="flex flex-row gap-1">
           <button className="btn-blue">
             <a href={`/client/${info.renderValue() ?? -1}`}>View</a>
-          </button>
-          <button className="btn-yellow">
-            <a href={`/client/update/${info.renderValue() ?? -1}`}>Update</a>
           </button>
         </div>
       ),

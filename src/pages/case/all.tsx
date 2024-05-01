@@ -4,13 +4,7 @@ import Head from "next/head";
 import Layout from "~/components/Layout";
 import MyTable from "~/components/Table";
 import prisma from "~/lib/prisma";
-import { type Case } from "~/utils/types";
-
-async function deleteCase(id: string): Promise<void> {
-  await fetch(`/api/case/${id}`, {
-    method: "DELETE",
-  });
-}
+import { type Case } from "@prisma/client";
 
 interface Props {
   cases: Case[];
@@ -44,9 +38,6 @@ export default function AllCases({ cases }: Props) {
           <button className="btn-blue">
             <a href={`/case/${info.renderValue() ?? "all"}`}>View</a>
           </button>
-          <button className="btn-yellow">
-            <a href={`/case/update/${info.renderValue() ?? "all"}`}>Update</a>
-          </button>
         </div>
       ),
       enableSorting: false,
@@ -73,7 +64,7 @@ export default function AllCases({ cases }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const cases = await prisma.cases.findMany();
+  const cases = await prisma.case.findMany();
   return {
     props: { cases },
   };

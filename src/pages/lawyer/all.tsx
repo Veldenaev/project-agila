@@ -4,13 +4,7 @@ import Head from "next/head";
 import Layout from "~/components/Layout";
 import MyTable from "~/components/Table";
 import prisma from "~/lib/prisma";
-import { type Lawyer } from "~/utils/types";
-
-async function deleteLawyer(id: number): Promise<void> {
-  await fetch(`/api/lawyer/${id}`, {
-    method: "DELETE",
-  });
-}
+import { type Lawyer } from "@prisma/client";
 
 interface Props {
   lawyers: Lawyer[];
@@ -22,10 +16,12 @@ interface Row {
 }
 
 export default function AllLawyers({ lawyers }: Props) {
-  const data: Row[] = lawyers.map((lawyer) => ({
-    name: `${lawyer.LastName}, ${lawyer.FirstName} ${lawyer.MiddleName}`,
-    id: lawyer.LawyerID,
-  }));
+  const data: Row[] = lawyers
+    .map((lawyer) => ({
+      name: `${lawyer.LastName}, ${lawyer.FirstName} ${lawyer.MiddleName}`,
+      id: lawyer.LawyerID,
+    }))
+    .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
   const columnHelper = createColumnHelper<Row>();
   const columns = [
     columnHelper.accessor("name", {
