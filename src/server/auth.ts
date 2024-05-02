@@ -90,7 +90,6 @@ export const authOptions: NextAuthOptions = {
             isLawyer: false,
             isAdmin: false,
           };
-          console.log(user);
           return user;
         } else if (lawyer) {
           const user = {
