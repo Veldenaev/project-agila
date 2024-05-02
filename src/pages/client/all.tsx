@@ -25,7 +25,7 @@ export default function AllClients({ clients }: Props) {
     }))
     .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
 
-  const [selectedClient, setClient] = useState(clients.find(clientSelect => clientSelect.ClientID === 1));
+  const [selectedClient, setClient] = useState((data.find(initialClientIndex => initialClientIndex.index === 0)?.orignal.ClientID));
 
   const receiveClient = (newClientID: number) => {
     const newClient = clients.find((clientSelect) => clientSelect.ClientID === newClientID);
@@ -46,11 +46,12 @@ export default function AllClients({ clients }: Props) {
         <title>All Clients</title>
       </Head>
       <Layout>
-        <main className="flex min-h-screen min-w-full flex-row ">
+        <main className="flex min-h-screen min-w-full flex-row">
           <Selector data={data} columns={columns} onRowSelect={receiveClient}/>
-          {/* <div className="flex flex-col w-80 bg-white">
-            
-          </div> */}
+          <div className="z-10 bg-white flex flex-col w-64 h-80 rounded-r justify-center my-auto items-center">
+            <b className="text-black">Name: {selectedClient?.LastName} {selectedClient?.FirstName}, {selectedClient?.MiddleName}</b>
+            <b className="text-black">Address: {selectedClient?.CityAdd}</b>
+          </div>
 
         </main>
       </Layout>
