@@ -4,7 +4,7 @@ import { type Client, type Case, type Payment } from "@prisma/client";
 import Head from "next/head";
 import prisma from "../../lib/prisma";
 import Shadow from "~/components/Shadow";
-import Table from "~/components/Table";
+import Table from "~/components/SelectorTable";
 import Form from "~/components/Form";
 
 interface Props {

@@ -2,9 +2,10 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { type GetServerSideProps } from "next";
 import Head from "next/head";
 import Layout from "~/components/Layout";
-import MyTable from "~/components/Table";
+import Selector from "~/components/SelectorTable";
 import prisma from "~/lib/prisma";
 import { type Client } from "@prisma/client";
+import { useState } from "react";
 
 interface Props {
   clients: Client[];
@@ -16,46 +17,41 @@ interface Row {
 }
 
 export default function AllClients({ clients }: Props) {
+
   const data: Row[] = clients
     .map((client) => ({
       name: `${client.LastName}, ${client.FirstName} ${client.MiddleName}`,
       id: client.ClientID,
     }))
     .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
+
+  const [selectedClient, setClient] = useState(clients.find(clientSelect => clientSelect.ClientID === 1));
+
+  const receiveClient = (newClientID: number) => {
+    const newClient = clients.find((clientSelect) => clientSelect.ClientID === newClientID);
+    setClient(newClient);
+  }
+
   const columnHelper = createColumnHelper<Row>();
+
   const columns = [
     columnHelper.accessor("name", {
       header: "Name",
     }),
-    columnHelper.accessor("id", {
-      header: "Client ID",
-    }),
-    columnHelper.accessor("id", {
-      header: "Actions",
-      cell: (info) => (
-        <div className="flex flex-row gap-1">
-          <button className="btn-blue">
-            <a href={`/client/${info.renderValue() ?? -1}`}>View</a>
-          </button>
-        </div>
-      ),
-      enableSorting: false,
-      enableColumnFilter: false,
-    }),
   ];
+
   return (
     <>
       <Head>
         <title>All Clients</title>
       </Head>
       <Layout>
-        <main className="flex min-h-screen flex-col">
-          <div className="z-10 my-auto flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-            <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-[3rem]">
-              <span className="text-agila">All</span> clients
-            </h1>
-            <MyTable data={data} columns={columns} />
-          </div>
+        <main className="flex min-h-screen min-w-full flex-row ">
+          <Selector data={data} columns={columns} onRowSelect={receiveClient}/>
+          {/* <div className="flex flex-col w-80 bg-white">
+            
+          </div> */}
+
         </main>
       </Layout>
     </>

@@ -11,7 +11,7 @@ import {
 } from "@prisma/client";
 import Layout from "~/components/Layout";
 import { createColumnHelper } from "@tanstack/react-table";
-import Table from "~/components/Table";
+import Table from "~/components/SelectorTable";
 import CaseForm from "~/components/CaseForm";
 
 interface Props {
