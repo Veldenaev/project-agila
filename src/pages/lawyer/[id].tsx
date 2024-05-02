@@ -9,12 +9,15 @@ import Form from "~/components/Form";
 import pingDelete from "~/utils/pingDelete";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import Block from "~/components/Block";
 
 interface Props {
   lawyer: Lawyer & { cases: (Case & { client: Client })[] };
 }
 
 export default function Lawyer({ lawyer }: Props) {
+  const { data: session } = useSession();
   const router = useRouter();
   const { cases, ...obj } = lawyer;
   const data = cases;
@@ -24,20 +27,22 @@ export default function Lawyer({ lawyer }: Props) {
       cell: (info) => (
         <div className="flex flex-row items-center justify-center gap-2">
           <p>{info.getValue()}</p>
-          <div className="flex flex-row gap-1">
-            <Link className="btn-blue" href={`/case/${info.getValue()}`}>
-              View
-            </Link>
-            <button
-              className="btn-red"
-              onClick={async () => {
-                await pingDelete("case", info.getValue());
-                router.refresh();
-              }}
-            >
-              Delete
-            </button>
-          </div>
+          {session?.user.isAdmin && (
+            <div className="flex flex-row gap-1">
+              <Link className="btn-blue" href={`/case/${info.getValue()}`}>
+                View
+              </Link>
+              <button
+                className="btn-red"
+                onClick={async () => {
+                  await pingDelete("case", info.getValue());
+                  router.refresh();
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          )}
         </div>
       ),
     }),
@@ -54,6 +59,11 @@ export default function Lawyer({ lawyer }: Props) {
       header: "Type",
     }),
   ];
+
+  if (session == null || Number(session.user.id) !== lawyer.LawyerID) {
+    return <Block title="Lawyer Dashboard" />;
+  }
+
   return (
     <>
       <Head>

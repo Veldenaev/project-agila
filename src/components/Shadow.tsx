@@ -5,6 +5,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function Shadow() {
   const { data: session } = useSession();
+
   return (
     <>
       <div className="inset absolute z-10 h-full w-full bg-black bg-opacity-60" />

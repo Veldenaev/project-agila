@@ -14,6 +14,8 @@ import Link from "next/link";
 import Layout from "~/components/Layout";
 import pingDelete from "~/utils/pingDelete";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import Block from "~/components/Block";
 
 interface Props {
   client: Client & {
@@ -37,6 +39,7 @@ interface PaymentRow {
 }
 
 export default function Client({ client, contract }: Props) {
+  const { data: session } = useSession();
   const router = useRouter();
   const { cases, payments, ...obj } = client;
   const casesData: CaseRow[] = cases.map((c) => ({
@@ -51,20 +54,22 @@ export default function Client({ client, contract }: Props) {
       cell: (info) => (
         <div className="flex flex-row items-center justify-center gap-2">
           <p>{info.getValue()}</p>
-          <div className="flex flex-row gap-1">
-            <Link className="btn-blue" href={`/case/${info.getValue()}`}>
-              View
-            </Link>
-            <button
-              className="btn-red"
-              onClick={async () => {
-                await pingDelete("case", info.getValue());
-                router.refresh();
-              }}
-            >
-              Delete
-            </button>
-          </div>
+          {session?.user.isAdmin && (
+            <div className="flex flex-row gap-1">
+              <Link className="btn-blue" href={`/case/${info.getValue()}`}>
+                View
+              </Link>
+              <button
+                className="btn-red"
+                onClick={async () => {
+                  await pingDelete("case", info.getValue());
+                  router.refresh();
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          )}
         </div>
       ),
     }),
@@ -91,20 +96,22 @@ export default function Client({ client, contract }: Props) {
           <p className="flex w-full items-center justify-center">
             {info.getValue()}
           </p>
-          <div className="flex flex-row gap-1">
-            <Link className="btn-blue" href={`/payment/${info.getValue()}`}>
-              Edit
-            </Link>
-            <button
-              className="btn-red"
-              onClick={async () => {
-                await pingDelete("payment", info.getValue());
-                router.refresh();
-              }}
-            >
-              Delete
-            </button>
-          </div>
+          {session?.user.isAdmin && (
+            <div className="flex flex-row gap-1">
+              <Link className="btn-blue" href={`/payment/${info.getValue()}`}>
+                Edit
+              </Link>
+              <button
+                className="btn-red"
+                onClick={async () => {
+                  await pingDelete("payment", info.getValue());
+                  router.refresh();
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          )}
         </div>
       ),
     }),
@@ -124,6 +131,11 @@ export default function Client({ client, contract }: Props) {
       },
     }),
   ];
+
+  if (session == null || Number(session.user.id) !== client.ClientID) {
+    return <Block title="Client Dashboard" />;
+  }
+
   return (
     <>
       <Head>
@@ -144,6 +156,7 @@ export default function Client({ client, contract }: Props) {
                   identifier={(c: Client) => c.ClientID}
                   adding={false}
                   stay={true}
+                  authorized={session?.user.isAdmin ?? false}
                 />
                 <div className="flex flex-col items-center justify-center gap-6">
                   <div className="flex flex-row gap-6">
@@ -160,7 +173,10 @@ export default function Client({ client, contract }: Props) {
                   <div className="w-full rounded-md bg-white px-3 py-1">
                     {contract.ContractID}
                   </div>
-                  <select onChange={() => console.log("I changed")}>
+                  <select
+                    className="w-full rounded-md"
+                    onChange={() => console.log("I changed")}
+                  >
                     {/*contracts.map((c, index) => (
                       <option key={index}>{c.ContractID}</option>
                     ))*/}
@@ -181,12 +197,14 @@ export default function Client({ client, contract }: Props) {
                       <span className="text-agila">{client.FirstName}</span>
                       &apos;s payments
                     </h1>
-                    <Link
-                      className="btn-blue"
-                      href={`/payment/new/${client.ClientID}`}
-                    >
-                      <p>Add</p>
-                    </Link>
+                    {session?.user.isAdmin && (
+                      <Link
+                        className="btn-blue"
+                        href={`/payment/new/${client.ClientID}`}
+                      >
+                        <p>Add</p>
+                      </Link>
+                    )}
                   </div>
                   <Table columns={paymentsColumns} data={paymentsData} />
                 </div>

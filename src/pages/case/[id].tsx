@@ -15,12 +15,15 @@ import pingDelete from "~/utils/pingDelete";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Form from "~/components/Form";
+import { useSession } from "next-auth/react";
+import Block from "~/components/Block";
 
 interface Props {
   theCase: Case & { contract: Contract; lawyers: Lawyer[]; works: Work[] };
 }
 
 export default function Case({ theCase }: Props) {
+  const { data: session } = useSession();
   const router = useRouter();
   const { lawyers, works, ...obj } = theCase;
   const data: Work[] = works;
@@ -45,28 +48,38 @@ export default function Case({ theCase }: Props) {
     }),
     columnHelper.accessor("WorkID", {
       header: "Actions",
-      cell: (info) => (
-        <div className="flex flex-row items-center justify-center gap-2">
-          <div className="flex flex-row gap-1">
-            <Link className="btn-blue" href={`/work/${info.getValue()}`}>
-              Edit
-            </Link>
-            <button
-              className="btn-red"
-              onClick={async () => {
-                await pingDelete("case", info.getValue());
-                router.refresh();
-              }}
-            >
-              Delete
-            </button>
+      cell: (info) =>
+        session?.user.isAdmin && (
+          <div className="flex flex-row items-center justify-center gap-2">
+            <div className="flex flex-row gap-1">
+              <Link className="btn-blue" href={`/work/${info.getValue()}`}>
+                Edit
+              </Link>
+              <button
+                className="btn-red"
+                onClick={async () => {
+                  await pingDelete("case", info.getValue());
+                  router.refresh();
+                }}
+              >
+                Delete
+              </button>
+            </div>
           </div>
-        </div>
-      ),
+        ),
       enableColumnFilter: false,
       enableSorting: false,
     }),
   ];
+
+  if (
+    session == null ||
+    (session.user.isLawyer &&
+      !lawyers.some((l) => l.LawyerID === Number(session.user.id)))
+  ) {
+    return <Block title="Case Information" />;
+  }
+
   return (
     <>
       <Head>
@@ -86,6 +99,7 @@ export default function Case({ theCase }: Props) {
                 identifier={(c: Case) => c.CaseNum}
                 adding={false}
                 stay={true}
+                authorized={session.user.isAdmin}
               />
               <div className="flex flex-col gap-10">
                 <div className="flex flex-col justify-center gap-5">
@@ -93,12 +107,14 @@ export default function Case({ theCase }: Props) {
                     <h1 className="text-center font-bold tracking-tight text-white sm:text-[2rem]">
                       Work Involved
                     </h1>
-                    <Link
-                      className="btn-blue"
-                      href={`/work/new/${theCase.CaseNum}`}
-                    >
-                      <p>Add</p>
-                    </Link>
+                    {session.user.isAdmin && (
+                      <Link
+                        className="btn-blue"
+                        href={`/work/new/${theCase.CaseNum}`}
+                      >
+                        <p>Add</p>
+                      </Link>
+                    )}
                   </div>
                   <Table data={data} columns={columns} />
                   <p className="flex flex-row items-center justify-between rounded-md bg-white p-2">

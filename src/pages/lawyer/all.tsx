@@ -8,6 +8,8 @@ import { type Lawyer } from "@prisma/client";
 import pingDelete from "~/utils/pingDelete";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import Block from "~/components/Block";
 
 interface Props {
   lawyers: Lawyer[];
@@ -19,6 +21,8 @@ interface Row {
 }
 
 export default function AllLawyers({ lawyers }: Props) {
+  const { data: session } = useSession();
+
   const router = useRouter();
   const data: Row[] = lawyers
     .map((lawyer) => ({
@@ -54,6 +58,11 @@ export default function AllLawyers({ lawyers }: Props) {
       ),
     }),
   ];
+
+  if (session == null || !session.user.isAdmin) {
+    return <Block title="All Lawyers" />;
+  }
+
   return (
     <>
       <Head>

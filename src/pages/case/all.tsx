@@ -8,14 +8,17 @@ import { type Case } from "@prisma/client";
 import pingDelete from "~/utils/pingDelete";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import Block from "~/components/Block";
 
 interface Props {
   cases: Case[];
 }
 
 export default function AllCases({ cases }: Props) {
+  const { data: session } = useSession();
   const router = useRouter();
-  const data = cases;
+  const data = cases.filter((c) => c.ClientID === Number(session?.user.id));
   const columnHelper = createColumnHelper<Case>();
   const columns = [
     columnHelper.accessor("CaseNum", {
@@ -54,6 +57,11 @@ export default function AllCases({ cases }: Props) {
       header: "Type",
     }),
   ];
+
+  if (session == null || session.user.isLawyer) {
+    return <Block title="All Cases" />;
+  }
+
   return (
     <>
       <Head>

@@ -5,12 +5,20 @@ import Form from "~/components/Form";
 import Layout from "~/components/Layout";
 import { defaultClient } from "~/utils/defaults";
 import genID from "~/utils/genID";
+import { useSession } from "next-auth/react";
+import Block from "~/components/Block";
 
 interface Props {
   nid: number;
 }
 
 export default function Client({ nid }: Props) {
+  const { data: session } = useSession();
+
+  if (session == null || !session.user.isAdmin) {
+    return <Block title="Add Client" />;
+  }
+
   const obj: Client = {
     ...defaultClient,
     ClientID: nid,
@@ -18,7 +26,7 @@ export default function Client({ nid }: Props) {
   return (
     <>
       <Head>
-        <title>Update Client</title>
+        <title>Add Client</title>
       </Head>
       <Layout>
         <main className="flex min-h-screen flex-col">

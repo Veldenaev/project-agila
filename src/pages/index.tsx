@@ -8,30 +8,39 @@ export default function Home() {
   const { data: session } = useSession();
   const links = [
     {
-      route: "/lawyer/1",
+      route: `/lawyer/${session?.user.id}`,
       text: "Access as lawyer",
       forClient: false,
       forLawyer: true,
-      forAdmin: true,
+      forAdmin: false,
     },
     {
-      route: "/client/1",
+      route: `/client/${session?.user.id}`,
       text: "Access as client",
-      forClient: false,
-      forLawyer: true,
-      forAdmin: true,
+      forClient: true,
+      forLawyer: false,
+      forAdmin: false,
     },
     {
       route: "/case/all",
-      text: "Access as manager (all cases)",
+      text: "Access as admin (all cases)",
+      forClient: false,
+      forLawyer: false,
+      forAdmin: true,
     },
     {
       route: "/lawyer/all",
-      text: "Access as manager (all lawyers)",
+      text: "Access as admin (all lawyers)",
+      forClient: false,
+      forLawyer: false,
+      forAdmin: true,
     },
     {
       route: "/client/all",
-      text: "Access as manager (all clients)",
+      text: "Access as admin (all clients)",
+      forClient: false,
+      forLawyer: false,
+      forAdmin: true,
     },
   ];
 
@@ -54,9 +63,9 @@ export default function Home() {
                 {links.map(
                   ({ route, text, forLawyer, forClient, forAdmin }, index) => {
                     if (
-                      (forLawyer! && session.user.isLawyer) ||
-                      (forClient! && session.user.isClient) ||
-                      (forAdmin! && session.user.isAdmin)
+                      (forLawyer && session.user.isLawyer) ||
+                      (forClient && session.user.isClient) ||
+                      (forAdmin && session.user.isAdmin)
                     ) {
                       return (
                         <Link

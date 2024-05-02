@@ -11,6 +11,7 @@ interface Props<T extends object> {
   identifier: (t: T) => string | number;
   adding: boolean;
   stay: boolean;
+  authorized: boolean;
 }
 
 export default function Form<T extends object>({
@@ -23,6 +24,7 @@ export default function Form<T extends object>({
   identifier,
   adding,
   stay,
+  authorized,
 }: Props<T>) {
   const router = useRouter();
   const [newObj, setNewObj] = useState(obj);
@@ -85,9 +87,14 @@ export default function Form<T extends object>({
               </button>
             </>
           ) : (
-            <button className="btn-blue" onClick={() => setUpdating((c) => !c)}>
-              Edit
-            </button>
+            authorized && (
+              <button
+                className="btn-blue"
+                onClick={() => setUpdating((c) => !c)}
+              >
+                Edit
+              </button>
+            )
           )}
         </div>
       </div>

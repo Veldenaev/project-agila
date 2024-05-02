@@ -8,6 +8,8 @@ import { type Contract } from "@prisma/client";
 import Link from "next/link";
 import pingDelete from "~/utils/pingDelete";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import Block from "~/components/Block";
 
 interface Props {
   contracts: Contract[];
@@ -20,6 +22,7 @@ interface Row {
 }
 
 export default function AllContracts({ contracts, cid }: Props) {
+  const { data: session } = useSession();
   const router = useRouter();
   const data: Row[] = contracts
     .map((contract) => ({
@@ -37,27 +40,34 @@ export default function AllContracts({ contracts, cid }: Props) {
       cell: (info) => (
         <div className="flex flex-row items-center justify-between">
           <p>{info.getValue()}</p>
-          <div className="flex flex-row gap-1">
-            <Link
-              className="btn-blue"
-              href={`/contract/edit/${info.getValue()}`}
-            >
-              Edit
-            </Link>
-            <button
-              className="btn-red"
-              onClick={async () => {
-                await pingDelete("contract", info.getValue());
-                router.refresh();
-              }}
-            >
-              Delete
-            </button>
-          </div>
+          {session?.user.isAdmin && (
+            <div className="flex flex-row gap-1">
+              <Link
+                className="btn-blue"
+                href={`/contract/edit/${info.getValue()}`}
+              >
+                Edit
+              </Link>
+              <button
+                className="btn-red"
+                onClick={async () => {
+                  await pingDelete("contract", info.getValue());
+                  router.refresh();
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          )}
         </div>
       ),
     }),
   ];
+
+  if (session == null) {
+    return <Block title="All Contracts" />;
+  }
+
   return (
     <>
       <Head>
@@ -70,9 +80,11 @@ export default function AllContracts({ contracts, cid }: Props) {
               <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-[3rem]">
                 <span className="text-agila">All</span> contracts
               </h1>
-              <Link className="btn-blue" href={`/contract/new/${cid}`}>
-                Add
-              </Link>
+              {session?.user.isAdmin && (
+                <Link className="btn-blue" href={`/contract/new/${cid}`}>
+                  Add
+                </Link>
+              )}
             </div>
             <MyTable data={data} columns={columns} />
           </div>

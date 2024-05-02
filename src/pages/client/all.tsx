@@ -4,13 +4,15 @@ import Head from "next/head";
 import Layout from "~/components/Layout";
 import MyTable from "~/components/Table";
 import prisma from "~/lib/prisma";
-import { type Client } from "@prisma/client";
+import { type Lawyer, type Client } from "@prisma/client";
 import Link from "next/link";
 import pingDelete from "~/utils/pingDelete";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import Block from "~/components/Block";
 
 interface Props {
-  clients: Client[];
+  clients: (Client & { cases: { lawyers: Lawyer[] }[] })[];
 }
 
 interface Row {
@@ -19,8 +21,21 @@ interface Row {
 }
 
 export default function AllClients({ clients }: Props) {
+  const { data: session } = useSession();
   const router = useRouter();
+
+  if (session == null || session.user.isClient) {
+    return <Block title="All Clients" />;
+  }
+
   const data: Row[] = clients
+    .filter(
+      (client) =>
+        session?.user.isAdmin ||
+        client.cases
+          .flatMap((c) => c.lawyers)
+          .some((l) => l.LawyerID === Number(session?.user.id)),
+    )
     .map((client) => ({
       name: `${client.LastName}, ${client.FirstName} ${client.MiddleName}`,
       id: client.ClientID,
@@ -36,24 +51,27 @@ export default function AllClients({ clients }: Props) {
       cell: (info) => (
         <div className="flex flex-row items-center justify-between">
           <p>{info.getValue()}</p>
-          <div className="flex flex-row gap-1">
-            <Link className="btn-blue" href={`/client/${info.getValue()}`}>
-              View
-            </Link>
-            <button
-              className="btn-red"
-              onClick={async () => {
-                await pingDelete("client", info.getValue());
-                router.refresh();
-              }}
-            >
-              Delete
-            </button>
-          </div>
+          {session.user.isAdmin && (
+            <div className="flex flex-row gap-1">
+              <Link className="btn-blue" href={`/client/${info.getValue()}`}>
+                View
+              </Link>
+              <button
+                className="btn-red"
+                onClick={async () => {
+                  await pingDelete("client", info.getValue());
+                  router.refresh();
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          )}
         </div>
       ),
     }),
   ];
+
   return (
     <>
       <Head>
@@ -66,9 +84,11 @@ export default function AllClients({ clients }: Props) {
               <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-[3rem]">
                 <span className="text-agila">All</span> clients
               </h1>
-              <Link className="btn-blue" href="/client/new/">
-                <p>Add</p>
-              </Link>
+              {session.user.isAdmin && (
+                <Link className="btn-blue" href="/client/new/">
+                  <p>Add</p>
+                </Link>
+              )}
             </div>
             <MyTable data={data} columns={columns} />
           </div>
@@ -79,7 +99,15 @@ export default function AllClients({ clients }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const clients = await prisma.client.findMany();
+  const clients = await prisma.client.findMany({
+    include: {
+      cases: {
+        select: {
+          lawyers: true,
+        },
+      },
+    },
+  });
   return {
     props: { clients },
   };

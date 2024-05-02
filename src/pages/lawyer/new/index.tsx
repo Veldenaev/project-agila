@@ -5,12 +5,20 @@ import Form from "~/components/Form";
 import Layout from "~/components/Layout";
 import { defaultLawyer } from "~/utils/defaults";
 import genID from "~/utils/genID";
+import { useSession } from "next-auth/react";
+import Block from "~/components/Block";
 
 interface Props {
   nid: number;
 }
 
 export default function Lawyer({ nid }: Props) {
+  const { data: session } = useSession();
+
+  if (session == null || !session.user.isAdmin) {
+    return <Block title="Add Lawyer" />;
+  }
+
   const obj: Lawyer = {
     ...defaultLawyer,
     LawyerID: nid,
@@ -18,7 +26,7 @@ export default function Lawyer({ nid }: Props) {
   return (
     <>
       <Head>
-        <title>Update Lawyer</title>
+        <title>Add Lawyer</title>
       </Head>
       <Layout>
         <main className="flex min-h-screen flex-col">
