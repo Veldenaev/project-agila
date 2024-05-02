@@ -11,7 +11,7 @@ import {
 } from "@prisma/client";
 import Layout from "~/components/Layout";
 import { createColumnHelper } from "@tanstack/react-table";
-import Table from "~/components/SelectorTable";
+import Table from "~/components/Table";
 import CaseForm from "~/components/CaseForm";
 
 interface Props {
@@ -50,7 +50,7 @@ export default function Case({ theCase }: Props) {
                 <h1 className="text-center font-bold tracking-tight text-white sm:text-[2rem]">
                   Work Involved
                 </h1>
-                <Table data={data} columns={columns} />
+                <Table data={data} columns={columns}/>
                 <p className="text-white">
                   Total:{" "}
                   {data

@@ -7,6 +7,7 @@ import MyTable from "~/components/Table";
 import prisma from "~/lib/prisma";
 import { type Client, Case } from "@prisma/client";
 import { useState } from "react";
+import Link from "next/link";
 
 interface Props {
   clients: Client[];
@@ -20,6 +21,7 @@ interface clientRow {
 
 interface caseRow {
   title: string;
+  id: string;
 }
 
 export default function AllClients({ clients, clientCases }: Props) {
@@ -34,6 +36,7 @@ export default function AllClients({ clients, clientCases }: Props) {
 
   const [caseData, setCaseData] = useState((clientCases.filter((filteredCase) => {return filteredCase.ClientID === 1})).map((clientCase) => ({
     title: `${clientCase.Title}`,
+    id: clientCase.CaseNum,
   })).sort((a, b) => (a.title > b.title ? 1 : b.title > a.title ? -1 : 0)));
 
   const receiveClient = (newClientID: number) => {
@@ -42,6 +45,7 @@ export default function AllClients({ clients, clientCases }: Props) {
     const filteredCases: Case[] = clientCases.filter((toFilter) => {return toFilter.ClientID === newClientID})
     const newCaseData: caseRow[] = filteredCases.map((clientCase) => ({
       title: `${clientCase.Title}`,
+      id: clientCase.CaseNum,
     })).sort((a, b) => (a.title > b.title ? 1 : b.title > a.title ? -1 : 0));
     setCaseData(newCaseData)
   }
@@ -51,12 +55,33 @@ export default function AllClients({ clients, clientCases }: Props) {
 
   const clientCol = [
     clientColumnHelper.accessor("name", {
-      header: "Name",
+      header: "Accounts",
     }),
   ];
   const caseCol = [
     caseColumnHelper.accessor("title", {
-      header: "Title",
+      header: "Cases",
+    }),
+    caseColumnHelper.accessor("id", {
+      header: "Action",
+      cell: (info) => (
+        <div className="flex flex-row items-center justify-between">
+          <div className="flex flex-row gap-1">
+            <Link className="btn-blue" href={`/case/${info.getValue()}`}>
+              View
+            </Link>
+            <button
+              className="btn-red"
+              onClick={async () => {
+                await pingDelete("client", info.getValue());
+                router.refresh();
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      ), enableColumnFilter: false, enableSorting: false,
     }),
   ];
 
@@ -66,9 +91,9 @@ export default function AllClients({ clients, clientCases }: Props) {
         <title>All Clients</title>
       </Head>
       <Layout>
-        <main className="flex min-h-screen min-w-full flex-row justify-center">
+        <main className="flex min-h-screen min-w-full flex-row justify-center gap-1">
           <Selector data={clientData} columns={clientCol} onRowSelect={receiveClient}/>
-          <div className="z-10 bg-white flex flex-col w-80 h-80 justify-center my-auto items-left gap-y-2">
+          <div className="z-10 bg-white flex flex-col justify-center my-auto items-left gap-y-2 rounded-md pl-5 min-h-80 min-w-80">
             <b className="text-black text-2xl">{selectedClient?.LastName} {selectedClient?.FirstName}, {selectedClient?.MiddleName}</b>
             <b className="text-black">Address: {selectedClient?.CityAdd}</b>
             <b className="text-black">Tel #: {selectedClient?.TelNum}</b>

@@ -48,8 +48,8 @@ export default function Table<T>({ data, columns, onRowSelect }: Props<T>) {
   
   return (
     <>
-    <div className="z-10 my-auto flex flex-col items-center justify-between pb-2 bg-white w-64 rounded-l-md h-80">
-      <table className="mt-1">
+    <div className="z-10 my-auto flex flex-col items-center justify-between bg-white rounded-md min-h-80 min-w-80">
+      <table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
