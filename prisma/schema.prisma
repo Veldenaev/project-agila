@@ -14,8 +14,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-// Necessary for Next auth
-
 model Client {
     ClientID            Int        @id  @db.SmallInt
     ContractID          Int        @unique  @db.SmallInt
@@ -106,59 +104,53 @@ model Payment {
     client              Client?    @relation(fields: [ClientID], references: [ClientID])
 }
 
-// model Post {
-//     id        Int      @id @default(autoincrement())
-//     name      String
-//     createdAt DateTime @default(now())
-//     updatedAt DateTime @updatedAt
+model Account {
+    id                 String  @id @default(cuid())
+    userId             String  @map("user_id")
+    type               String
+    provider           String
+    providerAccountId  String  @map("provider_account_id")
+    refresh_token      String? @db.Text
+    access_token       String? @db.Text
+    expires_at         Int?
+    token_type         String?
+    scope              String?
+    id_token           String? @db.Text
+    session_state      String?
 
-//     createdBy   User   @relation(fields: [createdById], references: [id])
-//     createdById String
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-//     @@index([name])
-// }
+    @@unique([provider, providerAccountId])
+    @@map("accounts")
+}
 
-// model Account {
-//     id                String  @id @default(cuid())
-//     userId            String
-//     type              String
-//     provider          String
-//     providerAccountId String
-//     refresh_token     String? @db.Text
-//     access_token      String? @db.Text
-//     expires_at        Int?
-//     token_type        String?
-//     scope             String?
-//     id_token          String? @db.Text
-//     session_state     String?
-//     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+model Session {
+    id           String   @id @default(cuid())
+    sessionToken String   @unique @map("session_token")
+    userId       String   @map("user_id")
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-//     @@unique([provider, providerAccountId])
-// }
+    @@map("sessions")
+}
 
-// model Session {
-//     id           String   @id @default(cuid())
-//     sessionToken String   @unique
-//     userId       String
-//     expires      DateTime
-//     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-// }
+model User {
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime? @map("email_verified")
+    image         String?
+    accounts      Account[]
+    sessions      Session[]
 
-// model User {
-//     id            String    @id @default(cuid())
-//     name          String?
-//     email         String?   @unique
-//     emailVerified DateTime?
-//     image         String?
-//     accounts      Account[]
-//     sessions      Session[]
-//     posts         Post[]
-// }
+    @@map("users")
+}
 
-// model VerificationToken {
-//     identifier String
-//     token      String   @unique
-//     expires    DateTime
+model VerificationToken {
+    identifier String
+    token      String
+    expires    DateTime
 
-//     @@unique([identifier, token])
-// }
+    @@unique([identifier, token])
+    @@map("verificationtokens")
+}

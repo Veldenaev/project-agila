@@ -12,11 +12,14 @@ export default function Shadow() {
       <div className="absolute z-20 flex w-full flex-row items-center justify-between p-5 text-white shadow-md">
         <Link href="/">Project Agila</Link>
         {session ? (
-          <button className="btn-blue" onClick={() => signIn()}>
-            Logout {session.user.id}
-          </button>
+          <div className="flex flex-row gap-6 items-center">
+            <p>Signed in as {session.user.name}</p>
+            <button className="btn-blue" onClick={() => signOut()}>
+              Logout
+            </button>
+          </div>
         ) : (
-          <button className="btn-blue" onClick={() => signOut()}>
+          <button className="btn-blue" onClick={() => signIn()}>
             Login
           </button>
         )}

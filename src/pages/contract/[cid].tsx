@@ -38,7 +38,10 @@ export default function AllContracts({ contracts, cid }: Props) {
         <div className="flex flex-row items-center justify-between">
           <p>{info.getValue()}</p>
           <div className="flex flex-row gap-1">
-            <Link className="btn-blue" href={`/contract/edit/${info.getValue()}`}>
+            <Link
+              className="btn-blue"
+              href={`/contract/edit/${info.getValue()}`}
+            >
               Edit
             </Link>
             <button

@@ -6,6 +6,7 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import prisma from "~/lib/prisma";
 
 import { db } from "~/server/db";
 
@@ -19,14 +20,17 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: DefaultSession["user"] & {
       id: string;
-      // ...other properties
+      isClient: boolean;
+      isLawyer: boolean;
+      isAdmin: boolean;
     };
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User {
+    isClient: boolean;
+    isLawyer: boolean;
+    isAdmin: boolean;
+  }
 }
 
 /**
@@ -36,12 +40,15 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, user }) => ({
+    jwt: ({ token, user }) => {
+      if (user) {
+        token.user = user;
+      }
+      return token;
+    },
+    session: ({ session, token }) => ({
       ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
+      user: token.user,
     }),
   },
   adapter: PrismaAdapter(db),
@@ -57,18 +64,46 @@ export const authOptions: NextAuthOptions = {
         username: { label: "Username", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
-        // Add logic here to look up the user from the credentials supplied
-        const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
+      async authorize(credentials, _req) {
+        const { username, password } = credentials!;
 
-        if (user) {
-          // Any object returned will be saved in `user` property of the JWT
+        const client = await prisma.client.findFirst({
+          where: {
+            user: String(username),
+            pass: String(password),
+          },
+        });
+
+        const lawyer = await prisma.lawyer.findFirst({
+          where: {
+            user: String(username),
+            pass: String(password),
+          },
+        });
+
+        if (client) {
+          const user = {
+            id: String(client.ClientID),
+            name: `${client.LastName}, ${client.FirstName} ${client.MiddleName}`,
+            email: client.Email,
+            isClient: true,
+            isLawyer: false,
+            isAdmin: false,
+          };
+          console.log(user);
+          return user;
+        } else if (lawyer) {
+          const user = {
+            id: String(lawyer.LawyerID),
+            name: `${lawyer.LastName}, ${lawyer.FirstName} ${lawyer.MiddleName}`,
+            email: lawyer.Email,
+            isClient: false,
+            isLawyer: true,
+            isAdmin: lawyer.isManager ?? false,
+          };
           return user;
         } else {
-          // If you return null then an error will be displayed advising the user to check their details.
           return null;
-
-          // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
         }
       },
     }),
@@ -82,6 +117,10 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      */
   ],
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60,
+  },
 };
 
 /**
