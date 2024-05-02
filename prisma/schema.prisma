@@ -27,6 +27,7 @@ model Client {
     Remarks             String?    @db.VarChar(200)
     user                String?    @db.VarChar(20)
     pass                String?    @db.Char(50)
+    CompanyName         String?    @db.VarChar(50)
     cases               Case[]
     payments            Payment[]
     clients             Contract[] @relation("people")
@@ -61,9 +62,11 @@ model Contract {
     isAmendment         Boolean?   @db.Bit(1)  @default(false)
     RootContractID      Int?       @db.SmallInt
     Date                DateTime?  @db.Date
+    filename            String?    @db.VarChar(20)
+    Title               String?    @db.VarChar(40)
     cases               Case[]
-    // roots               Contract[] @relation("root")
-    // root                Contract?  @relation("root", fields: [RootContractID], references: [ContractID])
+    // traceRoot           Contract[] @relation("root")
+    // roots               Contract?  @relation("root", fields: [RootContractID], references: [ContractID])
     contracts           Client?    @relation("sameID")
     clients             Client?    @relation("people", fields: [ClientID], references: [ClientID])
 }
@@ -90,6 +93,7 @@ model Case {
     Type                String?    @db.VarChar(20)
     Title               String?    @db.VarChar(40)
     Venue               String?    @db.VarChar(40)
+    OngoingStatus       Boolean?   @db.Bit(1)  @default(true)
     works               Work[]
     lawyers             Lawyer[]
     client              Client?    @relation(fields: [ClientID], references: [ClientID])
