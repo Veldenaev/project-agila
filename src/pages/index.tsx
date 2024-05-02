@@ -10,10 +10,16 @@ export default function Home() {
     {
       route: "/lawyer/1",
       text: "Access as lawyer",
+      forClient: false,
+      forLawyer: true,
+      forAdmin: true,
     },
     {
       route: "/client/1",
       text: "Access as client",
+      forClient: false,
+      forLawyer: true,
+      forAdmin: true,
     },
     {
       route: "/case/all",
@@ -43,24 +49,31 @@ export default function Home() {
             <h2 className="text-2xl tracking-tight text-white sm:text-[1.5rem]">
               Empowering billings for the law industry.
             </h2>
-            <div className="text-white">
-              {session ? (
-                <p>Logged in as {session.user.name}</p>
-              ) : (
-                <p>Not logged in</p>
-              )}
-            </div>
-            <div className="flex flex-col justify-center gap-10">
-              {links.map(({ route, text }, index) => (
-                <Link
-                  key={index}
-                  href={route}
-                  className="z-10 flex h-full items-center justify-center rounded-lg bg-agila px-4 py-2 text-lg font-bold hover:bg-agila/80"
-                >
-                  {text}
-                </Link>
-              ))}
-            </div>
+            {session ? (
+              <div className="flex flex-col justify-center gap-10">
+                {links.map(
+                  ({ route, text, forLawyer, forClient, forAdmin }, index) => {
+                    if (
+                      (forLawyer! && session.user.isLawyer) ||
+                      (forClient! && session.user.isClient) ||
+                      (forAdmin! && session.user.isAdmin)
+                    ) {
+                      return (
+                        <Link
+                          key={index}
+                          href={route}
+                          className="z-10 flex h-full items-center justify-center rounded-lg bg-agila px-4 py-2 text-lg font-bold hover:bg-agila/80"
+                        >
+                          {text}
+                        </Link>
+                      );
+                    }
+                  },
+                )}
+              </div>
+            ) : (
+              <p className="text-xl text-white">Not logged in...</p>
+            )}
           </div>
         </main>
       </Layout>
