@@ -14,25 +14,13 @@ import Filter from "./Filter";
 interface Props<T> {
   data: T[];
   columns: ColumnDef<T>[];
-  onRowSelect: (rowId: number, pageIndex: number) => void;
 }
 
-export default function Table<T>({ data, columns, onRowSelect }: Props<T>) {
-
+export default function Table<T>({ data, columns }: Props<T>) {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 5,
   });
-  
-
-  const [selectedRow, setRow] = useState<number>(0);
-
-  const rowSelect = (rowIndex: number, rowId: number, pageIndex: number) => {
-    setRow(rowIndex);
-    onRowSelect(rowId, pageIndex);
-  }
-  
-
   const table = useReactTable({
     data,
     columns,
@@ -45,10 +33,9 @@ export default function Table<T>({ data, columns, onRowSelect }: Props<T>) {
       pagination,
     },
   });
-  
   return (
     <>
-    <div className="z-10 my-auto flex flex-col items-center justify-between pb-2 bg-white w-64 rounded-l-md h-80">
+    <div className="z-10 my-auto flex flex-col items-center justify-between pb-2 bg-white w-64 rounded-r h-80">
       <table className="mt-1">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -87,7 +74,7 @@ export default function Table<T>({ data, columns, onRowSelect }: Props<T>) {
         <tbody>
           {table.getRowModel().rows.map((row) => {
             return (
-              <tr key={row.id} onClick={() => {rowSelect(row.index, row.original.id);}} className={`cursor-pointer ${selectedRow === row.index ? 'bg-blue-200' : ''}`}>
+              <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => {
                   return (
                     <td key={cell.id} className="px-2 py-1">
@@ -120,7 +107,7 @@ export default function Table<T>({ data, columns, onRowSelect }: Props<T>) {
         </tfoot>
       </table>
       {data.length > 0 && (
-        <div className="flex flex-col items-center pt-4 mb-4">
+        <div className="flex flex-col items-center pt-4 mb-2">
           <div className="flex items-center gap-2">
             <button
               className="rounded border p-1"

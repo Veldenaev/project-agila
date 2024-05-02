@@ -3,40 +3,60 @@ import { type GetServerSideProps } from "next";
 import Head from "next/head";
 import Layout from "~/components/Layout";
 import Selector from "~/components/SelectorTable";
+import MyTable from "~/components/Table";
 import prisma from "~/lib/prisma";
-import { type Client } from "@prisma/client";
+import { type Client, Case } from "@prisma/client";
 import { useState } from "react";
 
 interface Props {
   clients: Client[];
+  clientCases: Case[];
 }
 
-interface Row {
+interface clientRow {
   name: string;
   id: number;
 }
 
-export default function AllClients({ clients }: Props) {
+interface caseRow {
+  title: string;
+}
 
-  const data: Row[] = clients
-    .map((client) => ({
+export default function AllClients({ clients, clientCases }: Props) {
+
+  const clientData: clientRow[] = clients.map((client) => ({
       name: `${client.LastName}, ${client.FirstName} ${client.MiddleName}`,
       id: client.ClientID,
     }))
     .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
 
-  const [selectedClient, setClient] = useState((data.find(initialClientIndex => initialClientIndex.index === 0)?.orignal.ClientID));
+  const [selectedClient, setClient] = useState(clients.find(clientSelect => clientSelect.ClientID === 1));
+
+  const [caseData, setCaseData] = useState((clientCases.filter((filteredCase) => {return filteredCase.ClientID === 1})).map((clientCase) => ({
+    title: `${clientCase.Title}`,
+  })).sort((a, b) => (a.title > b.title ? 1 : b.title > a.title ? -1 : 0)));
 
   const receiveClient = (newClientID: number) => {
     const newClient = clients.find((clientSelect) => clientSelect.ClientID === newClientID);
     setClient(newClient);
+    const filteredCases: Case[] = clientCases.filter((toFilter) => {return toFilter.ClientID === newClientID})
+    const newCaseData: caseRow[] = filteredCases.map((clientCase) => ({
+      title: `${clientCase.Title}`,
+    })).sort((a, b) => (a.title > b.title ? 1 : b.title > a.title ? -1 : 0));
+    setCaseData(newCaseData)
   }
 
-  const columnHelper = createColumnHelper<Row>();
+  const clientColumnHelper = createColumnHelper<clientRow>();
+  const caseColumnHelper = createColumnHelper<caseRow>();
 
-  const columns = [
-    columnHelper.accessor("name", {
+  const clientCol = [
+    clientColumnHelper.accessor("name", {
       header: "Name",
+    }),
+  ];
+  const caseCol = [
+    caseColumnHelper.accessor("title", {
+      header: "Title",
     }),
   ];
 
@@ -46,13 +66,17 @@ export default function AllClients({ clients }: Props) {
         <title>All Clients</title>
       </Head>
       <Layout>
-        <main className="flex min-h-screen min-w-full flex-row">
-          <Selector data={data} columns={columns} onRowSelect={receiveClient}/>
-          <div className="z-10 bg-white flex flex-col w-64 h-80 rounded-r justify-center my-auto items-center">
-            <b className="text-black">Name: {selectedClient?.LastName} {selectedClient?.FirstName}, {selectedClient?.MiddleName}</b>
+        <main className="flex min-h-screen min-w-full flex-row justify-center">
+          <Selector data={clientData} columns={clientCol} onRowSelect={receiveClient}/>
+          <div className="z-10 bg-white flex flex-col w-80 h-80 justify-center my-auto items-left gap-y-2">
+            <b className="text-black text-2xl">{selectedClient?.LastName} {selectedClient?.FirstName}, {selectedClient?.MiddleName}</b>
             <b className="text-black">Address: {selectedClient?.CityAdd}</b>
+            <b className="text-black">Tel #: {selectedClient?.TelNum}</b>
+            <b className="text-black">Cel #: {selectedClient?.CellNum}</b>
+            <b className="text-black">Email: {selectedClient?.Email}</b>
+            <b className="text-black">Username: {selectedClient?.user}</b>
           </div>
-
+          <MyTable data={caseData} columns={caseCol}/>
         </main>
       </Layout>
     </>
@@ -61,7 +85,8 @@ export default function AllClients({ clients }: Props) {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const clients = await prisma.client.findMany();
+  const clientCases = await prisma.case.findMany();
   return {
-    props: { clients },
+    props: { clients, clientCases },
   };
 };
