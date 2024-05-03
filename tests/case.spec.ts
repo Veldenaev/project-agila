@@ -17,33 +17,20 @@ test("has table", async ({ page }) => {
 
 test("'View' button is visible", async ({ page }) => {
   await page.goto("/case/all");
+  await expect(page.getByRole("link", { name: /View/ }).first()).toBeVisible();
+});
+
+test("'Delete' button is visible", async ({ page }) => {
+  await page.goto("/case/all");
   await expect(
-    page.getByRole("button", { name: /View/ }).first(),
+    page.getByRole("button", { name: /Delete/ }).first(),
   ).toBeVisible();
 });
 
-test("'Update' button is visible", async ({ page }) => {
+test("Clicking 'View' button leads to a case page", async ({ page }) => {
   await page.goto("/case/all");
-  await expect(
-    page.getByRole("button", { name: /Update/ }).first(),
-  ).toBeVisible();
-});
-
-test("Clicking 'View' button leads to a case's page", async ({ page }) => {
-  await page.goto("/case/all");
-  await page.getByRole("button", { name: /View/ }).first().click();
+  await page.getByRole("link", { name: /View/ }).first().click();
   await expect(page).toHaveURL(/case\/\d+/);
-});
-
-test("Clicking 'Update' button leads to a form to update the case", async ({
-  page,
-}) => {
-  await page.goto("/case/all");
-  await page
-    .getByRole("button", { name: /Update/ })
-    .first()
-    .click();
-  await expect(page).toHaveURL(/case\/update\/\d+/);
 });
 
 test("individual case page has 'Information' in title", async ({ page }) => {
@@ -54,4 +41,30 @@ test("individual case page has 'Information' in title", async ({ page }) => {
 test("individual case page has table", async ({ page }) => {
   await page.goto("/case/1234");
   await expect(page.locator("table")).toBeVisible();
+});
+
+test("'Edit' button is visible in individual case page", async ({ page }) => {
+  await page.goto("/case/1234");
+  await expect(page.getByRole("link", { name: /Edit/ }).first()).toBeVisible();
+});
+
+test("'Delete' button is visible in individual case page", async ({ page }) => {
+  await page.goto("/case/1234");
+  await expect(
+    page.getByRole("button", { name: /Delete/ }).first(),
+  ).toBeVisible();
+});
+
+test("'Work Involved' text is visible in individual case page", async ({
+  page,
+}) => {
+  await page.goto("/case/1234");
+  await expect(page.getByText(/Work Involved/)).toBeVisible();
+});
+
+test("'Assigned Lawyers' text is visible in individual case page", async ({
+  page,
+}) => {
+  await page.goto("/case/1234");
+  await expect(page.getByText(/Assigned Lawyers/)).toBeVisible();
 });

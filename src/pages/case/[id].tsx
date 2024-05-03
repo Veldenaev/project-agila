@@ -74,7 +74,8 @@ export default function Case({ theCase }: Props) {
 
   if (
     session == null ||
-    (session.user.isLawyer &&
+    (!session.user.isAdmin &&
+      session.user.isLawyer &&
       !lawyers.some((l) => l.LawyerID === Number(session.user.id)))
   ) {
     return <Block title="Case Information" />;

@@ -14,30 +14,30 @@ test("has subtitle", async ({ page }) => {
 
 test("'Access as lawyer' button works", async ({ page }) => {
   await page.goto("/");
-  await page.locator('a:text("Access as lawyer")').click();
+  await page.getByRole("link", { name: "Access as lawyer" }).click();
   await expect(page).toHaveURL("/lawyer/1");
 });
 
-test("'Access as manager (all cases)' button works", async ({ page }) => {
+test("'Access as admin (all cases)' button works", async ({ page }) => {
   await page.goto("/");
-  await page.locator('a:text("Access as manager (all cases)")').click();
+  await page.getByRole("link", { name: "Access as admin (all cases)" }).click();
   await expect(page).toHaveURL("/case/all");
 });
 
-test("'Access as manager (all lawyers)' button works", async ({ page }) => {
+test("'Access as admin (all lawyers)' button works", async ({ page }) => {
   await page.goto("/");
-  await page.locator('a:text("Access as manager (all lawyers)")').click();
+  await page.getByRole("link", { name: "Access as admin (all lawyers)" }).click();
   await expect(page).toHaveURL("/lawyer/all");
 });
 
-test("'Access as manager (all clients)' button works", async ({ page }) => {
+test("'Access as admin (all clients)' button works", async ({ page }) => {
   await page.goto("/");
-  await page.locator('a:text("Access as manager (all clients)")').click();
+  await page.getByRole("link", { name: "Access as admin (all clients)" }).click();
   await expect(page).toHaveURL("/client/all");
 });
 
 test("'Access as client' button works", async ({ page }) => {
   await page.goto("/");
-  await page.locator('a:text("Access as client")').click();
+  await page.getByRole("link", { name: "Access as client" }).click();
   await expect(page).toHaveURL("/client/1");
 });

@@ -5,6 +5,7 @@ import Form from "~/components/Form";
 import Layout from "~/components/Layout";
 import { defaultContract } from "~/utils/defaults";
 import genID from "~/utils/genID";
+import { useSession } from "next-auth/react";
 
 interface Props {
   root: number;
@@ -13,11 +14,13 @@ interface Props {
 }
 
 export default function Contract({ root, cid, nid }: Props) {
+  const { data: session } = useSession();
   const obj: Contract = {
     ...defaultContract,
     ContractID: nid,
     ClientID: cid,
     RootContractID: root,
+    isAmendment: true,
   };
   return (
     <>
@@ -31,12 +34,13 @@ export default function Contract({ root, cid, nid }: Props) {
               obj={obj}
               type="contract"
               name="Contract"
-              keys={["ContractID", "ClientID", "RootContractID"]}
+              keys={["ContractID", "ClientID", "RootContractID", "isAmendment"]}
               hide={[]}
               textarea={[]}
               identifier={(c: Contract) => c.ContractID}
               adding={true}
               stay={false}
+              authorized={session?.user.isAdmin ?? false}
             />
           </div>
         </main>

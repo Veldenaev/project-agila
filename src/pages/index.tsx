@@ -12,14 +12,14 @@ export default function Home() {
       text: "Access as lawyer",
       forClient: false,
       forLawyer: true,
-      forAdmin: false,
+      forAdmin: true,
     },
     {
       route: `/client/${session?.user.id}`,
       text: "Access as client",
       forClient: true,
       forLawyer: false,
-      forAdmin: false,
+      forAdmin: true,
     },
     {
       route: "/case/all",

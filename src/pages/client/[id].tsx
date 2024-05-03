@@ -132,7 +132,10 @@ export default function Client({ client, contract }: Props) {
     }),
   ];
 
-  if (session == null || Number(session.user.id) !== client.ClientID) {
+  if (
+    session == null ||
+    (!session.user.isAdmin && Number(session.user.id) !== client.ClientID)
+  ) {
     return <Block title="Client Dashboard" />;
   }
 
