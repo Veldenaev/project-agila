@@ -13,3 +13,10 @@
     @apply rounded-md bg-red-400 px-2 py-1 text-white transition-all hover:bg-red-500;
   }
 }
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('~/assets/AvenirLTStd-Roman.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}

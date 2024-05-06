@@ -4,12 +4,12 @@ export default {
   content: ["./src/**/*.tsx"],
   theme: {
     extend: {
-      colors: {
-        agila: "#dd99ff",
-      },
-      // fontFamily: {
-      //   sans: ["var(--font-sans)", ...fontFamily.sans],
+      // colors: {
+      //   agila: "gray-900",
       // },
+      fontFamily: {
+        sans: ['Avenir'],
+      },
       backgroundImage: {
         bookshelf: "url('~/assets/bookshelfbg.jpg')",
       },

@@ -9,7 +9,6 @@ import Link from "next/link";
 import pingDelete from "~/utils/pingDelete";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useEffect } from 'react';
 import Block from "~/components/Block";
 
 interface Props {
@@ -25,12 +24,8 @@ export default function AllClients({ clients }: Props) {
   const { data: session } = useSession();
   const router = useRouter();
 
-  useEffect(() => {
-    !session ? router.push('/') : null
-    })
-  
-  if (session?.user.isClient === true) {
-    return <Block title='unauthorized access' />
+  if (session == null || session.user.isClient) {
+    return <Block title="All Clients" />;
   }
 
   const data: Row[] = clients
@@ -89,7 +84,7 @@ export default function AllClients({ clients }: Props) {
               <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-[3rem]">
                 <span className="text-agila">All</span> clients
               </h1>
-              {session?.user.isAdmin && (
+              {session.user.isAdmin && (
                 <Link className="btn-blue" href="/client/new/">
                   <p>Add</p>
                 </Link>
