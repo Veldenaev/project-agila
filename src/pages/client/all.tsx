@@ -2,18 +2,21 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { type GetServerSideProps } from "next";
 import Head from "next/head";
 import Layout from "~/components/Layout";
-import MyTable from "~/components/Table";
 import prisma from "~/lib/prisma";
-import { type Lawyer, type Client } from "@prisma/client";
+import { type Client, type Case } from "@prisma/client";
 import Link from "next/link";
 import pingDelete from "~/utils/pingDelete";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect } from 'react';
+import { useState } from "react"; 
 import Block from "~/components/Block";
+import { getSession } from "next-auth/react"; 
+import Selector from "~/components/SelectorTable";
 
 interface Props {
-  clients: (Client & { cases: { lawyers: Lawyer[] }[] })[];
+  clients: Client[];
+  cases: Case[];
 }
 
 interface Row {
@@ -22,47 +25,53 @@ interface Row {
 }
 
 export default function AllClients({ clients }: Props) {
+
   const { data: session } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    !session ? router.push('/') : null
+    !session ? router.push('/rerouter') : null
     })
   
   if (session?.user.isClient === true) {
     return <Block title='unauthorized access' />
   }
 
+  const [selectedClientID, setSelectedClientID] = useState<number>();
+
   const data: Row[] = clients
-    .filter(
-      (client) =>
-        session?.user.isAdmin ||
-        client.cases
-          .flatMap((c) => c.lawyers)
-          .some((l) => l.LawyerID === Number(session?.user.id)),
-    )
     .map((client) => ({
       name: `${client.LastName}, ${client.FirstName} ${client.MiddleName}`,
       id: client.ClientID,
     }))
     .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
+
   const columnHelper = createColumnHelper<Row>();
+
   const columns = [
+
     columnHelper.accessor("name", {
-      header: "Name",
+      header: "Account Name",
     }),
-    columnHelper.accessor("id", {
-      header: "Client ID",
+
+    columnHelper.accessor('id', {
+      header: '',
+      enableColumnFilter: false,
+      enableSorting: false,
       cell: (info) => (
         <div className="flex flex-row items-center justify-between">
-          <p>{info.getValue()}</p>
-          {session.user.isAdmin && (
-            <div className="flex flex-row gap-1">
-              <Link className="btn-blue" href={`/client/${info.getValue()}`}>
-                View
-              </Link>
-              <button
-                className="btn-red"
+          <div className="flex flex-row gap-1">
+            <button className="btn-blue"
+              onClick={async() => {
+                setSelectedClientID(info.getValue());
+              }}
+            >
+              Select
+            </button>
+  
+            {/* Conditionally show a delete button for admins */}
+            {session?.user.isAdmin && (
+              <button className="btn-red" 
                 onClick={async () => {
                   await pingDelete("client", info.getValue());
                   router.refresh();
@@ -70,8 +79,8 @@ export default function AllClients({ clients }: Props) {
               >
                 Delete
               </button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       ),
     }),
@@ -95,7 +104,7 @@ export default function AllClients({ clients }: Props) {
                 </Link>
               )}
             </div>
-            <MyTable data={data} columns={columns} />
+            <Selector data={data} columns={columns} selectedClientRow={selectedClientID} />
           </div>
         </main>
       </Layout>
@@ -103,17 +112,41 @@ export default function AllClients({ clients }: Props) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const clients = await prisma.client.findMany({
-    include: {
-      cases: {
-        select: {
-          lawyers: true,
-        },
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession({ req: context.req });
+
+  let clients: Client[] = [];
+  let cases: Case[] = [];
+
+  if(session?.user.isAdmin) {
+    clients = await prisma.client.findMany();
+    cases = await prisma.case.findMany();
+  } else if(session?.user.isLawyer) {
+    cases = await prisma.case.findMany({
+      include: {
+        lawyers: true,
       },
-    },
-  });
+      where: {
+        lawyers: {
+          some: {
+            LawyerID: parseInt(session.user.id)
+          }
+        }
+      }
+    });
+
+    const ClientIDs = cases.map(caseInstance => caseInstance.ClientID);
+    clients = await prisma.client.findMany({
+      where: {
+        ClientID: {
+          in: ClientIDs
+        }
+      }
+    });
+  } 
+
   return {
-    props: { clients },
+    props: { clients, cases },
   };
 };
+

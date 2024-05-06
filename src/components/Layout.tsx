@@ -6,7 +6,7 @@ import bookshelfbg from "/assets/bookshelfbg.jpg";
 
 interface Props {
   children: ReactNode;
-  shadow: boolean;
+  shadow?: boolean;
 }
 
 export default function Layout({ children, shadow=true }: Props) {

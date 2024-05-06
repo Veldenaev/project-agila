@@ -5,8 +5,7 @@ export default function Shadow() {
   const { data: session } = useSession();
 
   const handleSignOut = async () => {
-    await signOut({ redirect: false});
-    window.location.href = '/';
+    await signOut({});
   }
 
   return (

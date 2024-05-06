@@ -14,13 +14,16 @@ import Filter from "./Filter";
 interface Props<T> {
   data: T[];
   columns: ColumnDef<T>[];
+  selectedClientRow: number | undefined;
 }
 
-export default function Table<T>({ data, columns }: Props<T>) {
+export default function Table<T>({ data, columns, selectedClientRow=undefined }: Props<T>) {
+
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 5,
   });
+
   const table = useReactTable({
     data,
     columns,
@@ -33,6 +36,7 @@ export default function Table<T>({ data, columns }: Props<T>) {
       pagination,
     },
   });
+
   return (
     <>
       <table className="rounded-md bg-white">
@@ -73,7 +77,7 @@ export default function Table<T>({ data, columns }: Props<T>) {
         <tbody>
           {table.getRowModel().rows.map((row) => {
             return (
-              <tr key={row.id}>
+              <tr key={row.id} className={`${selectedClientRow === row.original.id ? 'bg-blue-200' : ''}`}>
                 {row.getVisibleCells().map((cell) => {
                   return (
                     <td key={cell.id} className="px-2 py-1">
@@ -143,7 +147,7 @@ export default function Table<T>({ data, columns }: Props<T>) {
               </strong> of{" "}
               <strong>{table.getPageCount().toLocaleString()}</strong>
             </span>
-            <span className="flex items-center gap-1">
+            {/* <span className="flex items-center gap-1">
               | Go to page
               <input
                 min={1}
@@ -158,7 +162,7 @@ export default function Table<T>({ data, columns }: Props<T>) {
                 }}
                 className="w-16 rounded border p-1"
               />
-            </span>
+            </span> */}
           </div>
           <div>
             Showing {table.getRowModel().rows.length.toLocaleString()} of{" "}

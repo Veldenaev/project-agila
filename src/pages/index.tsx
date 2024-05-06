@@ -11,13 +11,24 @@ export default function Login({ csrfToken }) {
 
   const router = useRouter();
 
+  const { error } = router.query;
+
+  const errorMessage = {
+    Signin: "Try signing with a different account.",
+    OAuthSignin: "Try signing with a different provider.",
+    OAuthCallback: "Could not complete your sign-in request.",
+    OAuthCreateAccount: "Could not create account.",
+    EmailCreateAccount: "Could not create account with email.",
+    Callback: "Could not process the sign-in callback.",
+    OAuthAccountNotLinked: "The account is not linked to the current user.",
+    EmailSignin: "Check your email address.",
+    CredentialsSignin: "Invalid username or password.",
+    default: "Unable to sign in."
+  }[error] || error;
+
   useEffect(() => {
-    session?.user.isClient ? (
-      router.push(`/client/${session?.user.id}`)
-    ) : session?.user.isAdmin ? (
-      router.push('/client/all')
-    ) : session?.user.isLawyer ? (
-      router.push(`/lawyer/${session?.user.id}`)
+    session ? (
+      router.push('/rerouter')
     ) : null;
     })
 
@@ -42,6 +53,12 @@ export default function Login({ csrfToken }) {
 
             <div className="w-80 rounded bg-white p-8 shadow-md">
               <h2 className="mb-4 text-2xl font-semibold">Login</h2>
+
+              {error && (
+                <div className="mb-4 text-center text-sm font-semibold text-red-600">
+                  {errorMessage}
+                </div>
+              )}
 
               <form method="post" action="/api/auth/callback/credentials">
                 <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
@@ -85,11 +102,9 @@ export default function Login({ csrfToken }) {
   );
 }
 
-// This function is added at the end of your Login component file
 export async function getServerSideProps(context) {
   return {
     props: {
-      // Fetch the CSRF token from NextAuth
       csrfToken: await getCsrfToken(context),
     },
   };

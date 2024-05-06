@@ -52,9 +52,12 @@ export const authOptions: NextAuthOptions = {
       ...session,
       user: token.user,
     }),
+    async redirect({ url, baseUrl }) {
+      return baseUrl + '/rerouter';
+    }
   },
   pages: {
-    signIn: '/', // Custom sign-in page route
+    signIn: '/',
   },
   adapter: PrismaAdapter(db),
   providers: [
