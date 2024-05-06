@@ -44,7 +44,7 @@ export default function Login({ csrfToken }) {
           <div className="z-10 mb-auto mt-auto flex flex-row items-center gap-16 p-8">
             <div className="flex flex-col items-center gap-2">
               <h1 className="text-5xl font-sans tracking-tight text-white sm:text-[4rem] text-center">
-                <span className="text-7xl">H</span>EFFRON <span className="text-7xl">C</span>RUZ
+                <span className="text-7xl">P</span>ROJECT <span className="text-7xl">A</span>GILA
               </h1>
               {/* <h2 className="text-2xl tracking-tight text-center text-white sm:text-[1.5rem]">
                 Attorneys and Counsellors at Law

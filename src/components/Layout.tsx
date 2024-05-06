@@ -17,8 +17,8 @@ export default function Layout({ children, shadow=true }: Props) {
       <Head>
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <div className="inset absolute z-10 h-full w-full bg-black bg-opacity-60" />
-      <Image src={bookshelfbg} fill alt="Bookshelf background image"/>
+      <div className="inset absolute z-10 h-full w-full bg-black bg-opacity-90" />
+      {/* <Image src={bookshelfbg} fill alt="Bookshelf background image"/> */}
       { shadow ? <Shadow /> : null} 
       {children}
     </>

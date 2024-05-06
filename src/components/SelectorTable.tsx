@@ -8,16 +8,24 @@ import {
   type ColumnDef,
   flexRender,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction} from "react";
 import Filter from "./Filter";
 
 interface Props<T> {
   data: T[];
   columns: ColumnDef<T>[];
-  selectedClientRow: number | undefined;
+  onRowSelect: Dispatch<SetStateAction<number | undefined>>;
+  tailClass: string | undefined;
 }
 
-export default function Table<T>({ data, columns, selectedClientRow=undefined }: Props<T>) {
+export default function Table<T>({ data, columns, onRowSelect, tailClass="flex flex-col bg-white min-w-64 rounded-md items-center" }: Props<T>) {
+
+  const [selectedID, setSelectedID] = useState<number>(1)
+
+  const handleSelect = (selectedRowID: number) => {
+    setSelectedID(selectedRowID);
+    onRowSelect(selectedRowID);
+  }
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -39,7 +47,8 @@ export default function Table<T>({ data, columns, selectedClientRow=undefined }:
 
   return (
     <>
-      <table className="rounded-md bg-white">
+    <div className={tailClass}>
+      <table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -77,7 +86,7 @@ export default function Table<T>({ data, columns, selectedClientRow=undefined }:
         <tbody>
           {table.getRowModel().rows.map((row) => {
             return (
-              <tr key={row.id} className={`${selectedClientRow === row.original.id ? 'bg-blue-200' : ''}`}>
+              <tr key={row.id} onClick={() => {handleSelect(row.original.id)}} className={`cursor-pointer ${selectedID === row.original.id ? 'bg-blue-200' : 'hover:bg-blue-50 transition-colors duration-75'}`}>
                 {row.getVisibleCells().map((cell) => {
                   return (
                     <td key={cell.id} className="px-2 py-1">
@@ -110,7 +119,7 @@ export default function Table<T>({ data, columns, selectedClientRow=undefined }:
         </tfoot>
       </table>
       {data.length > 0 && (
-        <div className="flex flex-col items-center gap-2 rounded-md bg-white p-2">
+        <div className="flex flex-col items-center gap-2 p-2">
           <div className="flex items-center gap-2">
             <button
               className="rounded border p-1"
@@ -170,6 +179,7 @@ export default function Table<T>({ data, columns, selectedClientRow=undefined }:
           </div>
         </div>
       )}
+    </div>
     </>
   );
 }
