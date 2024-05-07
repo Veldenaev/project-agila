@@ -14,17 +14,19 @@ import Filter from "./Filter";
 interface Props<T> {
   data: T[];
   columns: ColumnDef<T>[];
-  onRowSelect: Dispatch<SetStateAction<number | undefined>>;
+  onRowSelect: Dispatch<SetStateAction<number | undefined>> | undefined;
   tailClass: string | undefined;
 }
 
-export default function Table<T>({ data, columns, onRowSelect, tailClass="flex flex-col bg-white min-w-64 rounded-md items-center" }: Props<T>) {
+export default function Table<T>({ data, columns, onRowSelect=undefined, tailClass="flex flex-col bg-white min-w-64 rounded-md items-center" }: Props<T>) {
 
   const [selectedID, setSelectedID] = useState<number>(1)
 
   const handleSelect = (selectedRowID: number) => {
     setSelectedID(selectedRowID);
-    onRowSelect(selectedRowID);
+    if (onRowSelect !== undefined) {
+      onRowSelect(selectedRowID);
+    }
   }
 
   const [pagination, setPagination] = useState<PaginationState>({
