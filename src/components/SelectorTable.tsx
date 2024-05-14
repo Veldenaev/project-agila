@@ -8,19 +8,34 @@ import {
   type ColumnDef,
   flexRender,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction} from "react";
 import Filter from "./Filter";
+import { AnyCnameRecord } from "dns";
 
 interface Props<T> {
   data: T[];
   columns: ColumnDef<T>[];
+  onRowSelect: any;
+  tailClass: string | undefined;
+  selectorHighlight: boolean;
 }
 
-export default function Table<T>({ data, columns }: Props<T>) {
+export default function Table<T>({ selectorHighlight=true, data, columns, onRowSelect=undefined, tailClass="flex flex-col bg-white min-w-64 rounded-md items-center" }: Props<T>) {
+
+  const [selectedID, setSelectedID] = useState<number>(1)
+
+  const handleSelect = (selectedRowID: number) => {
+    setSelectedID(selectedRowID);
+    if (onRowSelect !== undefined) {
+      onRowSelect(selectedRowID);
+    }
+  }
+
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 5,
   });
+
   const table = useReactTable({
     data,
     columns,
@@ -33,9 +48,11 @@ export default function Table<T>({ data, columns }: Props<T>) {
       pagination,
     },
   });
+
   return (
     <>
-      <table className="rounded-md bg-white">
+    <div className={tailClass}>
+      <table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -73,7 +90,7 @@ export default function Table<T>({ data, columns }: Props<T>) {
         <tbody>
           {table.getRowModel().rows.map((row) => {
             return (
-              <tr key={row.id}>
+              <tr key={row.id} onClick={() => {handleSelect(row.original.id)}} className={`cursor-pointer ${((selectedID === row.original.id) && selectorHighlight) ? 'bg-blue-200' : 'hover:bg-blue-50 transition-colors duration-75'}`}>
                 {row.getVisibleCells().map((cell) => {
                   return (
                     <td key={cell.id} className="px-2 py-1">
@@ -106,7 +123,7 @@ export default function Table<T>({ data, columns }: Props<T>) {
         </tfoot>
       </table>
       {data.length > 0 && (
-        <div className="flex flex-col items-center gap-2 rounded-md bg-white p-2">
+        <div className="flex flex-col items-center gap-2 p-2">
           <div className="flex items-center gap-2">
             <button
               className="rounded border p-1"
@@ -143,7 +160,7 @@ export default function Table<T>({ data, columns }: Props<T>) {
               </strong> of{" "}
               <strong>{table.getPageCount().toLocaleString()}</strong>
             </span>
-            <span className="flex items-center gap-1">
+            {/* <span className="flex items-center gap-1">
               | Go to page
               <input
                 min={1}
@@ -158,7 +175,7 @@ export default function Table<T>({ data, columns }: Props<T>) {
                 }}
                 className="w-16 rounded border p-1"
               />
-            </span>
+            </span> */}
           </div>
           <div>
             Showing {table.getRowModel().rows.length.toLocaleString()} of{" "}
@@ -166,6 +183,7 @@ export default function Table<T>({ data, columns }: Props<T>) {
           </div>
         </div>
       )}
+    </div>
     </>
   );
 }

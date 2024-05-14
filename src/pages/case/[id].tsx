@@ -10,7 +10,7 @@ import {
 } from "@prisma/client";
 import Layout from "~/components/Layout";
 import { createColumnHelper } from "@tanstack/react-table";
-import Table from "~/components/Table";
+import Table from "~/components/SelectorTable";
 import pingDelete from "~/utils/pingDelete";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
