@@ -10,15 +10,17 @@ import {
 } from "@tanstack/react-table";
 import { useState, type Dispatch, type SetStateAction} from "react";
 import Filter from "./Filter";
+import { AnyCnameRecord } from "dns";
 
 interface Props<T> {
   data: T[];
   columns: ColumnDef<T>[];
-  onRowSelect: Dispatch<SetStateAction<number | undefined>> | undefined;
+  onRowSelect: any;
   tailClass: string | undefined;
+  selectorHighlight: boolean;
 }
 
-export default function Table<T>({ data, columns, onRowSelect=undefined, tailClass="flex flex-col bg-white min-w-64 rounded-md items-center" }: Props<T>) {
+export default function Table<T>({ selectorHighlight=true, data, columns, onRowSelect=undefined, tailClass="flex flex-col bg-white min-w-64 rounded-md items-center" }: Props<T>) {
 
   const [selectedID, setSelectedID] = useState<number>(1)
 
@@ -88,7 +90,7 @@ export default function Table<T>({ data, columns, onRowSelect=undefined, tailCla
         <tbody>
           {table.getRowModel().rows.map((row) => {
             return (
-              <tr key={row.id} onClick={() => {handleSelect(row.original.id)}} className={`cursor-pointer ${selectedID === row.original.id ? 'bg-blue-200' : 'hover:bg-blue-50 transition-colors duration-75'}`}>
+              <tr key={row.id} onClick={() => {handleSelect(row.original.id)}} className={`cursor-pointer ${((selectedID === row.original.id) && selectorHighlight) ? 'bg-blue-200' : 'hover:bg-blue-50 transition-colors duration-75'}`}>
                 {row.getVisibleCells().map((cell) => {
                   return (
                     <td key={cell.id} className="px-2 py-1">

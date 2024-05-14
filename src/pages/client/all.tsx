@@ -25,7 +25,7 @@ interface Row {
   id: number;
 }
 
-export default function AllClients({ clients }: Props) {
+export default function AllClients({ clients, cases, payments }: Props) {
 
   const { data: session } = useSession();
   const router = useRouter();
@@ -40,20 +40,37 @@ export default function AllClients({ clients }: Props) {
 
   const [selectedClientID, setSelectedClientID] = useState<number>();
 
+  const caseSelect = (caseNum: number) => {
+    router.push(`/case/${caseNum}`)
+  }
+
   const selectedClient: Client | undefined = useMemo(() => {return clients.find((clientSelect) => clientSelect.ClientID === selectedClientID)},[selectedClientID])
 
-  const data: Row[] = useMemo(() => {return clients.map((client) => ({
+  const clientData: Row[] = useMemo(() => {return clients.map((client) => ({
       name: `${client.LastName}, ${client.FirstName} ${client.MiddleName}`,
       id: client.ClientID,
     }))
     .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))}, [clients]);
 
+  const caseData: Row[] = useMemo(() => {return cases.filter((c) => c.ClientID == selectedClientID).map((c) => ({
+    name: c.Title ? c.Title : c.CaseNum,
+    id: parseInt(c.CaseNum),
+  }))
+  .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))}, [cases, selectedClient]);
+
   const columnHelper = createColumnHelper<Row>();
 
-  const columns = useMemo(() => {return [
+  const clientColumns = useMemo(() => {return [
 
     columnHelper.accessor("name", {
       header: "Account Name",
+    }),
+  ]}, []);
+
+  const caseColumns = useMemo(() => {return [
+
+    columnHelper.accessor("name", {
+      header: "Case Title",
     }),
   ]}, []);
 
@@ -76,7 +93,7 @@ export default function AllClients({ clients }: Props) {
               )}
             </div>
             <div className="flex flex-row bg-white rounded-md p-1">
-              <Selector data={data} columns={columns} onRowSelect={setSelectedClientID} tailClass="flex flex-col bg-white min-h-72 min-w-64 rounded-l-md items-center"/>
+              <Selector data={clientData} columns={clientColumns} onRowSelect={setSelectedClientID} tailClass="flex flex-col bg-white min-h-72 min-w-64 rounded-l-md items-center justify-between"/>
               <table className="flex flex-col min-w-72 rounded-r-md text-left min-h-72 justify-center pr-4">
                 <thead className="text-2xl">
                   <tr>
@@ -95,6 +112,7 @@ export default function AllClients({ clients }: Props) {
                   </tr>
                 </tbody>
               </table>
+              <Selector selectorHighlight={false} data={caseData} columns={caseColumns} onRowSelect={caseSelect} tailClass="flex flex-col bg-white min-h-72 min-w-64 rounded-l-md items-center justify-between"/>
             </div>
           </div>
         </main>
