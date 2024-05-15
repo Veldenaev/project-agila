@@ -4,12 +4,14 @@ import Head from "next/head";
 import prisma from "../../lib/prisma";
 import Form from "~/components/Form";
 import Layout from "~/components/Layout";
+import { useSession } from "next-auth/react";
 
 interface Props {
   payment: Payment;
 }
 
 export default function Payment({ payment }: Props) {
+  const { data: session } = useSession();
   return (
     <>
       <Head>
@@ -28,6 +30,7 @@ export default function Payment({ payment }: Props) {
               identifier={(c: Payment) => c.PaymentID}
               adding={false}
               stay={false}
+              authorized={session?.user.isAdmin ?? false}
             />
           </div>
         </main>
