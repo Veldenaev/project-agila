@@ -34,7 +34,7 @@ export default function Form<T extends object>({
 }: Props<T>) {
   const router = useRouter();
   const [newObj, setNewObj] = useState(obj);
-  const [updating, setUpdating] = useState(adding || false);
+  const [updating, setUpdating] = useState(!stay);
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -65,18 +65,7 @@ export default function Form<T extends object>({
         </h1>
 
         <div className="flex justify-center gap-3 text-lg">
-          {adding ? (
-            <>
-              <input
-                type="submit"
-                value="Add"
-                className="btn-blue hover:cursor-pointer"
-              />
-              <button className="btn-red" onClick={() => router.back()}>
-                Cancel
-              </button>
-            </>
-          ) : updating ? (
+          {updating ? (
             <>
               <input
                 type="submit"
@@ -85,9 +74,14 @@ export default function Form<T extends object>({
               />
               <button
                 className="btn-red"
+                type="button"
                 onClick={() => {
-                  setNewObj(obj);
-                  setUpdating((c) => !c);
+                  if (stay) {
+                    setNewObj(obj);
+                    setUpdating((c) => !c);
+                  } else {
+                    router.back();
+                  }
                 }}
               >
                 Cancel
@@ -132,8 +126,9 @@ export default function Form<T extends object>({
                   onChange={(e) =>
                     setNewObj((oldObj) => ({
                       ...oldObj,
-                      [k]:
-                        typeof v === "number"
+                      [k]: k.match(/file/i)
+                        ? e.target.files?.item(0)?.name
+                        : typeof v === "number"
                           ? parseInt(e.target.value)
                           : e.target.value,
                     }))
@@ -142,7 +137,7 @@ export default function Form<T extends object>({
                   disabled={keys.includes(k) || !updating}
                   placeholder={k}
                   defaultValue={k.match(/file/i) ? "" : (v as string)}
-                  value={k.match(/file/i) ? "" : (v as string)}
+                  // value={k.match(/file/i) ? "" : (v as string)}
                   type={
                     k.match(/file/i)
                       ? "file"
