@@ -12,6 +12,9 @@ interface Props<T extends object> {
   adding: boolean;
   stay: boolean;
   authorized: boolean;
+  firstTailClass?: string;
+  secondTailClass?: string;
+  outerTailClass?: string;
 }
 
 export default function Form<T extends object>({
@@ -25,6 +28,9 @@ export default function Form<T extends object>({
   adding,
   stay,
   authorized,
+  firstTailClass="flex flex-row items-center justify-center gap-6",
+  secondTailClass="grid grid-cols-2 gap-3 rounded-lg bg-white p-4 pb-5",
+  outerTailClass="z-10 mx-auto my-auto flex flex-col"
 }: Props<T>) {
   const router = useRouter();
   const [newObj, setNewObj] = useState(obj);
@@ -51,12 +57,13 @@ export default function Form<T extends object>({
   return (
     <form
       onSubmit={submitData}
-      className="z-10 mx-auto my-auto flex flex-col gap-4"
+      className={outerTailClass}
     >
-      <div className="flex flex-row items-center justify-center gap-6">
+      <div className={firstTailClass}>
         <h1 className="text-center font-bold tracking-tight text-white sm:text-[2rem]">
           <span className="text-agila">{name}</span> #{identifier(obj)}
         </h1>
+
         <div className="flex justify-center gap-3 text-lg">
           {adding ? (
             <>
@@ -98,7 +105,8 @@ export default function Form<T extends object>({
           )}
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-3 rounded-lg bg-white p-4 pb-5">
+
+      <div className={secondTailClass}>
         {Object.entries(newObj)
           .filter(([k, _]) => !hide.includes(k))
           .map(([k, v], index) => (

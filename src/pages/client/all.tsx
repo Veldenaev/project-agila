@@ -127,28 +127,35 @@ export default function AllClients({ clients, cases, payments }: Props) {
 
   return (
     <>
+
       <Head>
         <title>All Clients</title>
       </Head>
+
       <Layout>
-        <main className="flex min-h-screen flex-col">
-          <div className="z-10 my-auto flex flex-col items-center justify-center px-4 py-16 ">
-            <div className="mb-8 flex flex-row items-center gap-6">
+        <main className="flex justify-center min-h-screen">
+          <div className="w-3/5 h-4/5 min-w-max z-10 my-auto flex flex-col items-center justify-center px-4 py-16">
+
+            <div className="mb-8 flex flex-row items-center gap-6"> {/* Header Div */}
+
               <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-[3rem]">
                 Accounts
               </h1>
+
               {session?.user.isAdmin && (
                 <Link className="btn-blue" href="/client/new/">
                   <p>Add</p>
                 </Link>
               )}
+
             </div>
-            <div className="flex flex-row rounded-md bg-white p-1">
+
+            <div className="h-80 w-full flex flex-row rounded-md bg-white p-1"> {/* Client Selector, Case Selector DIV */}
               <Selector
                 data={clientData}
                 columns={clientColumns}
                 onRowSelect={setSelectedClientID}
-                tailClass="flex flex-col bg-white min-h-72 min-w-64 rounded-l-md items-center justify-between"
+                tailClass="flex flex-col flex-grow bg-white min-h-72 min-w-64 rounded-l-md items-center justify-between"
               />
               <table className="flex min-h-72 min-w-72 flex-col justify-center rounded-r-md pr-4 text-left">
                 <thead className="text-2xl">
@@ -203,17 +210,30 @@ export default function AllClients({ clients, cases, payments }: Props) {
                 data={caseData}
                 columns={caseColumns}
                 onRowSelect={caseSelect}
-                tailClass="flex flex-col bg-white min-h-72 min-w-64 rounded-l-md items-center justify-between"
+                tailClass="flex flex-col flex-grow bg-white min-h-72 min-w-64 rounded-l-md items-center justify-between"
               />
             </div>
-            {session?.user.isAdmin ? (
-              <Selector
-                maxPageSize={3}
-                data={payData}
-                columns={payColumns}
-                tailClass="mt-4 flex flex-col bg-white min-h-48 min-w-80 flex-grow rounded-md items-center justify-between"
-              />
-            ) : null}
+            
+            {session?.user.isAdmin ? ( 
+              <div className="h-64 flex flex-row w-full mt-4 bg-white rounded-md justify-center"> {/* Payments Div */ }
+                <Selector
+                  selectorHighlight={false}
+                  maxPageSize={3}
+                  data={payData}
+                  columns={payColumns}
+                  tailClass="flex flex-col min-h-max flex-grow items-center justify-between"
+                  onRowSelect={paySelect}
+                />
+                <div className="flex w-1/5 items-center justify-center">
+                  <Link
+                    className="btn-blue"
+                    href={`/payment/new/${selectedClientID}`}
+                  >
+                    Add
+                  </Link>
+                </div>
+              </div>
+              ) : null}
           </div>
         </main>
       </Layout>

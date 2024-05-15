@@ -5,6 +5,8 @@ import Form from "~/components/Form";
 import Layout from "~/components/Layout";
 import { defaultPayment } from "~/utils/defaults";
 import genID from "~/utils/genID";
+import { useSession } from "next-auth/react";
+import Block from "~/components/Block";
 
 interface Props {
   cid: string;
@@ -12,6 +14,13 @@ interface Props {
 }
 
 export default function Payment({ cid, nid }: Props) {
+
+  const { data: session } = useSession();
+
+  if( !session || !session.user.isAdmin ){
+    return <Block />
+  }
+
   const obj: Payment = {
     ...defaultPayment,
     PaymentID: nid,
@@ -35,6 +44,7 @@ export default function Payment({ cid, nid }: Props) {
               identifier={(c: Payment) => c.PaymentID}
               adding={true}
               stay={false}
+              authorized={session.user.isAdmin}
             />
           </div>
         </main>
