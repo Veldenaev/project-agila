@@ -193,16 +193,18 @@ export default function AllClients({ clients, cases, payments }: Props) {
                       {selectedClient?.Email ? `${selectedClient?.Email}` : ""}
                     </td>
                   </tr>
-                  {session?.user.isAdmin &&
-                  selectedClient &&
-                  selectedClientID ? (
-                    <Link
-                      href={`/client/${selectedClientID}`}
-                      className="btn-blue"
-                    >
-                      View
-                    </Link>
-                  ) : null}
+                  <tr>
+                    {session?.user.isAdmin &&
+                    selectedClient &&
+                    selectedClientID ? (
+                      <Link
+                        href={`/client/${selectedClientID}`}
+                        className="btn-blue"
+                      >
+                        View
+                      </Link>
+                    ) : null}
+                  </tr>
                 </tbody>
               </table>
               <Selector
