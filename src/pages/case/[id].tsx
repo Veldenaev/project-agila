@@ -7,6 +7,7 @@ import {
   type Work,
   type Contract,
   type Lawyer,
+  type Client,
 } from "@prisma/client";
 import Layout from "~/components/Layout";
 import { createColumnHelper } from "@tanstack/react-table";
@@ -19,13 +20,18 @@ import { useSession } from "next-auth/react";
 import Block from "~/components/Block";
 
 interface Props {
-  theCase: Case & { contract: Contract; lawyers: Lawyer[]; works: Work[] };
+  theCase: Case & {
+    client: Client;
+    contract: Contract;
+    lawyers: Lawyer[];
+    works: Work[];
+  };
 }
 
 export default function Case({ theCase }: Props) {
   const { data: session } = useSession();
   const router = useRouter();
-  const { lawyers, works, ...obj } = theCase;
+  const { client, contract, lawyers, works, ...obj } = theCase;
   const data: Work[] = works;
   const columnHelper = createColumnHelper<Work>();
   const columns = [
@@ -58,7 +64,7 @@ export default function Case({ theCase }: Props) {
               <button
                 className="btn-red"
                 onClick={async () => {
-                  await pingDelete("case", info.getValue());
+                  await pingDelete("work", info.getValue());
                   router.refresh();
                 }}
               >

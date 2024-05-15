@@ -41,7 +41,7 @@ interface PaymentRow {
 export default function Client({ client, contract }: Props) {
   const { data: session } = useSession();
   const router = useRouter();
-  const { cases, payments, ...obj } = client;
+  const { cases, payments, contracts, ...obj } = client;
   const casesData: CaseRow[] = cases.map((c) => ({
     num: c.CaseNum,
     status: c.Status,
