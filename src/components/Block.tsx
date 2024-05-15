@@ -11,7 +11,6 @@ export default function Block({
   title,
   body = "You are not authorized to view this page",
 }: Props) {
-
   return (
     <>
       <Head>

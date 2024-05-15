@@ -5,7 +5,6 @@ import Layout from "~/components/Layout";
 import prisma from "~/lib/prisma";
 import { type Client, type Case, type Payment } from "@prisma/client";
 import Link from "next/link";
-import pingDelete from "~/utils/pingDelete";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
@@ -30,17 +29,11 @@ interface Row {
 export default function AllClients({ clients, cases, payments }: Props) {
   const { data: session } = useSession();
   const router = useRouter();
+  const [selectedClientID, setSelectedClientID] = useState<number>();
 
   useEffect(() => {
     !session ? router.push("/rerouter") : null;
   });
-
-  if (session?.user.isClient === true) {
-
-    return <Block/>
-  }
-
-  const [selectedClientID, setSelectedClientID] = useState<number>();
 
   const caseSelect = (caseNum: number) => {
     router.push(`/case/${caseNum}`);
@@ -54,7 +47,7 @@ export default function AllClients({ clients, cases, payments }: Props) {
     return clients.find(
       (clientSelect) => clientSelect.ClientID === selectedClientID,
     );
-  }, [selectedClientID]);
+  }, [selectedClientID, clients]);
 
   const clientData: Row[] = useMemo(() => {
     return clients
@@ -73,21 +66,27 @@ export default function AllClients({ clients, cases, payments }: Props) {
         id: parseInt(c.CaseNum),
       }))
       .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
-  }, [cases, selectedClient]);
+  }, [cases, selectedClientID]);
 
-  const payData: Row[] = useMemo(() => {return payments.filter((p) => p.ClientID == selectedClientID).map((p) => ({
-    amt: p.Amount,
-    date:  p.Date? (new Date(p.Date).toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      timeZoneName: 'short'
-  })) : 'No Date',
-    id: p.PaymentID
-  }))
-  .sort((a, b) => (a.amt > b.amt ? 1 : b.amt > a.amt ? -1 : 0))}, [payments, selectedClient]);
+  const payData: Row[] = useMemo(() => {
+    return payments
+      .filter((p) => p.ClientID == selectedClientID)
+      .map((p) => ({
+        amt: p.Amount,
+        date: p.Date
+          ? new Date(p.Date).toLocaleString("en-US", {
+              year: "numeric",
+              month: "numeric",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              timeZoneName: "short",
+            })
+          : "No Date",
+        id: p.PaymentID,
+      }))
+      .sort((a, b) => (a.amt > b.amt ? 1 : b.amt > a.amt ? -1 : 0));
+  }, [selectedClientID, payments]);
 
   const columnHelper = createColumnHelper<Row>();
 
@@ -97,7 +96,7 @@ export default function AllClients({ clients, cases, payments }: Props) {
         header: "Account Name",
       }),
     ];
-  }, []);
+  }, [columnHelper]);
 
   const caseColumns = useMemo(() => {
     return [
@@ -105,21 +104,26 @@ export default function AllClients({ clients, cases, payments }: Props) {
         header: "Case Title",
       }),
     ];
-  }, []);
+  }, [columnHelper]);
 
-  const payColumns = useMemo(() => {return [
+  const payColumns = useMemo(() => {
+    return [
+      columnHelper.accessor("id", {
+        header: "Payment Ref. No.",
+        enableColumnFilter: false,
+      }),
+      columnHelper.accessor("amt", {
+        header: "Amount",
+      }),
+      columnHelper.accessor("date", {
+        header: "Date",
+      }),
+    ];
+  }, [columnHelper]);
 
-    columnHelper.accessor("id", {
-      header: "Payment Ref. No.",
-      enableColumnFilter: false,
-    }),
-    columnHelper.accessor("amt", {
-      header: "Amount",
-    }),
-    columnHelper.accessor("date", {
-      header: "Date",
-    }),
-  ]}, []);
+  if (session?.user.isClient === true) {
+    return <Block />;
+  }
 
   return (
     <>
@@ -129,7 +133,7 @@ export default function AllClients({ clients, cases, payments }: Props) {
       <Layout>
         <main className="flex min-h-screen flex-col">
           <div className="z-10 my-auto flex flex-col items-center justify-center px-4 py-16 ">
-            <div className="flex flex-row items-center gap-6 mb-8">
+            <div className="mb-8 flex flex-row items-center gap-6">
               <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-[3rem]">
                 Accounts
               </h1>
@@ -182,9 +186,16 @@ export default function AllClients({ clients, cases, payments }: Props) {
                       {selectedClient?.Email ? `${selectedClient?.Email}` : ""}
                     </td>
                   </tr>
-                  { (session?.user.isAdmin && selectedClient && selectedClientID) ? 
-                    ( <Link href={`/client/${selectedClientID}`} className="btn-blue">View</Link> ) : null
-                  }
+                  {session?.user.isAdmin &&
+                  selectedClient &&
+                  selectedClientID ? (
+                    <Link
+                      href={`/client/${selectedClientID}`}
+                      className="btn-blue"
+                    >
+                      View
+                    </Link>
+                  ) : null}
                 </tbody>
               </table>
               <Selector
@@ -196,7 +207,12 @@ export default function AllClients({ clients, cases, payments }: Props) {
               />
             </div>
             {session?.user.isAdmin ? (
-              <Selector onRowSelect={paySelect} selectorHighlight={false} maxPageSize={3} data={payData} columns={payColumns} tailClass="mt-4 flex flex-col bg-white min-h-48 min-w-80 flex-grow rounded-md items-center justify-between"/>
+              <Selector
+                maxPageSize={3}
+                data={payData}
+                columns={payColumns}
+                tailClass="mt-4 flex flex-col bg-white min-h-48 min-w-80 flex-grow rounded-md items-center justify-between"
+              />
             ) : null}
           </div>
         </main>
@@ -210,7 +226,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   let clients: Client[] = [];
   let cases: Case[] = [];
-  let payments: Payment[] | { Date?: string; PaymentID: number; ClientID: number; Amount: number; }[]= [];
+  let payments:
+    | Payment[]
+    | { Date?: string; PaymentID: number; ClientID: number; Amount: number }[] =
+    [];
 
   if (session?.user.isAdmin) {
     clients = await prisma.client.findMany();

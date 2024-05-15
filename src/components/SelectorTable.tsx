@@ -8,9 +8,8 @@ import {
   type ColumnDef,
   flexRender,
 } from "@tanstack/react-table";
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useState } from "react";
 import Filter from "./Filter";
-import { AnyCnameRecord } from "dns";
 
 interface Props<T> {
   data: T[];
@@ -28,6 +27,7 @@ export default function Table<T>({
   columns,
   onRowSelect = undefined,
   tailClass = "flex flex-col bg-white min-w-64 rounded-md items-center",
+  maxPageSize = 10,
 }: Props<T>) {
   const [selectedID, setSelectedID] = useState<number>(1);
 

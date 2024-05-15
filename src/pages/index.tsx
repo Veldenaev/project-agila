@@ -5,9 +5,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { getCsrfToken } from "next-auth/react";
 
-
 export default function Login({ csrfToken }: any) {
-
   const { data: session } = useSession();
 
   const router = useRouter();
