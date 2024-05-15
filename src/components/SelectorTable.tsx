@@ -27,7 +27,6 @@ export default function Table<T>({
   columns,
   onRowSelect = undefined,
   tailClass = "flex flex-col bg-white min-w-64 rounded-md items-center",
-  maxPageSize = 10,
 }: Props<T>) {
   const [selectedID, setSelectedID] = useState<number>(1);
 
@@ -55,6 +54,9 @@ export default function Table<T>({
       pagination,
     },
   });
+
+  const nextArrowClass = table.getCanNextPage() ? "rounded-md border p-1 transition-colors duration-75 hover:bg-blue-50" : "rounded-md border p-1 ";
+  const prevArrowClass = table.getCanPreviousPage() ? "rounded-md border p-1 transition-colors duration-75 hover:bg-blue-50" : "rounded-md border p-1 ";
 
   return (
     <>
@@ -110,7 +112,7 @@ export default function Table<T>({
                 >
                   {row.getVisibleCells().map((cell) => {
                     return (
-                      <td key={cell.id} className="px-2 py-1">
+                      <td key={cell.id} className="px-2 py-1 rounded-lg">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext(),
@@ -143,28 +145,28 @@ export default function Table<T>({
           <div className="flex flex-col items-center gap-2 p-2">
             <div className="flex items-center gap-2">
               <button
-                className="rounded border p-1"
+                className={prevArrowClass}
                 onClick={() => table.firstPage()}
                 disabled={!table.getCanPreviousPage()}
               >
                 {"<<"}
               </button>
               <button
-                className="rounded border p-1"
+                className={prevArrowClass}
                 onClick={() => table.previousPage()}
                 disabled={!table.getCanPreviousPage()}
               >
                 {"<"}
               </button>
               <button
-                className="rounded border p-1"
+                className={nextArrowClass}
                 onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage()}
               >
                 {">"}
               </button>
               <button
-                className="rounded border p-1"
+                className={nextArrowClass}
                 onClick={() => table.lastPage()}
                 disabled={!table.getCanNextPage()}
               >

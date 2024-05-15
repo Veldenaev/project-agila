@@ -90,10 +90,12 @@ export default function Case({ theCase }: Props) {
       <Head>
         <title>Case Information</title>
       </Head>
+
       <Layout>
-        <main className="flex min-h-screen flex-col">
-          <div className="z-10 my-auto flex flex-col items-center justify-center gap-5">
-            <div className="flex flex-row gap-10">
+        <main className="flex flex-row w-screen h-screen justify-center items-center">
+            <div className="flex flex-row justify-center h-1/2 w-5/6">
+
+              <div className="h-full"> {/* Form DIV*/}
               <Form
                 obj={obj}
                 type="case"
@@ -105,26 +107,54 @@ export default function Case({ theCase }: Props) {
                 adding={false}
                 stay={true}
                 authorized={session.user.isAdmin}
+                outerTailClass="z-10 mx-auto my-auto flex flex-col h-full"
+                firstTailClass="flex flex-row items-center justify-center gap-6"
+                secondTailClass="grid grid-cols-2 gap-3 rounded-l-md bg-white h-full p-3"
               />
-              <div className="flex flex-col gap-10">
-                <div className="flex flex-col justify-center gap-5">
-                  <div className="flex flex-row items-center justify-center gap-6">
+              </div>
+              <div className="h-full"> {/* Assigned Lawyers DIV */}
+                <div className="flex flex-col justify-center h-full"> 
+
                     <h1 className="text-center font-bold tracking-tight text-white sm:text-[2rem]">
-                      Work Involved
+                      Lawyers
                     </h1>
-                    {session.user.isAdmin && (
-                      <Link
-                        className="btn-blue"
-                        href={`/work/new/${theCase.CaseNum}`}
-                      >
-                        <p>Add</p>
-                      </Link>
-                    )}
-                  </div>
-                  <Table data={data} columns={columns} />
-                  <p className="flex flex-row items-center justify-between rounded-md bg-white p-2">
+
+                    <div className="flex flex-col gap-1 bg-white pt-5 flex-grow">
+                      {lawyers.map((lawyer, index) => (
+                        <div
+                          key={index}
+                          className="font-bold flex flex-row items-center justify-between gap-1 px-3 py-2"
+                        >
+                          <p>{`${lawyer.LastName}, ${lawyer.FirstName} ${lawyer.MiddleName}`}</p>
+                          {/* <button className="btn-red">Delete</button> */}
+                        </div>
+                      ))}
+                    </div>
+                </div>
+              </div>
+              <div className="flex h-full flex-col"> {/* Works DIV */}
+                    <div className="flex flex-row items-center justify-center gap-6">
+
+                      <h1 className="text-center font-bold tracking-tight text-white sm:text-[2rem]">
+                        Work Involved
+                      </h1>
+
+                      {(session.user.isAdmin || session.user.isLawyer) && (
+                        <Link
+                          className="btn-blue"
+                          href={`/work/new/${theCase.CaseNum}`}
+                        >
+                          <p>Add</p>
+                        </Link>
+                      )}
+
+                    </div>
+
+                    <Table maxPageSize={8} data={data} columns={columns} tailClass="flex flex-col bg-white min-w-64 rounded-tr-md items-center flex-grow justify-between"/>
+
+                    <p className="flex flex-row items-center justify-start gap-5 rounded-br-md bg-white p-2">
                     <span className="rounded-md bg-gray-700 px-3 py-1 text-white">
-                      Total
+                      Total Billing
                     </span>
                     <span className="mr-1 font-bold">
                       Php{" "}
@@ -132,27 +162,13 @@ export default function Case({ theCase }: Props) {
                         .map((work) => work.FeeAmt ?? 0)
                         .reduce((acc, cur) => acc + cur, 0)}
                     </span>
+                    
                   </p>
-                </div>
-                <div className="flex flex-col justify-center gap-5">
-                  <h1 className="text-center font-bold tracking-tight text-white sm:text-[2rem]">
-                    Assigned Lawyers
-                  </h1>
-                  <div className="flex flex-col gap-1 rounded-md bg-white">
-                    {lawyers.map((lawyer, index) => (
-                      <div
-                        key={index}
-                        className="flex flex-row items-center justify-between gap-1 px-3 py-2"
-                      >
-                        <p>{`${lawyer.LastName}, ${lawyer.FirstName} ${lawyer.MiddleName}`}</p>
-                        {/* <button className="btn-red">Delete</button> */}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+
               </div>
+
             </div>
-          </div>
+
         </main>
       </Layout>
     </>
