@@ -1,9 +1,10 @@
 import Layout from "~/components/Layout";
 import Head from "next/head";
 import { useSession } from "next-auth/react";
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 import { getCsrfToken } from "next-auth/react";
+
 
 export default function Login({ csrfToken }: any) {
 
@@ -13,24 +14,23 @@ export default function Login({ csrfToken }: any) {
 
   const { error } = router.query;
 
-  const errorMessage = {
-    Signin: "Try signing with a different account.",
-    OAuthSignin: "Try signing with a different provider.",
-    OAuthCallback: "Could not complete your sign-in request.",
-    OAuthCreateAccount: "Could not create account.",
-    EmailCreateAccount: "Could not create account with email.",
-    Callback: "Could not process the sign-in callback.",
-    OAuthAccountNotLinked: "The account is not linked to the current user.",
-    EmailSignin: "Check your email address.",
-    CredentialsSignin: "Invalid username or password.",
-    default: "Unable to sign in."
-  }[error] || error;
+  const errorMessage =
+    {
+      Signin: "Try signing with a different account.",
+      OAuthSignin: "Try signing with a different provider.",
+      OAuthCallback: "Could not complete your sign-in request.",
+      OAuthCreateAccount: "Could not create account.",
+      EmailCreateAccount: "Could not create account with email.",
+      Callback: "Could not process the sign-in callback.",
+      OAuthAccountNotLinked: "The account is not linked to the current user.",
+      EmailSignin: "Check your email address.",
+      CredentialsSignin: "Invalid username or password.",
+      default: "Unable to sign in.",
+    }[error] || error;
 
   useEffect(() => {
-    session ? (
-      router.push('/rerouter')
-    ) : null;
-    })
+    session ? router.push("/rerouter") : null;
+  });
 
   return (
     <>
@@ -43,8 +43,9 @@ export default function Login({ csrfToken }: any) {
         <main className="flex min-h-screen flex-col items-center">
           <div className="z-10 mb-auto mt-auto flex flex-row items-center gap-16 p-8">
             <div className="flex flex-col items-center gap-2">
-              <h1 className="text-5xl font-sans tracking-tight text-white sm:text-[4rem] text-center">
-                <span className="text-7xl">P</span>ROJECT <span className="text-7xl">A</span>GILA
+              <h1 className="text-center font-sans text-5xl tracking-tight text-white sm:text-[4rem]">
+                <span className="text-7xl">P</span>ROJECT{" "}
+                <span className="text-7xl">A</span>GILA
               </h1>
               {/* <h2 className="text-2xl tracking-tight text-center text-white sm:text-[1.5rem]">
                 Attorneys and Counsellors at Law
@@ -61,7 +62,11 @@ export default function Login({ csrfToken }: any) {
               )}
 
               <form method="post" action="/api/auth/callback/credentials">
-                <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
+                <input
+                  name="csrfToken"
+                  type="hidden"
+                  defaultValue={csrfToken}
+                />
                 <div className="mb-4 font-sans">
                   <label className="block text-sm font-medium text-gray-700">
                     Username
@@ -109,4 +114,3 @@ export async function getServerSideProps(context: any) {
     },
   };
 }
-

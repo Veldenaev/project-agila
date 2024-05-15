@@ -71,7 +71,7 @@ export default function Home() {
                         <Link
                           key={index}
                           href={route}
-                          className="z-10 flex h-full items-center justify-center rounded-lg bg-agila px-4 py-2 text-lg font-bold hover:bg-agila/80"
+                          className="bg-agila hover:bg-agila/80 z-10 flex h-full items-center justify-center rounded-lg px-4 py-2 text-lg font-bold"
                         >
                           {text}
                         </Link>

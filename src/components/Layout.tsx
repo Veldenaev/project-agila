@@ -9,17 +9,15 @@ interface Props {
   shadow?: boolean;
 }
 
-export default function Layout({ children, shadow=true }: Props) {
-
+export default function Layout({ children, shadow = true }: Props) {
   return (
-
     <>
       <Head>
         <link rel="icon" href="/favicon.png" />
       </Head>
       <div className="inset absolute z-10 h-full w-full bg-black bg-opacity-90" />
       {/* <Image src={bookshelfbg} fill alt="Bookshelf background image"/> */}
-      { shadow ? <Shadow /> : null} 
+      {shadow ? <Shadow /> : null}
       {children}
     </>
   );

@@ -8,7 +8,7 @@ export default {
       //   agila: "gray-900",
       // },
       fontFamily: {
-        sans: ['Avenir'],
+        sans: ["Avenir"],
       },
       backgroundImage: {
         bookshelf: "url('~/assets/bookshelfbg.jpg')",

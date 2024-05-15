@@ -26,13 +26,17 @@ test("'Access as admin (all cases)' button works", async ({ page }) => {
 
 test("'Access as admin (all lawyers)' button works", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("link", { name: "Access as admin (all lawyers)" }).click();
+  await page
+    .getByRole("link", { name: "Access as admin (all lawyers)" })
+    .click();
   await expect(page).toHaveURL("/lawyer/all");
 });
 
 test("'Access as admin (all clients)' button works", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("link", { name: "Access as admin (all clients)" }).click();
+  await page
+    .getByRole("link", { name: "Access as admin (all clients)" })
+    .click();
   await expect(page).toHaveURL("/client/all");
 });
 
