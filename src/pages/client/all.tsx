@@ -39,6 +39,10 @@ export default function AllClients({ clients, cases, payments }: Props) {
     router.push(`/case/${caseNum}`);
   };
 
+  const paySelect = (payID: number) => {
+    router.push(`/payment/${payID}`);
+  };
+
   const selectedClient: Client | undefined = useMemo(() => {
     return clients.find(
       (clientSelect) => clientSelect.ClientID === selectedClientID,
@@ -48,7 +52,7 @@ export default function AllClients({ clients, cases, payments }: Props) {
   const clientData: Row[] = useMemo(() => {
     return clients
       .map((client) => ({
-        name: `${client.LastName}, ${client.FirstName} ${client.MiddleName}`,
+        name: (client.LastName && client.FirstName) ? `${client.LastName}, ${client.FirstName} ${client.MiddleName ? client.MiddleName: ''}` : client.CompanyName ? client.CompanyName : 'No Name',
         id: client.ClientID,
       }))
       .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));

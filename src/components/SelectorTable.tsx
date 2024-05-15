@@ -21,6 +21,7 @@ interface Props<T> {
 }
 
 export default function Table<T>({
+  maxPageSize = 5,
   selectorHighlight = true,
   data,
   columns,
