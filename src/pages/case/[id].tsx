@@ -23,10 +23,6 @@ interface Props {
 }
 
 export default function Case({ theCase }: Props) {
-  if (theCase === null) {
-    return <Block title="Case not found" body="Case not found" />;
-  }
-
   const { data: session } = useSession();
   const router = useRouter();
   const { lawyers, works, ...obj } = theCase;
@@ -75,6 +71,10 @@ export default function Case({ theCase }: Props) {
       enableSorting: false,
     }),
   ];
+
+  if (theCase === null) {
+    return <Block title="Case not found" body="Case not found" />;
+  }
 
   if (
     session == null ||

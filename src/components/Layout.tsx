@@ -1,8 +1,6 @@
 import Head from "next/head";
 import React, { type ReactNode } from "react";
 import Shadow from "./Shadow";
-import Image from "next/image";
-import bookshelfbg from "/assets/bookshelfbg.jpg";
 
 interface Props {
   children: ReactNode;

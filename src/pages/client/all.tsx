@@ -5,7 +5,6 @@ import Layout from "~/components/Layout";
 import prisma from "~/lib/prisma";
 import { type Client, type Case, type Payment } from "@prisma/client";
 import Link from "next/link";
-import pingDelete from "~/utils/pingDelete";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
@@ -30,17 +29,11 @@ interface Row {
 export default function AllClients({ clients, cases, payments }: Props) {
   const { data: session } = useSession();
   const router = useRouter();
+  const [selectedClientID, setSelectedClientID] = useState<number>();
 
   useEffect(() => {
     !session ? router.push("/rerouter") : null;
   });
-
-  if (session?.user.isClient === true) {
-
-    return <Block/>
-  }
-
-  const [selectedClientID, setSelectedClientID] = useState<number>();
 
   const caseSelect = (caseNum: number) => {
     router.push(`/case/${caseNum}`);
@@ -50,7 +43,7 @@ export default function AllClients({ clients, cases, payments }: Props) {
     return clients.find(
       (clientSelect) => clientSelect.ClientID === selectedClientID,
     );
-  }, [selectedClientID]);
+  }, [selectedClientID, clients]);
 
   const clientData: Row[] = useMemo(() => {
     return clients
@@ -69,7 +62,7 @@ export default function AllClients({ clients, cases, payments }: Props) {
         id: parseInt(c.CaseNum),
       }))
       .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
-  }, [cases, selectedClient]);
+  }, [cases, selectedClientID]);
 
   const payData: Row[] = useMemo(() => {return payments.filter((p) => p.ClientID == selectedClientID).map((p) => ({
     amt: p.Amount,
@@ -83,7 +76,7 @@ export default function AllClients({ clients, cases, payments }: Props) {
   })) : 'No Date',
     id: p.PaymentID
   }))
-  .sort((a, b) => (a.amt > b.amt ? 1 : b.amt > a.amt ? -1 : 0))}, [payments, selectedClient]);
+  .sort((a, b) => (a.amt > b.amt ? 1 : b.amt > a.amt ? -1 : 0))}, [selectedClientID, payments]);
 
   const columnHelper = createColumnHelper<Row>();
 
@@ -93,7 +86,7 @@ export default function AllClients({ clients, cases, payments }: Props) {
         header: "Account Name",
       }),
     ];
-  }, []);
+  }, [columnHelper]);
 
   const caseColumns = useMemo(() => {
     return [
@@ -101,10 +94,9 @@ export default function AllClients({ clients, cases, payments }: Props) {
         header: "Case Title",
       }),
     ];
-  }, []);
+  }, [columnHelper]);
 
   const payColumns = useMemo(() => {return [
-
     columnHelper.accessor("id", {
       header: "Payment Ref. No.",
       enableColumnFilter: false,
@@ -115,7 +107,11 @@ export default function AllClients({ clients, cases, payments }: Props) {
     columnHelper.accessor("date", {
       header: "Date",
     }),
-  ]}, []);
+  ]}, [columnHelper]);
+
+  if (session?.user.isClient === true) {
+    return <Block/>
+  }
 
   return (
     <>

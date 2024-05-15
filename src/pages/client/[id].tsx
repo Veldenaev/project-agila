@@ -39,10 +39,6 @@ interface PaymentRow {
 }
 
 export default function Client({ client, contract }: Props) {
-  if (client === null) {
-    return <Block title="Client not found" body="Client not found" />;
-  }
-
   const { data: session } = useSession();
   const router = useRouter();
   const { cases, payments, ...obj } = client;
@@ -135,6 +131,10 @@ export default function Client({ client, contract }: Props) {
       },
     }),
   ];
+
+  if (client === null) {
+    return <Block title="Client not found" body="Client not found" />;
+  }
 
   if (
     session == null ||
