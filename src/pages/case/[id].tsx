@@ -93,7 +93,7 @@ export default function Case({ theCase }: Props) {
 
       <Layout>
         <main className="flex flex-row w-screen h-screen justify-center items-center">
-            <div className="flex flex-row justify-center h-1/2 w-5/6">
+            <div className="z-10 flex flex-row justify-center h-104 min-w-308 w-5/6">
 
               <div className="h-full"> {/* Form DIV*/}
               <Form
@@ -150,7 +150,7 @@ export default function Case({ theCase }: Props) {
 
                     </div>
 
-                    <Table maxPageSize={8} data={data} columns={columns} tailClass="flex flex-col bg-white min-w-64 rounded-tr-md items-center flex-grow justify-between"/>
+                    <Table selectorHighlight={false} maxPageSize={5} data={data} columns={columns} tailClass="flex flex-col bg-white min-w-64 rounded-tr-md items-center flex-grow justify-between"/>
 
                     <p className="flex flex-row items-center justify-start gap-5 rounded-br-md bg-white p-2">
                     <span className="rounded-md bg-gray-700 px-3 py-1 text-white">
