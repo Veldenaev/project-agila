@@ -17,6 +17,7 @@ export default function Shadow() {
             <p>
               Signed in as{" "}
               <span className="text-blue-400">{session.user.name}</span>
+              {session.user.isAdmin && <span> (Admin)</span>}
             </p>
             <button className="btn-blue" onClick={handleSignOut}>
               Logout
