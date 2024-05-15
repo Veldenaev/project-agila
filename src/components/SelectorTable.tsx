@@ -14,10 +14,11 @@ import { AnyCnameRecord } from "dns";
 
 interface Props<T> {
   data: T[];
-  columns: ColumnDef<T>[];
-  onRowSelect: any;
-  tailClass: string | undefined;
-  selectorHighlight: boolean;
+  columns: ColumnDef<T>[] | any;
+  onRowSelect?: any;
+  tailClass?: string;
+  selectorHighlight?: boolean;
+  maxPageSize?: number;
 }
 
 export default function Table<T>({
@@ -31,14 +32,14 @@ export default function Table<T>({
 
   const handleSelect = (selectedRowID: number) => {
     setSelectedID(selectedRowID);
-    if (onRowSelect !== undefined) {
+    if (onRowSelect) {
       onRowSelect(selectedRowID);
     }
   };
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 5,
+    pageSize: maxPageSize,
   });
 
   const table = useReactTable({

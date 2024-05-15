@@ -11,7 +11,7 @@ export default function Shadow() {
   return (
     <>
       <div className="absolute z-20 flex w-full flex-row items-center justify-between p-5 text-white">
-        <Link href="/">Project Agila</Link>
+        <Link href="/rerouter">Project Agila</Link>
         {session ? (
           <div className="flex flex-row items-center gap-6">
             <p>Signed in as {session.user.name}</p>
