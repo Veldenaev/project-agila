@@ -14,7 +14,10 @@ export default function Shadow() {
         <Link href="/rerouter">Project Agila</Link>
         {session ? (
           <div className="flex flex-row items-center gap-6">
-            <p>Signed in as {session.user.name}</p>
+            <p>
+              Signed in as{" "}
+              <span className="text-blue-400">{session.user.name}</span>
+            </p>
             <button className="btn-blue" onClick={handleSignOut}>
               Logout
             </button>
