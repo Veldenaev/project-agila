@@ -23,9 +23,8 @@ interface Props {
 }
 
 export default function Case({ theCase }: Props) {
-
   if (theCase === null) {
-    return <Block title="Case not found" body="Case not found" />
+    return <Block title="Case not found" body="Case not found" />;
   }
 
   const { data: session } = useSession();

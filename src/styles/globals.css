@@ -15,8 +15,8 @@
 }
 
 @font-face {
-  font-family: 'Avenir';
-  src: url('~/assets/AvenirLTStd-Roman.otf') format('opentype');
+  font-family: "Avenir";
+  src: url("~/assets/AvenirLTStd-Roman.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
 }

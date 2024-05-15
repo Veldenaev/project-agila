@@ -6,7 +6,7 @@ export default function Shadow() {
 
   const handleSignOut = async () => {
     await signOut({});
-  }
+  };
 
   return (
     <>

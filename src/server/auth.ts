@@ -39,7 +39,6 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 
-
 export const authOptions: NextAuthOptions = {
   callbacks: {
     jwt: ({ token, user }) => {
@@ -53,11 +52,11 @@ export const authOptions: NextAuthOptions = {
       user: token.user,
     }),
     async redirect({ url, baseUrl }) {
-      return baseUrl + '/rerouter';
-    }
+      return baseUrl + "/rerouter";
+    },
   },
   pages: {
-    signIn: '/',
+    signIn: "/",
   },
   adapter: PrismaAdapter(db),
   providers: [
@@ -128,7 +127,6 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
   },
-
 };
 
 /**

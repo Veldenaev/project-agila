@@ -39,9 +39,8 @@ interface PaymentRow {
 }
 
 export default function Client({ client, contract }: Props) {
-
   if (client === null) {
-    return <Block title="Client not found" body="Client not found" />
+    return <Block title="Client not found" body="Client not found" />;
   }
 
   const { data: session } = useSession();
@@ -236,11 +235,13 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       contracts: true,
     },
   });
-  const contract = client ? await prisma.contract.findUnique({
-    where: {
-      ContractID: Number(client?.ContractID),
-    },
-  }) : null;
+  const contract = client
+    ? await prisma.contract.findUnique({
+        where: {
+          ContractID: Number(client?.ContractID),
+        },
+      })
+    : null;
   return {
     props: {
       client: JSON.parse(JSON.stringify(client)),
