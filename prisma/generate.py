@@ -104,7 +104,7 @@ class Client:
         self.TelNum = gen_tel()
         self.CityAdd = gen_city()
         self.Remarks = gen_sentence()
-        self.user = f"{self.FirstName.lower()}_{self.LastName.lower()}"
+        self.user = f"{self.FirstName[0].lower()}{self.MiddleName[0].lower()}{self.LastName.lower()}"
         self.passw = "password"
         self.CompanyName = gen_company()
 
@@ -138,7 +138,7 @@ class Lawyer:
         self.TelNum = gen_tel()
         self.CityAdd = gen_city()
         self.isManager = random.randint(1, 100) == 1
-        self.user = f"{self.FirstName.lower()}_{self.LastName.lower()}"
+        self.user = f"{self.FirstName[0].lower()}{self.MiddleName[0].lower()}{self.LastName.lower()}"
         self.passw = "password"
 
     def __repr__(self) -> str:
@@ -247,7 +247,7 @@ class Work:
         return f"({self.WorkID}, '{self.CaseNum}', '{self.Type}', '{self.Date}', '{self.Remarks}', '{self.location}', '{self.filename}', '{self.Title}', {self.FeeAmt})"
 
 
-MAX = 10**2
+MAX = 10**3
 
 client_id_pool = [*set(gen_id() for _ in range(MAX))]
 lawyer_id_pool = [*set(gen_id() for _ in range(MAX))]
