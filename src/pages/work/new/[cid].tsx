@@ -5,6 +5,7 @@ import Form from "~/components/Form";
 import Layout from "~/components/Layout";
 import { defaultWork } from "~/utils/defaults";
 import genID from "~/utils/genID";
+import { useSession } from "next-auth/react";
 
 interface Props {
   cid: string;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export default function Work({ cid, nid }: Props) {
+  const { data: session } = useSession();
   const obj: Work = {
     ...defaultWork,
     WorkID: nid,
@@ -35,6 +37,7 @@ export default function Work({ cid, nid }: Props) {
               identifier={(w: Work) => w.WorkID}
               adding={true}
               stay={false}
+              authorized={session?.user.isAdmin ?? false}
             />
           </div>
         </main>
