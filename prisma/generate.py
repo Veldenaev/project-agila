@@ -257,16 +257,20 @@ case_id_pool = [*set(gen_digit_str(5) for _ in range(MAX))]
 payment_id_pool = [*set(gen_id() for _ in range(MAX))]
 
 case_to_lawyer_pool = [
-    *set(zip(
-        [random.choice(case_id_pool) for _ in range(MAX)],
-        [random.choice(lawyer_id_pool) for _ in range(MAX)],
-    ))
+    *set(
+        zip(
+            [random.choice(case_id_pool) for _ in range(MAX)],
+            [random.choice(lawyer_id_pool) for _ in range(MAX)],
+        )
+    )
 ]
 lawyer_to_work_pool = [
-    *set(zip(
-        [random.choice(case_to_lawyer_pool)[1] for _ in range(MAX)],
-        [random.choice(work_id_pool) for _ in range(MAX)]
-    ))
+    *set(
+        zip(
+            [random.choice(case_to_lawyer_pool)[1] for _ in range(MAX)],
+            [random.choice(work_id_pool) for _ in range(MAX)],
+        )
+    )
 ]
 
 payment_client_pool = [
@@ -291,7 +295,7 @@ work_case_pool = [
 case_contract_client_pool = [
     *zip(
         [*set(random.choice(case_to_lawyer_pool)[0] for _ in range(MAX))],
-        [random.choice(client_contract_pool) for _ in range(MAX)]
+        [random.choice(client_contract_pool) for _ in range(MAX)],
     )
 ]
 contract_client_root_pool = [
