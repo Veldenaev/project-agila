@@ -4,7 +4,7 @@ import { type Lawyer, type Case, type Client } from "@prisma/client";
 import Head from "next/head";
 import prisma from "../../lib/prisma";
 import Layout from "~/components/Layout";
-import Table from "~/components/Table";
+import Table from "~/components/SelectorTable";
 import Form from "~/components/Form";
 import pingDelete from "~/utils/pingDelete";
 import { useRouter } from "next/navigation";

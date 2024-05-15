@@ -2,7 +2,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { type GetServerSideProps } from "next";
 import Head from "next/head";
 import Layout from "~/components/Layout";
-import MyTable from "~/components/Table";
+import MyTable from "~/components/SelectorTable";
 import prisma from "~/lib/prisma";
 import { type Lawyer } from "@prisma/client";
 import pingDelete from "~/utils/pingDelete";
