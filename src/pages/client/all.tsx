@@ -64,19 +64,25 @@ export default function AllClients({ clients, cases, payments }: Props) {
       .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
   }, [cases, selectedClientID]);
 
-  const payData: Row[] = useMemo(() => {return payments.filter((p) => p.ClientID == selectedClientID).map((p) => ({
-    amt: p.Amount,
-    date:  p.Date? (new Date(p.Date).toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      timeZoneName: 'short'
-  })) : 'No Date',
-    id: p.PaymentID
-  }))
-  .sort((a, b) => (a.amt > b.amt ? 1 : b.amt > a.amt ? -1 : 0))}, [selectedClientID, payments]);
+  const payData: Row[] = useMemo(() => {
+    return payments
+      .filter((p) => p.ClientID == selectedClientID)
+      .map((p) => ({
+        amt: p.Amount,
+        date: p.Date
+          ? new Date(p.Date).toLocaleString("en-US", {
+              year: "numeric",
+              month: "numeric",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              timeZoneName: "short",
+            })
+          : "No Date",
+        id: p.PaymentID,
+      }))
+      .sort((a, b) => (a.amt > b.amt ? 1 : b.amt > a.amt ? -1 : 0));
+  }, [selectedClientID, payments]);
 
   const columnHelper = createColumnHelper<Row>();
 
@@ -96,21 +102,23 @@ export default function AllClients({ clients, cases, payments }: Props) {
     ];
   }, [columnHelper]);
 
-  const payColumns = useMemo(() => {return [
-    columnHelper.accessor("id", {
-      header: "Payment Ref. No.",
-      enableColumnFilter: false,
-    }),
-    columnHelper.accessor("amt", {
-      header: "Amount",
-    }),
-    columnHelper.accessor("date", {
-      header: "Date",
-    }),
-  ]}, [columnHelper]);
+  const payColumns = useMemo(() => {
+    return [
+      columnHelper.accessor("id", {
+        header: "Payment Ref. No.",
+        enableColumnFilter: false,
+      }),
+      columnHelper.accessor("amt", {
+        header: "Amount",
+      }),
+      columnHelper.accessor("date", {
+        header: "Date",
+      }),
+    ];
+  }, [columnHelper]);
 
   if (session?.user.isClient === true) {
-    return <Block/>
+    return <Block />;
   }
 
   return (
@@ -121,7 +129,7 @@ export default function AllClients({ clients, cases, payments }: Props) {
       <Layout>
         <main className="flex min-h-screen flex-col">
           <div className="z-10 my-auto flex flex-col items-center justify-center px-4 py-16 ">
-            <div className="flex flex-row items-center gap-6 mb-8">
+            <div className="mb-8 flex flex-row items-center gap-6">
               <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-[3rem]">
                 Accounts
               </h1>
@@ -174,9 +182,16 @@ export default function AllClients({ clients, cases, payments }: Props) {
                       {selectedClient?.Email ? `${selectedClient?.Email}` : ""}
                     </td>
                   </tr>
-                  { (session?.user.isAdmin && selectedClient && selectedClientID) ? 
-                    ( <Link href={`/client/${selectedClientID}`} className="btn-blue">View</Link> ) : null
-                  }
+                  {session?.user.isAdmin &&
+                  selectedClient &&
+                  selectedClientID ? (
+                    <Link
+                      href={`/client/${selectedClientID}`}
+                      className="btn-blue"
+                    >
+                      View
+                    </Link>
+                  ) : null}
                 </tbody>
               </table>
               <Selector
@@ -188,7 +203,12 @@ export default function AllClients({ clients, cases, payments }: Props) {
               />
             </div>
             {session?.user.isAdmin ? (
-              <Selector maxPageSize={3} data={payData} columns={payColumns} tailClass="mt-4 flex flex-col bg-white min-h-48 min-w-80 flex-grow rounded-md items-center justify-between"/>
+              <Selector
+                maxPageSize={3}
+                data={payData}
+                columns={payColumns}
+                tailClass="mt-4 flex flex-col bg-white min-h-48 min-w-80 flex-grow rounded-md items-center justify-between"
+              />
             ) : null}
           </div>
         </main>
@@ -202,7 +222,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   let clients: Client[] = [];
   let cases: Case[] = [];
-  let payments: Payment[] | { Date?: string; PaymentID: number; ClientID: number; Amount: number; }[]= [];
+  let payments:
+    | Payment[]
+    | { Date?: string; PaymentID: number; ClientID: number; Amount: number }[] =
+    [];
 
   if (session?.user.isAdmin) {
     clients = await prisma.client.findMany();

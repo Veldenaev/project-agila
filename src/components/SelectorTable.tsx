@@ -26,7 +26,7 @@ export default function Table<T>({
   columns,
   onRowSelect = undefined,
   tailClass = "flex flex-col bg-white min-w-64 rounded-md items-center",
-	maxPageSize = 10,
+  maxPageSize = 10,
 }: Props<T>) {
   const [selectedID, setSelectedID] = useState<number>(1);
 
