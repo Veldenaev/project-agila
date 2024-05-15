@@ -8,7 +8,7 @@ import {
 } from "@prisma/client";
 import Head from "next/head";
 import prisma from "../../lib/prisma";
-import Table from "~/components/Table";
+import Table from "~/components/SelectorTable";
 import Form from "~/components/Form";
 import Link from "next/link";
 import Layout from "~/components/Layout";
@@ -39,6 +39,11 @@ interface PaymentRow {
 }
 
 export default function Client({ client, contract }: Props) {
+
+  if (client === null) {
+    return <Block title="Client not found" body="Client not found" />
+  }
+
   const { data: session } = useSession();
   const router = useRouter();
   const { cases, payments, ...obj } = client;
@@ -231,11 +236,11 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       contracts: true,
     },
   });
-  const contract = await prisma.contract.findUnique({
+  const contract = client ? await prisma.contract.findUnique({
     where: {
       ContractID: Number(client?.ContractID),
     },
-  });
+  }) : null;
   return {
     props: {
       client: JSON.parse(JSON.stringify(client)),

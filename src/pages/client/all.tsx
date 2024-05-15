@@ -110,6 +110,7 @@ export default function AllClients({ clients, cases, payments }: Props) {
                   <tr>
                     <td >{selectedClient?.Email ? `${selectedClient?.Email}` : ''}</td>
                   </tr>
+                  
                 </tbody>
               </table>
               <Selector selectorHighlight={false} data={caseData} columns={caseColumns} onRowSelect={caseSelect} tailClass="flex flex-col bg-white min-h-72 min-w-64 rounded-l-md items-center justify-between"/>

@@ -4,9 +4,10 @@ import Link from "next/link";
 
 interface Props {
   title: string;
+  body: string | undefined;
 }
 
-export default function Block({ title }: Props) {
+export default function Block({ title, body="You are not authorized to view this page" }: Props) {
   return (
     <>
       <Head>
@@ -16,9 +17,9 @@ export default function Block({ title }: Props) {
         <main className="flex min-h-screen flex-col">
           <div className="z-10 my-auto flex flex-col items-center justify-center gap-12 px-4 py-16 ">
             <p className="text-2xl text-white">
-              You are not authorized to view this page.
+              {body}
             </p>
-            <Link href={'/'}>Return</Link>
+            <Link href={'/rerouter'} className="btn-red">Return</Link>
           </div>
         </main>
       </Layout>
