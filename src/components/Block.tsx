@@ -3,11 +3,11 @@ import Layout from "./Layout";
 import Link from "next/link";
 
 interface Props {
-  title: string;
-  body: string | undefined;
+  title?: string;
+  body?: string;
 }
 
-export default function Block({ title, body="You are not authorized to view this page" }: Props) {
+export default function Block({ title="Unauthorized Access", body="You are not authorized to view this page" }: Props) {
   return (
     <>
       <Head>

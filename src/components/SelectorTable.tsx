@@ -14,26 +14,27 @@ import { AnyCnameRecord } from "dns";
 
 interface Props<T> {
   data: T[];
-  columns: ColumnDef<T>[];
-  onRowSelect: any;
-  tailClass: string | undefined;
-  selectorHighlight: boolean;
+  columns: ColumnDef<T>[] | any;
+  onRowSelect?: any;
+  tailClass?: string;
+  selectorHighlight?: boolean;
+  maxPageSize?: number;
 }
 
-export default function Table<T>({ selectorHighlight=true, data, columns, onRowSelect=undefined, tailClass="flex flex-col bg-white min-w-64 rounded-md items-center" }: Props<T>) {
+export default function Table<T>({ maxPageSize=5, selectorHighlight=true, data, columns, onRowSelect=undefined, tailClass="flex flex-col bg-white min-w-64 rounded-md items-center" }: Props<T>) {
 
   const [selectedID, setSelectedID] = useState<number>(1)
 
   const handleSelect = (selectedRowID: number) => {
     setSelectedID(selectedRowID);
-    if (onRowSelect !== undefined) {
+    if (onRowSelect) {
       onRowSelect(selectedRowID);
     }
   }
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 5,
+    pageSize: maxPageSize,
   });
 
   const table = useReactTable({

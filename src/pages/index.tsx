@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { getCsrfToken } from "next-auth/react";
 
-export default function Login({ csrfToken }) {
+export default function Login({ csrfToken }: any) {
 
   const { data: session } = useSession();
 
@@ -35,7 +35,7 @@ export default function Login({ csrfToken }) {
   return (
     <>
       <Head>
-        <title>Login | Heffron Cruz</title>
+        <title>Login | Project Agila</title>
         <link rel="icon" href="/favicon.png" />
       </Head>
 
@@ -102,7 +102,7 @@ export default function Login({ csrfToken }) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: any) {
   return {
     props: {
       csrfToken: await getCsrfToken(context),

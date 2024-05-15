@@ -59,7 +59,7 @@ export default function AllCases({ cases }: Props) {
   ];
 
   if (session == null || (!session.user.isAdmin && session.user.isLawyer)) {
-    return <Block title="All Cases" />;
+    return <Block />;
   }
 
   return (

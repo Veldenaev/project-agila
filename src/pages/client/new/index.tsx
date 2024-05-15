@@ -16,7 +16,7 @@ export default function Client({ nid }: Props) {
   const { data: session } = useSession();
 
   if (session == null || !session.user.isAdmin) {
-    return <Block title="Add Client" />;
+    return <Block />;
   }
 
   const obj: Client = {

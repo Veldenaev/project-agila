@@ -141,7 +141,7 @@ export default function Client({ client, contract }: Props) {
     session == null ||
     (!session.user.isAdmin && Number(session.user.id) !== client.ClientID)
   ) {
-    return <Block title="Client Dashboard" />;
+    return <Block />;
   }
 
   return (
