@@ -24,6 +24,7 @@ interface Props {
     payments: Payment[];
   };
   contract: Contract;
+  allContractIDs: number[];
 }
 
 interface CaseRow {
@@ -38,7 +39,7 @@ interface PaymentRow {
   date: Date | null;
 }
 
-export default function Client({ client, contract }: Props) {
+export default function Client({ client, contract, allContractIDs }: Props) {
   const { data: session } = useSession();
 
   if (!client) {
@@ -66,11 +67,11 @@ export default function Client({ client, contract }: Props) {
       cell: (info) => (
         <div className="flex flex-row items-center justify-center gap-2">
           <p>{info.getValue()}</p>
-            <div className="flex flex-row gap-1">
-              <Link className="btn-blue" href={`/case/${info.getValue()}`}>
-                View
-              </Link>
-              {session?.user.isAdmin && (
+          <div className="flex flex-row gap-1">
+            <Link className="btn-blue" href={`/case/${info.getValue()}`}>
+              View
+            </Link>
+            {session?.user.isAdmin && (
               <button
                 className="btn-red"
                 onClick={async () => {
@@ -80,9 +81,8 @@ export default function Client({ client, contract }: Props) {
               >
                 Delete
               </button>
-              )}
-            </div>
-          
+            )}
+          </div>
         </div>
       ),
     }),
@@ -159,7 +159,9 @@ export default function Client({ client, contract }: Props) {
                   obj={obj}
                   type="client"
                   name="Client"
-                  keys={["ClientID", "ContractID"]}
+                  keys={["ClientID"]}
+                  foreign={["ContractID"]}
+                  foreignChoices={allContractIDs}
                   hide={["pass"]}
                   textarea={[]}
                   identifier={(c: Client) => c.ClientID}
@@ -182,14 +184,6 @@ export default function Client({ client, contract }: Props) {
                   <div className="w-full rounded-md bg-white px-3 py-1">
                     {contract.ContractID}
                   </div>
-                  <select
-                    className="w-full rounded-md"
-                    onChange={() => console.log("I changed")}
-                  >
-                    {/*contracts.map((c, index) => (
-                      <option key={index}>{c.ContractID}</option>
-                    ))*/}
-                  </select>
                 </div>
               </div>
               <div className="flex flex-col items-center justify-center gap-10">
@@ -244,10 +238,18 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
         },
       })
     : null;
+  const allContractIDs = (
+    await prisma.contract.findMany({
+      where: {
+        ClientID: Number(client?.ClientID),
+      },
+    })
+  ).map((c) => c.ContractID);
   return {
     props: {
       client: JSON.parse(JSON.stringify(client)),
       contract: JSON.parse(JSON.stringify(contract)),
+      allContractIDs,
     },
   };
 };

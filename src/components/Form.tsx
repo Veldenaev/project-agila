@@ -7,6 +7,8 @@ interface Props<T extends object> {
   type: string;
   name: string;
   keys: string[];
+  foreign?: string[];
+  foreignChoices?: (string | number)[];
   hide: string[];
   textarea: string[];
   identifier: (t: T) => string | number;
@@ -23,6 +25,8 @@ export default function Form<T extends object>({
   type,
   name,
   keys,
+  foreign,
+  foreignChoices,
   hide,
   textarea,
   identifier,
@@ -115,22 +119,38 @@ export default function Form<T extends object>({
           .map(([k, v], index) => (
             <div key={index} className="flex flex-col">
               <span className="pl-1 text-black">{k}</span>
-
-              {textarea.includes(k) ? (
+              {foreign?.includes(k) ? (
+                <select
+                  className="min-h-7 rounded-md border-2 border-solid border-black disabled:bg-gray-200"
+                  disabled={!updating}
+                  onChange={(e) =>
+                    setNewObj((oldObj) => ({
+                      ...oldObj,
+                      [k]: e.target.value,
+                    }))
+                  }
+                >
+                  {foreignChoices?.map((choice, index) => (
+                    <option key={index} value={choice}>
+                      {choice}
+                    </option>
+                  ))}
+                </select>
+              ) : textarea.includes(k) ? (
                 <textarea
-                  className="min-h-7 rounded-md border-2 border-solid border-black px-1 disabled:bg-gray-200"
+                  className="h-7 max-h-20 min-h-7 rounded-md border-2 border-solid border-black px-1 disabled:bg-gray-200"
                   disabled={!updating}
                   defaultValue={v as string}
                   onChange={(e) =>
                     setNewObj((oldObj) => ({
                       ...oldObj,
-                      Status: e.target.value,
+                      [k]: e.target.value,
                     }))
                   }
                 ></textarea>
               ) : (
                 <input
-                  className={`rounded-md ${k.match(/file/i) ? "" : "border-2 border-solid border-black disabled:bg-gray-200"} px-1`}
+                  className={`rounded-md ${k.match(/file/i) ? "" : "border-2 border-solid border-black disabled:bg-gray-200"} px-1 ${typeof v === "boolean" ? "mr-auto ml-1" : ""}`}
                   autoFocus
                   checked={typeof v == "boolean" && v}
                   onChange={(e) =>
