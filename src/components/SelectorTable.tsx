@@ -18,6 +18,7 @@ interface Props<T> {
   tailClass?: string;
   selectorHighlight?: boolean;
   maxPageSize?: number;
+  columnWidth?: number;
 }
 
 export default function Table<T>({
@@ -27,6 +28,7 @@ export default function Table<T>({
   columns,
   onRowSelect = undefined,
   tailClass = "flex flex-col bg-white min-w-64 rounded-md items-center",
+  columnWidth = 64,
 }: Props<T>) {
   const [selectedID, setSelectedID] = useState<number>(1);
 
@@ -66,7 +68,7 @@ export default function Table<T>({
     <>
       <div className={tailClass}>
         <table>
-          <thead>
+          <thead className="align-top">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
