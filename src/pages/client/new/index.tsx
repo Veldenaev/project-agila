@@ -7,12 +7,14 @@ import { defaultClient } from "~/utils/defaults";
 import genID from "~/utils/genID";
 import { useSession } from "next-auth/react";
 import Block from "~/components/Block";
+import prisma from "~/lib/prisma";
 
 interface Props {
   nid: number;
+  allContractIDs: number[];
 }
 
-export default function Client({ nid }: Props) {
+export default function Client({ nid, allContractIDs }: Props) {
   const { data: session } = useSession();
 
   if (session == null || !session.user.isAdmin) {
@@ -35,12 +37,15 @@ export default function Client({ nid }: Props) {
               obj={obj}
               type="client"
               name="Client"
-              keys={["ClientID"]}
+              keys={["ClientID", "ContractID"]}
+              // foreign={["ContractID"]}
+              // foreignChoices={allContractIDs}
               hide={[]}
               textarea={[]}
               identifier={(c: Client) => c.ClientID}
               adding={true}
               stay={false}
+              authorized={session?.user.isAdmin ?? false}
             />
           </div>
         </main>
@@ -50,9 +55,13 @@ export default function Client({ nid }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
+  const allContractIDs = (await prisma.contract.findMany()).map(
+    (c) => c.ContractID,
+  );
   return {
     props: {
       nid: genID(),
+      allContractIDs,
     },
   };
 };
