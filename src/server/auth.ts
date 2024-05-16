@@ -57,6 +57,7 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/",
+    signOut: "/rerouter",
   },
   adapter: PrismaAdapter(db),
   providers: [
