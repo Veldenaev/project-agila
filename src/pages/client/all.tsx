@@ -27,6 +27,10 @@ interface Row {
   amt?: number;
 }
 
+function formatNumber(value: number): string {
+  return new Intl.NumberFormat('en-US').format(value);
+}
+
 function sumNumbers(numbers: (number | null)[]): number {
   return numbers.reduce((acc, current) => (acc ?? 0) + (current ?? 0), 0) ?? 0;
 }
@@ -122,7 +126,7 @@ export default function AllClients({ clients, cases, payments, works }: Props) {
         header: "Account Name",
       }),
     ];
-  }, [columnHelper]);
+  }, []);
 
   const caseColumns = useMemo(() => {
     return [
@@ -130,7 +134,7 @@ export default function AllClients({ clients, cases, payments, works }: Props) {
         header: "Case Title",
       }),
     ];
-  }, [columnHelper]);
+  }, []);
 
   const payColumns = useMemo(() => {
     return [
@@ -139,12 +143,13 @@ export default function AllClients({ clients, cases, payments, works }: Props) {
       }),
       columnHelper.accessor("amt", {
         header: "Amount",
+        cell: (info) => formatNumber(info.getValue() ?? 0),
       }),
       columnHelper.accessor("date", {
         header: "Date",
       }),
     ];
-  }, [columnHelper]);
+  }, []);
 
   if (session?.user.isClient === true) {
     return <Block />;
@@ -258,7 +263,7 @@ export default function AllClients({ clients, cases, payments, works }: Props) {
                   maxPageSize={3}
                   data={payData}
                   columns={payColumns}
-                  tailClass="flex flex-col min-h-max items-center justify-between w-3/4"
+                  tailClass="flex flex-col min-h-max items-center justify-between w-2/3"
                   onRowSelect={paySelect}
                   columnBorder={true}
                 />
@@ -273,16 +278,16 @@ export default function AllClients({ clients, cases, payments, works }: Props) {
                   <table>
                     <tbody>
                       <tr>
-                        <td className="font-bold pr-4 text-red-600">Billings:</td>
-                        <td className="pl-2 border-l text-red-600">{workTotal}</td>
+                        <td className="pr-4 text-red-600">Billings:</td>
+                        <td className="pl-2 border-l text-red-600">{formatNumber(workTotal)}</td>
                       </tr>
                       <tr>
-                        <td className="font-bold pr-4 text-green-400">Payments:</td>
-                        <td className="pl-2 border-l text-green-400">{payTotal}</td>
+                        <td className="pr-4 text-green-400">Payments:</td>
+                        <td className="pl-2 border-l text-green-400">{formatNumber(payTotal)}</td>
                       </tr>
                       <tr>
-                        <td className="font-bold pr-4 text-blue-600">Balance:</td>
-                        <td className="pl-2 border-l text-blue-600">{workTotal - payTotal}</td>
+                        <td className="pt-2 font-bold pr-4 border-t text-blue-600 text-2xl">Balance:</td>
+                        <td className="pt-2 pl-2 border-l border-t text-blue-600 text-3xl">{formatNumber(workTotal - payTotal)}</td>
                       </tr>
                     </tbody>
                   </table>
