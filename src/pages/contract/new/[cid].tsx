@@ -5,6 +5,7 @@ import Form from "~/components/Form";
 import Layout from "~/components/Layout";
 import { defaultContract } from "~/utils/defaults";
 import genID from "~/utils/genID";
+import { useSession } from "next-auth/react";
 
 interface Props {
   cid: number;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export default function Contract({ cid, nid }: Props) {
+  const { data: session } = useSession();
   const obj: Contract = {
     ...defaultContract,
     ContractID: nid,
@@ -20,7 +22,7 @@ export default function Contract({ cid, nid }: Props) {
   return (
     <>
       <Head>
-        <title>Update Contract</title>
+        <title>Add Contract</title>
       </Head>
       <Layout>
         <main className="flex min-h-screen flex-col">
@@ -29,12 +31,13 @@ export default function Contract({ cid, nid }: Props) {
               obj={obj}
               type="contract"
               name="Contract"
-              keys={["ContractID", "ClientID"]}
-              hide={[]}
+              keys={["ContractID", "ClientID", "RootContractID"]}
+              hide={["isAmendment"]}
               textarea={[]}
               identifier={(c: Contract) => c.ContractID}
               adding={true}
               stay={false}
+              authorized={session?.user.isAdmin ?? false}
             />
           </div>
         </main>

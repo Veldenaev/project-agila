@@ -34,8 +34,8 @@ export default function Contract({ root, cid, nid }: Props) {
               obj={obj}
               type="contract"
               name="Contract"
-              keys={["ContractID", "ClientID", "RootContractID", "isAmendment"]}
-              hide={[]}
+              keys={["ContractID", "ClientID", "RootContractID"]}
+              hide={["isAmendment"]}
               textarea={[]}
               identifier={(c: Contract) => c.ContractID}
               adding={true}

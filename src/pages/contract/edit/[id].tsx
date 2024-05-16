@@ -5,12 +5,14 @@ import prisma from "../../../lib/prisma";
 import Form from "~/components/Form";
 import Layout from "~/components/Layout";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 interface Props {
   contract: Contract;
 }
 
 export default function Contract({ contract }: Props) {
+  const { data: session } = useSession();
   return (
     <>
       <Head>
@@ -24,11 +26,12 @@ export default function Contract({ contract }: Props) {
               type="contract"
               name="Contract"
               keys={["ContractID", "ClientID", "RootContractID"]}
-              hide={[]}
+              hide={["isAmendment"]}
               textarea={[]}
               identifier={(c: Contract) => c.ContractID}
               adding={false}
               stay={false}
+              authorized={session?.user.isAdmin ?? false}
             />
             <Link
               className="btn-blue text-xl"
