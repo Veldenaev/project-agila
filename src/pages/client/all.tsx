@@ -21,7 +21,7 @@ interface Props {
 
 interface Row {
   name?: string;
-  id: number;
+  id: number | string;
   date?: string | null | Date;
   amt?: number;
 }
@@ -114,8 +114,7 @@ export default function AllClients({ clients, cases, payments }: Props) {
   const payColumns = useMemo(() => {
     return [
       columnHelper.accessor("id", {
-        header: "Payment Ref. No.",
-        enableColumnFilter: false,
+        header: "Ref. No.",
       }),
       columnHelper.accessor("amt", {
         header: "Amount",
@@ -161,7 +160,7 @@ export default function AllClients({ clients, cases, payments }: Props) {
                 onRowSelect={setSelectedClientID}
                 tailClass="flex flex-col flex-grow bg-white min-h-72 min-w-64 rounded-l-md items-center justify-between"
               />
-              <table className="flex min-h-72 min-w-72 flex-col justify-center rounded-r-md pr-4 text-left">
+              <table className="flex bg-gray-300 min-h-72 min-w-96 gap-1 flex-col justify-center rounded-md px-4 text-left">
                 <thead className="text-2xl">
                   <tr>
                     <th>
@@ -265,7 +264,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let cases: Case[] = [];
   let payments:
     | Payment[]
-    | { Date?: string; PaymentID: number; ClientID: number; Amount: number }[] =
+    | { Date?: string; PaymentID: string; ClientID: number; Amount: number }[] =
     [];
 
   if (session?.user.isAdmin) {
@@ -276,6 +275,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     payments = payments.map((payment) => ({
       ...payment,
       Date: payment.Date?.toISOString(),
+      PaymentID: payment.PaymentID.toString(),
     }));
   } else if (session?.user.isLawyer) {
     cases = await prisma.case.findMany({
