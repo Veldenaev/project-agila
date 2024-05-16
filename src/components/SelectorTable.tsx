@@ -19,6 +19,7 @@ interface Props<T> {
   selectorHighlight?: boolean;
   maxPageSize?: number;
   columnWidth?: number;
+  columnBorder?: boolean;
 }
 
 export default function Table<T>({
@@ -29,6 +30,7 @@ export default function Table<T>({
   onRowSelect = undefined,
   tailClass = "flex flex-col bg-white min-w-64 rounded-md items-center",
   columnWidth = 64,
+  columnBorder = false,
 }: Props<T>) {
   const [selectedID, setSelectedID] = useState<number>(1);
 
@@ -118,7 +120,7 @@ export default function Table<T>({
                 >
                   {row.getVisibleCells().map((cell) => {
                     return (
-                      <td key={cell.id} className="rounded-lg px-2 py-1">
+                      <td key={cell.id} className={`${columnBorder ? 'border-x' : ''} rounded-lg px-2 py-1`}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext(),
