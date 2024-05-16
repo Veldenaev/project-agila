@@ -29,9 +29,9 @@ export default function Form<T extends object>({
   adding,
   stay,
   authorized,
-  firstTailClass="flex flex-row items-center justify-center gap-6",
-  secondTailClass="grid grid-cols-2 gap-3 rounded-lg bg-white p-4 pb-5",
-  outerTailClass="z-10 mx-auto my-auto flex flex-col"
+  firstTailClass = "flex flex-row items-center justify-center gap-6",
+  secondTailClass = "grid grid-cols-2 gap-3 rounded-lg bg-white p-4 pb-5",
+  outerTailClass = "z-10 mx-auto my-auto flex flex-col",
 }: Props<T>) {
   const router = useRouter();
   const [newObj, setNewObj] = useState(obj);
@@ -56,17 +56,14 @@ export default function Form<T extends object>({
   };
 
   return (
-    <form
-      onSubmit={submitData}
-      className={outerTailClass}
-    >
+    <form onSubmit={submitData} className={outerTailClass}>
       <div className={firstTailClass}>
         <h1 className="text-center font-bold tracking-tight text-white sm:text-[2rem]">
           <span className="text-agila">{name}</span> #{identifier(obj)}
         </h1>
 
         <div className="flex justify-center gap-3 text-lg">
-          {(updating && authorized) ? (
+          {updating && authorized ? (
             <>
               <input
                 type="submit"
@@ -91,21 +88,21 @@ export default function Form<T extends object>({
           ) : (
             authorized && (
               <div>
-              <button
-                className="btn-blue"
-                onClick={() => setUpdating((c) => !c)}
-              >
-                Edit
-              </button>
-              <button
-              className="btn-red ml-1"
-              onClick={async () => {
-                await pingDelete(type, identifier(obj));
-                // router.push('/rerouter');
-              }}
-            >
-              Delete
-            </button>
+                <button
+                  className="btn-blue"
+                  onClick={() => setUpdating((c) => !c)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="btn-red ml-1"
+                  onClick={async () => {
+                    await pingDelete(type, identifier(obj));
+                    // router.push('/rerouter');
+                  }}
+                >
+                  Delete
+                </button>
               </div>
             )
           )}

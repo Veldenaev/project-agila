@@ -55,8 +55,12 @@ export default function Table<T>({
     },
   });
 
-  const nextArrowClass = table.getCanNextPage() ? "rounded-md border p-1 transition-colors duration-75 hover:bg-blue-50" : "rounded-md border p-1 ";
-  const prevArrowClass = table.getCanPreviousPage() ? "rounded-md border p-1 transition-colors duration-75 hover:bg-blue-50" : "rounded-md border p-1 ";
+  const nextArrowClass = table.getCanNextPage()
+    ? "rounded-md border p-1 transition-colors duration-75 hover:bg-blue-50"
+    : "rounded-md border p-1 ";
+  const prevArrowClass = table.getCanPreviousPage()
+    ? "rounded-md border p-1 transition-colors duration-75 hover:bg-blue-50"
+    : "rounded-md border p-1 ";
 
   return (
     <>
@@ -112,7 +116,7 @@ export default function Table<T>({
                 >
                   {row.getVisibleCells().map((cell) => {
                     return (
-                      <td key={cell.id} className="px-2 py-1 rounded-lg">
+                      <td key={cell.id} className="rounded-lg px-2 py-1">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext(),

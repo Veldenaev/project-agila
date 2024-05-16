@@ -14,11 +14,10 @@ interface Props {
 }
 
 export default function Payment({ cid, nid }: Props) {
-
   const { data: session } = useSession();
 
-  if( !session || !session.user.isAdmin ){
-    return <Block />
+  if (!session || !session.user.isAdmin) {
+    return <Block />;
   }
 
   const obj: Payment = {

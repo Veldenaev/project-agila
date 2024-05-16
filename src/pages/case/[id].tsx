@@ -98,10 +98,11 @@ export default function Case({ theCase }: Props) {
       </Head>
 
       <Layout>
-        <main className="flex flex-row w-screen h-screen justify-center items-center">
-            <div className="z-10 flex flex-row justify-center h-104 min-w-308 w-5/6">
-
-              <div className="h-full"> {/* Form DIV*/}
+        <main className="flex h-screen w-screen flex-row items-center justify-center">
+          <div className="z-10 flex h-104 w-5/6 min-w-308 flex-row justify-center">
+            <div className="h-full">
+              {" "}
+              {/* Form DIV*/}
               <Form
                 obj={obj}
                 type="case"
@@ -117,64 +118,65 @@ export default function Case({ theCase }: Props) {
                 firstTailClass="flex flex-row items-center justify-center gap-6"
                 secondTailClass="grid grid-cols-2 gap-3 rounded-l-md bg-white h-full p-3"
               />
-              </div>
-              <div className="h-full"> {/* Assigned Lawyers DIV */}
-                <div className="flex flex-col justify-center h-full"> 
+            </div>
+            <div className="h-full">
+              {" "}
+              {/* Assigned Lawyers DIV */}
+              <div className="flex h-full flex-col justify-center">
+                <h1 className="text-center font-bold tracking-tight text-white sm:text-[2rem]">
+                  Lawyers
+                </h1>
 
-                    <h1 className="text-center font-bold tracking-tight text-white sm:text-[2rem]">
-                      Lawyers
-                    </h1>
-
-                    <div className="flex flex-col gap-1 bg-white pt-5 flex-grow">
-                      {lawyers.map((lawyer, index) => (
-                        <div
-                          key={index}
-                          className="font-bold flex flex-row items-center justify-between gap-1 px-3 py-2"
-                        >
-                          <p>{`${lawyer.LastName}, ${lawyer.FirstName} ${lawyer.MiddleName}`}</p>
-                          {/* <button className="btn-red">Delete</button> */}
-                        </div>
-                      ))}
+                <div className="flex flex-grow flex-col gap-1 bg-white pt-5">
+                  {lawyers.map((lawyer, index) => (
+                    <div
+                      key={index}
+                      className="flex flex-row items-center justify-between gap-1 px-3 py-2 font-bold"
+                    >
+                      <p>{`${lawyer.LastName}, ${lawyer.FirstName} ${lawyer.MiddleName}`}</p>
+                      {/* <button className="btn-red">Delete</button> */}
                     </div>
+                  ))}
                 </div>
               </div>
-              <div className="flex h-full flex-col"> {/* Works DIV */}
-                    <div className="flex flex-row items-center justify-center gap-6">
-
-                      <h1 className="text-center font-bold tracking-tight text-white sm:text-[2rem]">
-                        Work Involved
-                      </h1>
-
-                      {(session.user.isAdmin || session.user.isLawyer) && (
-                        <Link
-                          className="btn-blue"
-                          href={`/work/new/${theCase.CaseNum}`}
-                        >
-                          <p>Add</p>
-                        </Link>
-                      )}
-
-                    </div>
-
-                    <Table selectorHighlight={false} maxPageSize={5} data={data} columns={columns} tailClass="flex flex-col bg-white min-w-64 rounded-tr-md items-center flex-grow justify-between"/>
-
-                    <p className="flex flex-row items-center justify-start gap-5 rounded-br-md bg-white p-2">
-                    <span className="rounded-md bg-gray-700 px-3 pb-1 pt-2 text-white">
-                      Total Billing
-                    </span>
-                    <span className="mr-1 font-bold">
-                      Php{" "}
-                      {data
-                        .map((work) => work.FeeAmt ?? 0)
-                        .reduce((acc, cur) => acc + cur, 0)}
-                    </span>
-                    
-                  </p>
-
-              </div>
-
             </div>
+            <div className="flex h-full flex-col">
+              {" "}
+              {/* Works DIV */}
+              <div className="flex flex-row items-center justify-center gap-6">
+                <h1 className="text-center font-bold tracking-tight text-white sm:text-[2rem]">
+                  Work Involved
+                </h1>
 
+                {(session.user.isAdmin || session.user.isLawyer) && (
+                  <Link
+                    className="btn-blue"
+                    href={`/work/new/${theCase.CaseNum}`}
+                  >
+                    <p>Add</p>
+                  </Link>
+                )}
+              </div>
+              <Table
+                selectorHighlight={false}
+                maxPageSize={5}
+                data={data}
+                columns={columns}
+                tailClass="flex flex-col bg-white min-w-64 rounded-tr-md items-center flex-grow justify-between"
+              />
+              <p className="flex flex-row items-center justify-start gap-5 rounded-br-md bg-white p-2">
+                <span className="rounded-md bg-gray-700 px-3 pb-1 pt-2 text-white">
+                  Total Billing
+                </span>
+                <span className="mr-1 font-bold">
+                  Php{" "}
+                  {data
+                    .map((work) => work.FeeAmt ?? 0)
+                    .reduce((acc, cur) => acc + cur, 0)}
+                </span>
+              </p>
+            </div>
+          </div>
         </main>
       </Layout>
     </>

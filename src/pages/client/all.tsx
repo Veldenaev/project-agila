@@ -52,7 +52,12 @@ export default function AllClients({ clients, cases, payments }: Props) {
   const clientData: Row[] = useMemo(() => {
     return clients
       .map((client) => ({
-        name: (client.LastName && client.FirstName) ? `${client.LastName}, ${client.FirstName} ${client.MiddleName ? client.MiddleName: ''}` : client.CompanyName ? client.CompanyName : 'No Name',
+        name:
+          client.LastName && client.FirstName
+            ? `${client.LastName}, ${client.FirstName} ${client.MiddleName ? client.MiddleName : ""}`
+            : client.CompanyName
+              ? client.CompanyName
+              : "No Name",
         id: client.ClientID,
       }))
       .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
@@ -127,30 +132,29 @@ export default function AllClients({ clients, cases, payments }: Props) {
 
   return (
     <>
-
       <Head>
         <title>All Clients</title>
       </Head>
 
       <Layout>
-        <main className="flex justify-center min-h-screen">
-          <div className="w-3/5 h-4/5 min-w-max z-10 my-auto flex flex-col items-center justify-center px-4 py-16">
-
-            <div className="mb-8 flex flex-row items-center gap-6"> {/* Header Div */}
-
+        <main className="flex min-h-screen justify-center">
+          <div className="z-10 my-auto flex h-4/5 w-3/5 min-w-max flex-col items-center justify-center px-4 py-16">
+            <div className="mb-8 flex flex-row items-center gap-6">
+              {" "}
+              {/* Header Div */}
               <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-[3rem]">
                 Accounts
               </h1>
-
               {session?.user.isAdmin && (
                 <Link className="btn-blue" href="/client/new/">
                   <p>Add</p>
                 </Link>
               )}
-
             </div>
 
-            <div className="h-80 w-full flex flex-row rounded-md bg-white p-1"> {/* Client Selector, Case Selector DIV */}
+            <div className="flex h-80 w-full flex-row rounded-md bg-white p-1">
+              {" "}
+              {/* Client Selector, Case Selector DIV */}
               <Selector
                 data={clientData}
                 columns={clientColumns}
@@ -207,7 +211,7 @@ export default function AllClients({ clients, cases, payments }: Props) {
 
                         <Link
                           href={`/case/new/${selectedClientID}`}
-                          className="ml-2 btn-blue"
+                          className="btn-blue ml-2"
                         >
                           Add Case
                         </Link>
@@ -224,9 +228,11 @@ export default function AllClients({ clients, cases, payments }: Props) {
                 tailClass="flex flex-col flex-grow bg-white min-h-72 min-w-64 rounded-l-md items-center justify-between"
               />
             </div>
-            
-            {session?.user.isAdmin ? ( 
-              <div className="h-64 flex flex-row w-full mt-4 bg-white rounded-md justify-center"> {/* Payments Div */ }
+
+            {session?.user.isAdmin ? (
+              <div className="mt-4 flex h-64 w-full flex-row justify-center rounded-md bg-white">
+                {" "}
+                {/* Payments Div */}
                 <Selector
                   selectorHighlight={false}
                   maxPageSize={3}
@@ -244,7 +250,7 @@ export default function AllClients({ clients, cases, payments }: Props) {
                   </Link>
                 </div>
               </div>
-              ) : null}
+            ) : null}
           </div>
         </main>
       </Layout>

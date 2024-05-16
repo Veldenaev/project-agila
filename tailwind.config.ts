@@ -5,8 +5,8 @@ export default {
   theme: {
     extend: {
       spacing: {
-        '104': '26rem', // 416px
-        '308': '77rem', // 1232px
+        "104": "26rem", // 416px
+        "308": "77rem", // 1232px
       },
       colors: {
         agila: "gray-900",
