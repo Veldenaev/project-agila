@@ -15,6 +15,7 @@ export const defaultCase: Case = {
   Type: "",
   Title: "",
   Venue: "",
+	OngoingStatus: false,
 };
 
 export const defaultClient: Client = {
@@ -28,6 +29,7 @@ export const defaultClient: Client = {
   TelNum: "",
   CityAdd: "",
   Remarks: "",
+	CompanyName: "",
   user: "",
   pass: "",
 };
@@ -65,6 +67,8 @@ export const defaultContract: Contract = {
   isAmendment: false,
   RootContractID: 0,
   Date: new Date(),
+	filename: "",
+	Title: "",
 };
 
 export const defaultWork: Work = {
