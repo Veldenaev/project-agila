@@ -132,6 +132,7 @@ export default function Form<T extends object>({
                 <input
                   className={`rounded-md ${k.match(/file/i) ? "" : "border-2 border-solid border-black disabled:bg-gray-200"} px-1`}
                   autoFocus
+                  checked={typeof v == "boolean" && v}
                   onChange={(e) =>
                     setNewObj((oldObj) => ({
                       ...oldObj,
@@ -139,7 +140,9 @@ export default function Form<T extends object>({
                         ? e.target.files?.item(0)?.name
                         : typeof v === "number"
                           ? parseInt(e.target.value)
-                          : e.target.value,
+                          : typeof v === "boolean"
+                            ? e.target.checked
+                            : e.target.value,
                     }))
                   }
                   min={0}
@@ -154,9 +157,11 @@ export default function Form<T extends object>({
                         ? "email"
                         : k.match(/date/i)
                           ? "date"
-                          : typeof v === "string"
-                            ? "text"
-                            : "number"
+                          : typeof v === "boolean"
+                            ? "checkbox"
+                            : typeof v === "string"
+                              ? "text"
+                              : "number"
                   }
                 />
               )}
