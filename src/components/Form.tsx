@@ -122,7 +122,7 @@ export default function Form<T extends object>({
               {foreign?.includes(k) ? (
                 <select
                   className="min-h-7 rounded-md border-2 border-solid border-black disabled:bg-gray-200"
-                  disabled={!updating}
+                  disabled={!authorized || !updating}
                   onChange={(e) =>
                     setNewObj((oldObj) => ({
                       ...oldObj,
@@ -139,7 +139,7 @@ export default function Form<T extends object>({
               ) : textarea.includes(k) ? (
                 <textarea
                   className="h-7 max-h-20 min-h-7 rounded-md border-2 border-solid border-black px-1 disabled:bg-gray-200"
-                  disabled={!updating}
+                  disabled={!authorized || !updating}
                   defaultValue={v as string}
                   onChange={(e) =>
                     setNewObj((oldObj) => ({
@@ -166,7 +166,7 @@ export default function Form<T extends object>({
                     }))
                   }
                   min={0}
-                  disabled={keys.includes(k) || !updating}
+                  disabled={keys.includes(k) || !authorized || !updating}
                   placeholder={k}
                   defaultValue={k.match(/file/i) ? "" : (v as string)}
                   // value={k.match(/file/i) ? "" : (v as string)}
