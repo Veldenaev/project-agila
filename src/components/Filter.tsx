@@ -36,6 +36,7 @@ export default function Filter<T, U>({ column, table }: Props<T, U>) {
             e.target.value,
           ])
         }
+        min={0}
         placeholder={`Max`}
         className="w-16 rounded border px-1 shadow"
       />
