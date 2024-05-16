@@ -182,14 +182,14 @@ export default function Client({ client, contract }: Props) {
                   <div className="w-full rounded-md bg-white px-3 py-1">
                     {contract.ContractID}
                   </div>
-                  <select
+                  {/* <select
                     className="w-full rounded-md"
                     onChange={() => console.log("I changed")}
                   >
-                    {/*contracts.map((c, index) => (
+                    contracts.map((c, index) => (
                       <option key={index}>{c.ContractID}</option>
-                    ))*/}
-                  </select>
+                    ))
+                  </select> */}
                 </div>
               </div>
               <div className="flex flex-col items-center justify-center gap-10">
