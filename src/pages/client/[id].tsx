@@ -184,6 +184,7 @@ export default function Client({ client, contract, allContractIDs }: Props) {
                   <div className="w-full rounded-md bg-white px-3 py-1">
                     {contract.ContractID}
                   </div>
+
                 </div>
               </div>
               <div className="flex flex-col items-center justify-center gap-10">

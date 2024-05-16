@@ -186,7 +186,7 @@ export default function AllClients({ clients, cases, payments, works }: Props) {
                 onRowSelect={setSelectedClientID}
                 tailClass="flex flex-col flex-grow bg-white min-h-72 min-w-64 rounded-l-md items-center justify-between"
               />
-              <table className="flex bg-gray-300 min-h-72 min-w-96 gap-1 flex-col justify-center rounded-md px-4 text-left">
+              <table className="flex bg-gray-200 min-h-72 min-w-96 gap-1 flex-col justify-center rounded-md px-4 text-left">
                 <thead className="text-2xl">
                   <tr>
                     <th>

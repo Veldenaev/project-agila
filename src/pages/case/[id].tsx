@@ -18,6 +18,7 @@ import Link from "next/link";
 import Form from "~/components/Form";
 import { useSession } from "next-auth/react";
 import Block from "~/components/Block";
+import { useMemo } from "react";
 
 interface Props {
   theCase: Case & {
@@ -26,6 +27,10 @@ interface Props {
     lawyers: Lawyer[];
     works: Work[];
   };
+}
+
+function formatNumber(value: number): string {
+  return new Intl.NumberFormat('en-US').format(value);
 }
 
 export default function Case({ theCase }: Props) {
@@ -70,7 +75,7 @@ export default function Case({ theCase }: Props) {
     columnHelper.accessor("WorkID", {
       header: "Actions",
       cell: (info) =>
-        session?.user.isAdmin && (
+        session?.user.isAdmin ? (
           <div className="flex flex-row items-center justify-center gap-2">
             <div className="flex flex-row gap-1">
               <Link className="btn-blue" href={`/work/${info.getValue()}`}>
@@ -87,33 +92,27 @@ export default function Case({ theCase }: Props) {
               </button>
             </div>
           </div>
-        ),
+        ) : session?.user.isClient? ( 
+          <div className="flex flex-row items-center justify-center gap-2">
+            <div className="flex flex-row gap-1">
+              <Link className="btn-blue" href={`/work/${info.getValue()}`}>
+                View
+              </Link>
+            </div>
+          </div>
+        ): null,
       enableColumnFilter: false,
       enableSorting: false,
     }),
   ];
 
-  if (theCase === null) {
-    return <Block title="Case not found" body="Case not found" />;
-  }
+  const totalBill: string = useMemo(() => {
+    const total = formatNumber(data
+      .map((work) => work.FeeAmt ?? 0)
+      .reduce((acc, cur) => acc + cur, 0))
+      return total
+  }, [])
 
-  if (
-    session == null ||
-    (!session.user.isAdmin &&
-      session.user.isLawyer &&
-      !lawyers.some((l) => l.LawyerID === Number(session.user.id)))
-  ) {
-    return <Block title="Unauthorized Access" />;
-  }
-  if (
-    session == null ||
-    (!session.user.isAdmin &&
-      !session.user.isLawyer &&
-      !client.ClientID === (session.user.id))
-  ) {
-    return <Block title="Unauthorized Access" />;
-  }
-    
   return (
     <>
       <Head>
@@ -193,9 +192,7 @@ export default function Case({ theCase }: Props) {
                 </span>
                 <span className="mr-1 font-bold">
                   Php{" "}
-                  {data
-                    .map((work) => work.FeeAmt ?? 0)
-                    .reduce((acc, cur) => acc + cur, 0)}
+                  {totalBill}
                 </span>
               </p>
             </div>
