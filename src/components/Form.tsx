@@ -98,7 +98,7 @@ export default function Form<T extends object>({
                   className="btn-red ml-1"
                   onClick={async () => {
                     await pingDelete(type, identifier(obj));
-                    // router.push('/rerouter');
+                    router.back();
                   }}
                 >
                   Delete
