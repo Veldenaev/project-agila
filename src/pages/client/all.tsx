@@ -3,7 +3,7 @@ import { type GetServerSideProps } from "next";
 import Head from "next/head";
 import Layout from "~/components/Layout";
 import prisma from "~/lib/prisma";
-import { type Client, type Case, type Payment } from "@prisma/client";
+import { type Client, type Case, type Payment, type Work } from "@prisma/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -17,6 +17,7 @@ interface Props {
   clients: Client[];
   cases: Case[];
   payments: Payment[];
+  works: Work[]
 }
 
 interface Row {
@@ -26,7 +27,11 @@ interface Row {
   amt?: number;
 }
 
-export default function AllClients({ clients, cases, payments }: Props) {
+function sumNumbers(numbers: (number | null)[]): number {
+  return numbers.reduce((acc, current) => (acc ?? 0) + (current ?? 0), 0) ?? 0;
+}
+
+export default function AllClients({ clients, cases, payments, works }: Props) {
   const { data: session } = useSession();
   const router = useRouter();
   const [selectedClientID, setSelectedClientID] = useState<number>();
@@ -91,6 +96,22 @@ export default function AllClients({ clients, cases, payments }: Props) {
         id: p.PaymentID,
       }))
       .sort((a, b) => (a.amt > b.amt ? 1 : b.amt > a.amt ? -1 : 0));
+  }, [selectedClientID, payments]);
+
+  const workTotal: number = useMemo(() => {
+      const selectedCases = cases
+      .filter((c) => c.ClientID == selectedClientID).map((c) => c.CaseNum);
+      const selectedWorks = works.filter((w) => selectedCases.includes(w.CaseNum)).map((w) => w.FeeAmt);
+      const total = sumNumbers(selectedWorks);
+      return total
+  }, [works, cases, selectedClientID]);
+
+  const payTotal: number = useMemo(() => {
+    const selectedPayments = payments
+      .filter((p) => p.ClientID == selectedClientID)
+      .map((p) =>  p.Amount)
+    const total = sumNumbers(selectedPayments)
+    return total
   }, [selectedClientID, payments]);
 
   const columnHelper = createColumnHelper<Row>();
@@ -237,16 +258,34 @@ export default function AllClients({ clients, cases, payments }: Props) {
                   maxPageSize={3}
                   data={payData}
                   columns={payColumns}
-                  tailClass="flex flex-col min-h-max flex-grow items-center justify-between"
+                  tailClass="flex flex-col min-h-max items-center justify-between w-3/4"
                   onRowSelect={paySelect}
+                  columnBorder={true}
                 />
-                <div className="flex w-1/5 items-center justify-start">
+                <div className="flex flex-col flex-grow items-start gap-4 justify-center">
                   <Link
                     className="btn-blue"
                     href={`/payment/new/${selectedClientID}`}
                   >
-                    Add
+                    Add Payment
                   </Link>
+
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td className="font-bold pr-4 text-red-600">Billings:</td>
+                        <td className="pl-2 border-l text-red-600">{workTotal}</td>
+                      </tr>
+                      <tr>
+                        <td className="font-bold pr-4 text-green-400">Payments:</td>
+                        <td className="pl-2 border-l text-green-400">{payTotal}</td>
+                      </tr>
+                      <tr>
+                        <td className="font-bold pr-4 text-blue-600">Balance:</td>
+                        <td className="pl-2 border-l text-blue-600">{workTotal - payTotal}</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             ) : null}
@@ -266,17 +305,25 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     | Payment[]
     | { Date?: string; PaymentID: string; ClientID: number; Amount: number }[] =
     [];
+  let works: Work[] | { Date: string | undefined; WorkID: number; CaseNum: string; Type: string | null; Remarks: string | null; location: string | null; filename: string | null; Title: string | null; FeeAmt: number | null; }[] = [];
 
   if (session?.user.isAdmin) {
     clients = await prisma.client.findMany();
     cases = await prisma.case.findMany();
     payments = await prisma.payment.findMany();
+    works = await prisma.work.findMany();
 
     payments = payments.map((payment) => ({
       ...payment,
       Date: payment.Date?.toISOString(),
       PaymentID: payment.PaymentID.toString(),
     }));
+
+    works = works.map((work) => ({
+      ...work,
+      Date: work.Date?.toISOString(),
+    }));
+
   } else if (session?.user.isLawyer) {
     cases = await prisma.case.findMany({
       include: {
@@ -292,6 +339,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     });
 
     const ClientIDs = cases.map((caseInstance) => caseInstance.ClientID);
+    const CaseNums = cases.map((caseInstance) => caseInstance.CaseNum);
     clients = await prisma.client.findMany({
       where: {
         ClientID: {
@@ -299,9 +347,22 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         },
       },
     });
+    works = await prisma.work.findMany({
+      where: {
+        CaseNum: {
+          in: CaseNums,
+        },
+      },
+    });
+    works = works.map((work) => ({
+      ...work,
+      Date: work.Date?.toISOString(),
+    }));
   }
 
+
+
   return {
-    props: { clients, cases, payments },
+    props: { clients, cases, payments, works },
   };
 };

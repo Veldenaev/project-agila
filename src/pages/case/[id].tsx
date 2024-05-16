@@ -100,6 +100,27 @@ export default function Case({ theCase }: Props) {
       <Layout>
         <main className="flex h-screen w-screen flex-row items-center justify-center">
           <div className="z-10 flex h-104 w-5/6 min-w-308 flex-row justify-center">
+          <div className="h-full">
+              {" "}
+              {/* Assigned Lawyers DIV */}
+              <div className="flex h-full flex-col justify-center">
+                <h1 className="text-center font-bold tracking-tight text-white sm:text-[2rem]">
+                  Lawyers
+                </h1>
+
+                <div className="flex flex-grow flex-col gap-1 bg-white pt-5 rounded-l-md">
+                  {lawyers.map((lawyer, index) => (
+                    <div
+                      key={index}
+                      className="flex flex-row items-center justify-between gap-1 px-3 py-2 font-bold"
+                    >
+                      <p>{`${lawyer.LastName}, ${lawyer.FirstName} ${lawyer.MiddleName}`}</p>
+                      {/* <button className="btn-red">Delete</button> */}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
             <div className="h-full">
               {" "}
               {/* Form DIV*/}
@@ -116,29 +137,8 @@ export default function Case({ theCase }: Props) {
                 authorized={session.user.isAdmin}
                 outerTailClass="z-10 mx-auto my-auto flex flex-col h-full"
                 firstTailClass="flex flex-row items-center justify-center gap-6"
-                secondTailClass="grid grid-cols-2 gap-3 rounded-l-md bg-white h-full p-3"
+                secondTailClass="grid grid-cols-2 gap-3 bg-white h-full p-3"
               />
-            </div>
-            <div className="h-full">
-              {" "}
-              {/* Assigned Lawyers DIV */}
-              <div className="flex h-full flex-col justify-center">
-                <h1 className="text-center font-bold tracking-tight text-white sm:text-[2rem]">
-                  Lawyers
-                </h1>
-
-                <div className="flex flex-grow flex-col gap-1 bg-white pt-5">
-                  {lawyers.map((lawyer, index) => (
-                    <div
-                      key={index}
-                      className="flex flex-row items-center justify-between gap-1 px-3 py-2 font-bold"
-                    >
-                      <p>{`${lawyer.LastName}, ${lawyer.FirstName} ${lawyer.MiddleName}`}</p>
-                      {/* <button className="btn-red">Delete</button> */}
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
             <div className="flex h-full flex-col">
               {" "}
