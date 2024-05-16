@@ -80,7 +80,7 @@ model Work {
     location            String?    @db.VarChar(100)
     filename            String?    @db.VarChar(20)
     Title               String?    @db.VarChar(40)
-    FeeAmt              Int?       @db.SmallInt
+    FeeAmt              Int?       @db.MediumInt
     lawyers             Lawyer[]
     case                Case?      @relation(fields: [CaseNum], references: [CaseNum])
 }
