@@ -54,11 +54,11 @@ export default function Client({ client, contract }: Props) {
       cell: (info) => (
         <div className="flex flex-row items-center justify-center gap-2">
           <p>{info.getValue()}</p>
-          {session?.user.isAdmin && (
             <div className="flex flex-row gap-1">
               <Link className="btn-blue" href={`/case/${info.getValue()}`}>
                 View
               </Link>
+              {session?.user.isAdmin && (
               <button
                 className="btn-red"
                 onClick={async () => {
@@ -68,8 +68,9 @@ export default function Client({ client, contract }: Props) {
               >
                 Delete
               </button>
+              )}
             </div>
-          )}
+          
         </div>
       ),
     }),
