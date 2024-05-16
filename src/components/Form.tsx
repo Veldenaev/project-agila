@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import pingDelete from "~/utils/pingDelete";
 
 interface Props<T extends object> {
   obj: T;
@@ -65,7 +66,7 @@ export default function Form<T extends object>({
         </h1>
 
         <div className="flex justify-center gap-3 text-lg">
-          {updating ? (
+          {(updating && authorized) ? (
             <>
               <input
                 type="submit"
@@ -89,12 +90,23 @@ export default function Form<T extends object>({
             </>
           ) : (
             authorized && (
+              <div>
               <button
                 className="btn-blue"
                 onClick={() => setUpdating((c) => !c)}
               >
                 Edit
               </button>
+              <button
+              className="btn-red ml-1"
+              onClick={async () => {
+                await pingDelete(type, identifier(obj));
+                router.push('/rerouter');
+              }}
+            >
+              Delete
+            </button>
+              </div>
             )
           )}
         </div>

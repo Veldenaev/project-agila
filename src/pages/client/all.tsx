@@ -197,12 +197,21 @@ export default function AllClients({ clients, cases, payments }: Props) {
                     {session?.user.isAdmin &&
                     selectedClient &&
                     selectedClientID ? (
-                      <Link
-                        href={`/client/${selectedClientID}`}
-                        className="btn-blue"
-                      >
-                        View
-                      </Link>
+                      <div className="mt-2">
+                        <Link
+                          href={`/client/${selectedClientID}`}
+                          className="btn-blue"
+                        >
+                          View
+                        </Link>
+
+                        <Link
+                          href={`/case/new/${selectedClientID}`}
+                          className="ml-2 btn-blue"
+                        >
+                          Add Case
+                        </Link>
+                      </div>
                     ) : null}
                   </tr>
                 </tbody>
@@ -226,7 +235,7 @@ export default function AllClients({ clients, cases, payments }: Props) {
                   tailClass="flex flex-col min-h-max flex-grow items-center justify-between"
                   onRowSelect={paySelect}
                 />
-                <div className="flex w-1/5 items-center justify-center">
+                <div className="flex w-1/5 items-center justify-start">
                   <Link
                     className="btn-blue"
                     href={`/payment/new/${selectedClientID}`}
