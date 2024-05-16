@@ -90,6 +90,14 @@ export default function Case({ theCase }: Props) {
   ) {
     return <Block title="Unauthorized Access" />;
   }
+  if (
+    session == null ||
+    (!session.user.isAdmin &&
+      !session.user.isLawyer &&
+      !client.ClientID === (session.user.id))
+  ) {
+    return <Block title="Unauthorized Access" />;
+  }
 
   return (
     <>
