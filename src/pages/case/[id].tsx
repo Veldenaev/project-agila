@@ -159,7 +159,7 @@ export default function Case({ theCase }: Props) {
                     <Table selectorHighlight={false} maxPageSize={5} data={data} columns={columns} tailClass="flex flex-col bg-white min-w-64 rounded-tr-md items-center flex-grow justify-between"/>
 
                     <p className="flex flex-row items-center justify-start gap-5 rounded-br-md bg-white p-2">
-                    <span className="rounded-md bg-gray-700 px-3 py-1 text-white">
+                    <span className="rounded-md bg-gray-700 px-3 pb-1 pt-2 text-white">
                       Total Billing
                     </span>
                     <span className="mr-1 font-bold">
