@@ -40,6 +40,18 @@ interface PaymentRow {
 
 export default function Client({ client, contract }: Props) {
   const { data: session } = useSession();
+
+  if (!client) {
+    return <Block title="Client not found" body="Client not found" />;
+  }
+  
+  if (
+    session == null ||
+    (!session.user.isAdmin && Number(session.user.id) !== client.ClientID)
+  ) {
+    return <Block />;
+  }
+
   const router = useRouter();
   const { cases, payments, contracts, ...obj } = client;
   const casesData: CaseRow[] = cases.map((c) => ({
@@ -132,17 +144,6 @@ export default function Client({ client, contract }: Props) {
       },
     }),
   ];
-
-  if (client === null) {
-    return <Block title="Client not found" body="Client not found" />;
-  }
-
-  if (
-    session == null ||
-    (!session.user.isAdmin && Number(session.user.id) !== client.ClientID)
-  ) {
-    return <Block />;
-  }
 
   return (
     <>

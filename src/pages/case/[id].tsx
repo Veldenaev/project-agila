@@ -30,8 +30,23 @@ interface Props {
 
 export default function Case({ theCase }: Props) {
   const { data: session } = useSession();
-  const router = useRouter();
+
+  if (!theCase) {
+    return <Block title="Case not found" body="Case not found" />;
+  }
+  
   const { client, contract, lawyers, works, ...obj } = theCase;
+
+  if (
+    session == null ||
+    (!session.user.isAdmin &&
+      session.user.isLawyer &&
+      !lawyers.some((l) => l.LawyerID === Number(session.user.id)))
+  ) {
+    return <Block />;
+  }
+
+  const router = useRouter();
   const data: Work[] = works;
   const columnHelper = createColumnHelper<Work>();
   const columns = [
@@ -98,7 +113,7 @@ export default function Case({ theCase }: Props) {
   ) {
     return <Block title="Unauthorized Access" />;
   }
-
+    
   return (
     <>
       <Head>
