@@ -93,6 +93,27 @@ export default function Case({ theCase }: Props) {
     }),
   ];
 
+  if (theCase === null) {
+    return <Block title="Case not found" body="Case not found" />;
+  }
+
+  if (
+    session == null ||
+    (!session.user.isAdmin &&
+      session.user.isLawyer &&
+      !lawyers.some((l) => l.LawyerID === Number(session.user.id)))
+  ) {
+    return <Block title="Unauthorized Access" />;
+  }
+  if (
+    session == null ||
+    (!session.user.isAdmin &&
+      !session.user.isLawyer &&
+      !client.ClientID === (session.user.id))
+  ) {
+    return <Block title="Unauthorized Access" />;
+  }
+    
   return (
     <>
       <Head>
