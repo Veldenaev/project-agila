@@ -30,29 +30,27 @@ interface Props {
 }
 
 function formatNumber(value: number): string {
-  return new Intl.NumberFormat('en-US').format(value);
+  return new Intl.NumberFormat("en-US").format(value);
 }
 
 export default function Case({ theCase }: Props) {
   const { data: session } = useSession();
+  const router = useRouter();
+
+  const { client, contract, lawyers, works, ...obj } = theCase;
+  const data: Work[] = works;
+
+  const totalBill: string = useMemo(() => {
+    const total = formatNumber(
+      data.map((work) => work.FeeAmt ?? 0).reduce((acc, cur) => acc + cur, 0),
+    );
+    return total;
+  }, [data]);
 
   if (!theCase) {
     return <Block title="Case not found" body="Case not found" />;
   }
-  
-  const { client, contract, lawyers, works, ...obj } = theCase;
 
-  if (
-    session == null ||
-    (!session.user.isAdmin &&
-      session.user.isLawyer &&
-      !lawyers.some((l) => l.LawyerID === Number(session.user.id)))
-  ) {
-    return <Block />;
-  }
-
-  const router = useRouter();
-  const data: Work[] = works;
   const columnHelper = createColumnHelper<Work>();
   const columns = [
     columnHelper.accessor("Title", {
@@ -92,7 +90,7 @@ export default function Case({ theCase }: Props) {
               </button>
             </div>
           </div>
-        ) : session?.user.isClient? ( 
+        ) : session?.user.isClient ? (
           <div className="flex flex-row items-center justify-center gap-2">
             <div className="flex flex-row gap-1">
               <Link className="btn-blue" href={`/work/${info.getValue()}`}>
@@ -100,18 +98,20 @@ export default function Case({ theCase }: Props) {
               </Link>
             </div>
           </div>
-        ): null,
+        ) : null,
       enableColumnFilter: false,
       enableSorting: false,
     }),
   ];
 
-  const totalBill: string = useMemo(() => {
-    const total = formatNumber(data
-      .map((work) => work.FeeAmt ?? 0)
-      .reduce((acc, cur) => acc + cur, 0))
-      return total
-  }, [])
+  if (
+    session == null ||
+    (!session.user.isAdmin &&
+      session.user.isLawyer &&
+      !lawyers.some((l) => l.LawyerID === Number(session.user.id)))
+  ) {
+    return <Block />;
+  }
 
   return (
     <>
@@ -122,7 +122,7 @@ export default function Case({ theCase }: Props) {
       <Layout>
         <main className="flex h-screen w-screen flex-row items-center justify-center">
           <div className="z-10 flex h-104 w-5/6 min-w-308 flex-row justify-center">
-          <div className="h-full">
+            <div className="h-full">
               {" "}
               {/* Assigned Lawyers DIV */}
               <div className="flex h-full flex-col justify-center">
@@ -130,7 +130,7 @@ export default function Case({ theCase }: Props) {
                   Lawyers
                 </h1>
 
-                <div className="flex flex-grow flex-col gap-1 bg-white pt-5 rounded-l-md">
+                <div className="flex flex-grow flex-col gap-1 rounded-l-md bg-white pt-5">
                   {lawyers.map((lawyer, index) => (
                     <div
                       key={index}
@@ -190,10 +190,7 @@ export default function Case({ theCase }: Props) {
                 <span className="rounded-md bg-gray-700 px-3 pb-1 pt-2 text-white">
                   Total Billing
                 </span>
-                <span className="mr-1 font-bold">
-                  Php{" "}
-                  {totalBill}
-                </span>
+                <span className="mr-1 font-bold">Php {totalBill}</span>
               </p>
             </div>
           </div>

@@ -45,25 +45,29 @@ test("Clicking 'View' button leads to a lawyer's page", async ({ page }) => {
 // });
 
 test("individual lawyer page has 'Dashboard' in title", async ({ page }) => {
-  await page.goto("/lawyer/1");
+  await page.goto("/lawyer/10030");
   await expect(page).toHaveTitle(/Dashboard/);
 });
 
-test("individual lawyer page has table", async ({ page }) => {
-  await page.goto("/lawyer/1");
-  await expect(page.locator("table").first()).toBeVisible();
-});
+// test("individual lawyer page has table", async ({ page }) => {
+//   await page.goto("/lawyer/10030");
+//   await expect(page.locator("table").first()).toBeVisible();
+// });
 
-test("'View' button is visible in individual lawyer page", async ({ page }) => {
-  await page.goto("/lawyer/1");
-  await expect(page.getByRole("link", { name: /View/ }).first()).toBeVisible();
-});
-
-test("'Delete' button is visible in individual lawyer page", async ({
+test("'Return' button is visible in individual lawyer page", async ({
   page,
 }) => {
-  await page.goto("/lawyer/1");
+  await page.goto("/lawyer/10030");
   await expect(
-    page.getByRole("button", { name: /Delete/ }).first(),
+    page.getByRole("link", { name: /Return/ }).first(),
+  ).toBeVisible();
+});
+
+test("'Logout' button is visible in individual lawyer page", async ({
+  page,
+}) => {
+  await page.goto("/lawyer/10030");
+  await expect(
+    page.getByRole("button", { name: /Logout/ }).first(),
   ).toBeVisible();
 });

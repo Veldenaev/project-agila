@@ -37,9 +37,9 @@ export default function Client({ nid, allContractIDs }: Props) {
               obj={obj}
               type="client"
               name="Client"
-              keys={["ClientID", "ContractID"]}
-              // foreign={["ContractID"]}
-              // foreignChoices={allContractIDs}
+              keys={["ClientID"]}
+              foreign={["ContractID"]}
+              foreignChoices={allContractIDs}
               hide={[]}
               textarea={[]}
               identifier={(c: Client) => c.ClientID}

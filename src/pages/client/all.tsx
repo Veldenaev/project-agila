@@ -3,7 +3,12 @@ import { type GetServerSideProps } from "next";
 import Head from "next/head";
 import Layout from "~/components/Layout";
 import prisma from "~/lib/prisma";
-import { type Client, type Case, type Payment, type Work } from "@prisma/client";
+import {
+  type Client,
+  type Case,
+  type Payment,
+  type Work,
+} from "@prisma/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -17,7 +22,7 @@ interface Props {
   clients: Client[];
   cases: Case[];
   payments: Payment[];
-  works: Work[]
+  works: Work[];
 }
 
 interface Row {
@@ -28,7 +33,7 @@ interface Row {
 }
 
 function formatNumber(value: number): string {
-  return new Intl.NumberFormat('en-US').format(value);
+  return new Intl.NumberFormat("en-US").format(value);
 }
 
 function sumNumbers(numbers: (number | null)[]): number {
@@ -103,19 +108,22 @@ export default function AllClients({ clients, cases, payments, works }: Props) {
   }, [selectedClientID, payments]);
 
   const workTotal: number = useMemo(() => {
-      const selectedCases = cases
-      .filter((c) => c.ClientID == selectedClientID).map((c) => c.CaseNum);
-      const selectedWorks = works.filter((w) => selectedCases.includes(w.CaseNum)).map((w) => w.FeeAmt);
-      const total = sumNumbers(selectedWorks);
-      return total
+    const selectedCases = cases
+      .filter((c) => c.ClientID == selectedClientID)
+      .map((c) => c.CaseNum);
+    const selectedWorks = works
+      .filter((w) => selectedCases.includes(w.CaseNum))
+      .map((w) => w.FeeAmt);
+    const total = sumNumbers(selectedWorks);
+    return total;
   }, [works, cases, selectedClientID]);
 
   const payTotal: number = useMemo(() => {
     const selectedPayments = payments
       .filter((p) => p.ClientID == selectedClientID)
-      .map((p) =>  p.Amount)
-    const total = sumNumbers(selectedPayments)
-    return total
+      .map((p) => p.Amount);
+    const total = sumNumbers(selectedPayments);
+    return total;
   }, [selectedClientID, payments]);
 
   const columnHelper = createColumnHelper<Row>();
@@ -186,7 +194,7 @@ export default function AllClients({ clients, cases, payments, works }: Props) {
                 onRowSelect={setSelectedClientID}
                 tailClass="flex flex-col flex-grow bg-white min-h-72 min-w-64 rounded-l-md items-center justify-between"
               />
-              <table className="flex bg-gray-200 min-h-72 min-w-96 gap-1 flex-col justify-center rounded-md px-4 text-left">
+              <table className="flex min-h-72 min-w-96 flex-col justify-center gap-1 rounded-md bg-gray-200 px-4 text-left">
                 <thead className="text-2xl">
                   <tr>
                     <th>
@@ -267,27 +275,37 @@ export default function AllClients({ clients, cases, payments, works }: Props) {
                   onRowSelect={paySelect}
                   columnBorder={true}
                 />
-                <div className="flex flex-col flex-grow items-start gap-4 justify-center">
-                  <Link
-                    className="btn-blue"
-                    href={`/payment/new/${selectedClientID}`}
-                  >
-                    Add Payment
-                  </Link>
+                <div className="flex flex-grow flex-col items-start justify-center gap-4">
+                  {selectedClientID && (
+                    <Link
+                      className="btn-blue"
+                      href={`/payment/new/${selectedClientID}`}
+                    >
+                      Add Payment
+                    </Link>
+                  )}
 
                   <table>
                     <tbody>
                       <tr>
                         <td className="pr-4 text-red-600">Billings:</td>
-                        <td className="pl-2 border-l text-red-600">{formatNumber(workTotal)}</td>
+                        <td className="border-l pl-2 text-red-600">
+                          {formatNumber(workTotal)}
+                        </td>
                       </tr>
                       <tr>
                         <td className="pr-4 text-green-400">Payments:</td>
-                        <td className="pl-2 border-l text-green-400">{formatNumber(payTotal)}</td>
+                        <td className="border-l pl-2 text-green-400">
+                          {formatNumber(payTotal)}
+                        </td>
                       </tr>
                       <tr>
-                        <td className="pt-2 font-bold pr-4 border-t text-blue-600 text-2xl">Balance:</td>
-                        <td className="pt-2 pl-2 border-l border-t text-blue-600 text-3xl">{formatNumber(workTotal - payTotal)}</td>
+                        <td className="border-t pr-4 pt-2 text-2xl font-bold text-blue-600">
+                          Balance:
+                        </td>
+                        <td className="border-l border-t pl-2 pt-2 text-3xl text-blue-600">
+                          {formatNumber(workTotal - payTotal)}
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -310,7 +328,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     | Payment[]
     | { Date?: string; PaymentID: string; ClientID: number; Amount: number }[] =
     [];
-  let works: Work[] | { Date: string | undefined; WorkID: number; CaseNum: string; Type: string | null; Remarks: string | null; location: string | null; filename: string | null; Title: string | null; FeeAmt: number | null; }[] = [];
+  let works:
+    | Work[]
+    | {
+        Date: string | undefined;
+        WorkID: number;
+        CaseNum: string;
+        Type: string | null;
+        Remarks: string | null;
+        location: string | null;
+        filename: string | null;
+        Title: string | null;
+        FeeAmt: number | null;
+      }[] = [];
 
   if (session?.user.isAdmin) {
     clients = await prisma.client.findMany();
@@ -328,7 +358,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       ...work,
       Date: work.Date?.toISOString(),
     }));
-
   } else if (session?.user.isLawyer) {
     cases = await prisma.case.findMany({
       include: {
@@ -364,8 +393,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       Date: work.Date?.toISOString(),
     }));
   }
-
-
 
   return {
     props: { clients, cases, payments, works },
